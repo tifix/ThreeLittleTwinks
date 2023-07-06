@@ -1,3 +1,7 @@
+/* Control the flow of the metagame through this class
+ * 
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

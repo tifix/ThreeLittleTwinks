@@ -1,3 +1,9 @@
+/* This class is the base for player and enemy actions. 
+ * While ActionBase is a shorthand for creating and assigning attacks quickly, this class actually handles PERFORMING the attack
+ * 
+ * Action is initialised; cloned from non-editable BaseData into an editable instance 
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,16 +32,14 @@ public class Action {
 
     public void Initialise() { updatedData = baseData.ActionValues; name = updatedData.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
     
-    
-    
-
+ 
     public void Perform() 
     {
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
 
         Debug.Log($"{owner.name} at position {owner.position} is performing action");
 
-        if (owner.position < 5) //If the player is performing the action
+        if (owner.position < 5) //If the player is attacking
         {
             int hitPosition = owner.position + updatedData.range;
             if (hitPosition > 4) //Attack reaches the enemy
@@ -44,16 +48,16 @@ public class Action {
                 BattleManager.instance.charactersEnemy[hitPosition - 5].TakeDamage(updatedData.damage);
                 BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
             }
-            else 
+            else            //Attack hits player's characters
             {
                 Debug.Log($"the attack is hitting player's own troops! at position {hitPosition}");
                 BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
                 BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
             }
         }
-        else            //if the enemy is performing the action
+        else            //if the enemy is attacking
         {
-        
+            //ENEMY ATTACK LOGIC HERE!
         
         }/*
         */

@@ -1,3 +1,8 @@
+/* Each character's data is stored on this object - be it friend or foe.
+ * main consideration is avalible actions (actions to show in prep screen) and actionChosen (action to execute during the round)
+ * For now, these are assigned in-editor, soon they will be selectable in-game
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +22,8 @@ public class Character
         hpCur -= dmg;
         if (hpCur < 0) Die();
     }
+    
+    //Kill character when health reaches 0 and do some funky stuff and effects in the future
     private void Die() 
     {
         Debug.LogWarning($"The character {name} has just died! Someone get the cheap roses!");

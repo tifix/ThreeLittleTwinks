@@ -1,3 +1,8 @@
+/* This class handles the flow of the battle - initialising characters, turn order etc.
+ * 
+ * 
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -61,8 +66,23 @@ public class BattleManager : MonoBehaviour
 
             if (charactersEnemy[i].actionChosen == null) charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];
         }
+    }   //Initialise health to full and actions from base action values.
+
+    //Execute character actions when the player presses corresponding keys.  Needs constrainment to 1 per turn.
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) { ExecuteCharacterAction(charactersPlayer[0]); }
+        if (Input.GetKeyDown(KeyCode.W)) { ExecuteCharacterAction(charactersPlayer[1]); }
+        if (Input.GetKeyDown(KeyCode.E)) { ExecuteCharacterAction(charactersPlayer[2]); }
+        if (Input.GetKeyDown(KeyCode.R)) { ExecuteCharacterAction(charactersPlayer[3]); }
     }
 
+    void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
+    {
+        c.actionChosen.Perform();
+    }
+
+    #region utilities
     //Gets character by their ID values
     public Character GetCharacterByID(int ID) 
     {
@@ -78,25 +98,13 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning("Failed to retrive character by ID");
         return null;
     }
-
     public ActionBase GetActionBaseByName(string name) 
     {
         ScriptableObject temp = (ScriptableObject)Resources.Load("Actions/" + name);
         Debug.LogWarning(temp.name);
         return temp as ActionBase;
     }
+    #endregion
 
-    //Execute character actions when the player presses corresponding keys
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Q)) { ExecuteCharacterAction(charactersPlayer[0]); }
-        if(Input.GetKeyDown(KeyCode.W)) { ExecuteCharacterAction(charactersPlayer[1]); }
-        if(Input.GetKeyDown(KeyCode.E)) { ExecuteCharacterAction(charactersPlayer[2]); }
-        if(Input.GetKeyDown(KeyCode.R)) { ExecuteCharacterAction(charactersPlayer[3]); }
-    }
 
-    void ExecuteCharacterAction(Character c)
-    {
-        c.actionChosen.Perform();
-    }
 }
