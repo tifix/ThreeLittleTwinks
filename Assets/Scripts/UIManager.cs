@@ -53,19 +53,19 @@ public class UIManager : MonoBehaviour
         descriptionAbility4.text = c.actionsAvalible[3].updatedData.description;
 
         dmgAbility1.text = c.actionsAvalible[0].updatedData.damage.ToString();
-        dmgAbility1.text = c.actionsAvalible[1].updatedData.damage.ToString();
-        dmgAbility1.text = c.actionsAvalible[2].updatedData.damage.ToString();
-        dmgAbility1.text = c.actionsAvalible[3].updatedData.damage.ToString();
+        dmgAbility2.text = c.actionsAvalible[1].updatedData.damage.ToString();
+        dmgAbility3.text = c.actionsAvalible[2].updatedData.damage.ToString();
+        dmgAbility4.text = c.actionsAvalible[3].updatedData.damage.ToString();
 
         rangeAbility1.text = c.actionsAvalible[0].updatedData.range.ToString();
-        rangeAbility1.text = c.actionsAvalible[1].updatedData.range.ToString();
-        rangeAbility1.text = c.actionsAvalible[2].updatedData.range.ToString();
-        rangeAbility1.text = c.actionsAvalible[3].updatedData.range.ToString();
+        rangeAbility2.text = c.actionsAvalible[1].updatedData.range.ToString();
+        rangeAbility3.text = c.actionsAvalible[2].updatedData.range.ToString();
+        rangeAbility4.text = c.actionsAvalible[3].updatedData.range.ToString();
 
         costAbility1.text = c.actionsAvalible[0].updatedData.cost.ToString();
-        costAbility1.text = c.actionsAvalible[1].updatedData.cost.ToString();
-        costAbility1.text = c.actionsAvalible[2].updatedData.cost.ToString();
-        costAbility1.text = c.actionsAvalible[3].updatedData.cost.ToString();
+        costAbility2.text = c.actionsAvalible[1].updatedData.cost.ToString();
+        costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
+        costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
     }
 
     public void SetAbility(int index) 
