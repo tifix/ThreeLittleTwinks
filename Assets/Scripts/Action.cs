@@ -30,18 +30,19 @@ public class Action {
     public ActionValues updatedData;
     public int ownerID;
 
-    public void Initialise() { updatedData = baseData.ActionValues; name = updatedData.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
+    public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
     
  
     public void Perform() 
     {
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
-
         Debug.Log($"{owner.name} at position {owner.position} is performing action");
+
 
         if (owner.position < 5) //If the player is attacking
         {
             int hitPosition = owner.position + updatedData.range;
+            if (hitPosition > 7) {Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
             if (hitPosition > 4) //Attack reaches the enemy
             {
                 Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
