@@ -6,13 +6,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
+using static Unity.Burst.Intrinsics.X86;
 
+[ExecuteInEditMode]
 public class UIManager : MonoBehaviour
 {
+    public static UIManager instance;
+
     [SerializeField] int selectedCharacter = 0;
     public GameObject screen_AbilitySelect;
     public TMP_Text CaptionCharacterName;
-
+    [Header("Targetting line parameters")]
+    [Tooltip("how many points is the curve made up of?"), SerializeField] int   targetCurvatureResolution;
+    [Tooltip("how tall should the curve be"),SerializeField]            float   targetBaseHeight, targetMaxHeight;
+    [Space(5)]
+    public LineRenderer targetLine;
     //Individual ability value displayers
     public TMP_Text captionAbility1, captionAbility2, captionAbility3, captionAbility4;
     public TMP_Text descriptionAbility1, descriptionAbility2, descriptionAbility3, descriptionAbility4;
@@ -20,9 +29,17 @@ public class UIManager : MonoBehaviour
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
 
+    [SerializeField] Vector3[] pos;
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(this);
+    }
 
     void Start()
     {
+        targetLine.positionCount = 0;//clearing the target preview.
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
     }
 
@@ -35,6 +52,38 @@ public class UIManager : MonoBehaviour
         selectedCharacter=0;
         if (state) LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
         screen_AbilitySelect.SetActive(state); 
+    }
+
+    public void ShowTargetParabola(Vector3 init, Vector3 fin) 
+    {
+        //Drawing initial and final positions
+        targetLine.positionCount = targetCurvatureResolution;
+        Vector3[] trajectory = new Vector3[targetCurvatureResolution];
+        pos = new Vector3[targetCurvatureResolution];
+        trajectory[0] = new Vector3(init.x,init.y+ targetBaseHeight,init.z); 
+        trajectory[targetCurvatureResolution-1] = new Vector3(fin.x, fin.y + targetBaseHeight, fin.z);
+
+        //Determining natural peak height by solving for midpoint coordinate
+        float peakY = -1 * ((init.x+fin.x)/2-init.x) * ((init.x + fin.x) / 2 - fin.x);
+
+        Vector3 midPosition;
+        for (int i = 1; i < targetCurvatureResolution-1; i++)
+        {
+            midPosition = (targetCurvatureResolution - (float)i) / targetCurvatureResolution * init + ((float)i / targetCurvatureResolution * fin); //getting X from curve resolution
+            float y = -1 * (midPosition.x - init.x)*(midPosition.x - fin.x);                                                          //The equation of the curve
+
+            //Lerp the curve so that the height of both end-points and peak is consistent and adjustable
+            float relativeY = Mathf.InverseLerp(0, peakY, y); //this represents how far up th
+            y = Mathf.Lerp(targetBaseHeight,targetMaxHeight, relativeY);
+
+            //Exporting values to Gizmos and LineRenderer
+            midPosition +=  y * Vector3.up;
+            trajectory[i] = midPosition;
+            pos[i] = midPosition;
+        }
+
+        targetLine.enabled = true;
+        targetLine.SetPositions(trajectory);
     }
 
     void LoadDataForCharacter(Character c) 
@@ -87,5 +136,14 @@ public class UIManager : MonoBehaviour
         if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Length-1;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
+    }
+
+    public void OnDrawGizmos()
+    {
+        if(pos.Length>0)
+        for (int i = 0; i < pos.Length; i++)
+        {
+            Gizmos.DrawSphere(pos[i], .3f);
+        }
     }
 }

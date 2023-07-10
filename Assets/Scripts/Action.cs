@@ -36,7 +36,7 @@ public class Action {
     public void Perform() 
     {
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
-        Debug.Log($"{owner.name} at position {owner.position} is performing action");
+        Debug.Log($"{owner.name} at position {owner.position} is performing action {name} (range{updatedData.range})");
 
 
         if (owner.position < 5) //If the player is attacking
@@ -46,14 +46,20 @@ public class Action {
             if (hitPosition > 4) //Attack reaches the enemy
             {
                 Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
+                UIManager.instance.ShowTargetParabola(BattleManager.instance.characterPositions[owner.position-1].position, BattleManager.instance.characterPositions[hitPosition-1].position);
+                
                 BattleManager.instance.charactersEnemy[hitPosition - 5].TakeDamage(updatedData.damage);
-                BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
+                GameObject HitFX =GameObject.Instantiate(BattleManager.instance.HitMarker, BattleManager.instance.characterPositions[hitPosition - 1].position, Quaternion.identity);
+                GameObject.Destroy(HitFX, 2);
             }
             else            //Attack hits player's characters
             {
                 Debug.Log($"the attack is hitting player's own troops! at position {hitPosition}");
+                UIManager.instance.ShowTargetParabola(BattleManager.instance.characterPositions[owner.position-1].position, BattleManager.instance.characterPositions[hitPosition-1].position);
+
                 BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
-                BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
+                GameObject HitFX = GameObject.Instantiate(BattleManager.instance.HitMarker, BattleManager.instance.characterPositions[hitPosition - 1].position, Quaternion.identity);
+                GameObject.Destroy(HitFX, 2);
             }
         }
         else            //if the enemy is attacking
