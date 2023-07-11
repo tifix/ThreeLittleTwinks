@@ -27,5 +27,25 @@ public class Character
     private void Die() 
     {
         Debug.LogWarning($"The character {name} has just died! Someone get the cheap roses!");
+        //Reshuffle positions, since the corpse is no longer a target
+        BattleManager.instance.characterPositions[position - 1].gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        BattleManager.instance.characterPositions.RemoveAt(position - 1);
+
+        //Remove
+        BattleManager.instance.charactersEnemy.Remove(this);
+        BattleManager.instance.RecalculateCharacterPositions();
+
+
+        //Check if all chars are dead for ending the fight with victory/defeat
+        if (BattleManager.instance.charactersEnemy.Count < 1) 
+        {
+            Debug.Log("All enemies defeated! Victory!");
+            BattleManager.instance.EndEncounter(true);
+        }
+        if (BattleManager.instance.charactersPlayer.Count < 1)
+        {
+            Debug.Log("All player champtions defeated! Victory!");
+            BattleManager.instance.EndEncounter(false);
+        }
     }
 }

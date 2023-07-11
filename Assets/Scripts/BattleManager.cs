@@ -10,14 +10,16 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    public bool isInBattle = true;
     //Data of player characters and enemy characters
-    public Character[] charactersPlayer = new Character[4];
-    public Character[] charactersEnemy = new Character[4];
-    public Transform[] characterPositions = new Transform[8];
+    public List <Character> charactersPlayer =  new List<Character>(4);
+    public List <Character> charactersEnemy =   new List<Character>(4);
+    public List<Transform> characterPositions = new List<Transform>(8);
     public string battleID="1";
 
     public static BattleManager instance;
     public GameObject HitMarker;
+    public Action DefaultAction;
 
     //Assign instance if none found, otherwise destroy
     private void Awake()
@@ -51,11 +53,11 @@ public class BattleManager : MonoBehaviour
     //Gets character by their ID values
     public Character GetCharacterByID(int ID) 
     {
-        for (int i = 0; i < charactersPlayer.Length; i++)
+        for (int i = 0; i < charactersPlayer.Count; i++)
         {
             if (charactersPlayer[i].GetHashCode() == ID) return charactersPlayer[i];
         }
-        for (int i = 0; i < charactersEnemy.Length; i++)
+        for (int i = 0; i < charactersEnemy.Count; i++)
         {
             if (charactersEnemy[i].GetHashCode() == ID) return charactersEnemy[i];
         }
@@ -78,7 +80,7 @@ public class BattleManager : MonoBehaviour
         UIManager.instance.ToggleEncounterSelection(false); //hide the map screen
         Debug.Log($"Starting encounter: {ID}"); battleID = ID;
         //Initialising Player Characters
-        for (int i = 0; i < charactersPlayer.Length; i++)
+        for (int i = 0; i < charactersPlayer.Count; i++)
         {
             //Refill health
             charactersPlayer[i].hpCur = charactersPlayer[i].hpMax;
@@ -96,12 +98,26 @@ public class BattleManager : MonoBehaviour
             if (charactersPlayer[i].actionChosen == null) charactersPlayer[i].actionChosen = charactersPlayer[i].actionsAvalible[0];
         }
 
+        //if enemies have been reset or deleted, set default values, default attacks
+        for (int i = 0; i < charactersEnemy.Count; i++)
+        {
+            if (charactersEnemy[i].hpMax==0) 
+            {
+                charactersEnemy[i].actionChosen = DefaultAction;
+                charactersEnemy[i].name = "Zombie fairy";
+                for (int j = 0; j < charactersEnemy[i].actionsAvalible.Length; j++)
+                {
+                    charactersEnemy[i].actionsAvalible[j] = DefaultAction;
+                }
+            }
+        }
+
         //Initialising Enemy Characters
-        for (int i = 0; i < charactersEnemy.Length; i++)
+        for (int i = 0; i < charactersEnemy.Count; i++)
         {
             //Refill health
             charactersEnemy[i].hpCur = charactersEnemy[i].hpMax;
-            charactersEnemy[i].position = i + 1;
+            charactersEnemy[i].position = i + 1+ charactersPlayer.Count;
 
             //Initialising action instances from base action Scriptable Objects
             charactersEnemy[i].actionChosen.Initialise(); ;
@@ -115,7 +131,18 @@ public class BattleManager : MonoBehaviour
             if (charactersEnemy[i].actionChosen == null) charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];
         }
     }   //Initialise health to full and actions from base action values.
-    void EndEncounter(bool isWon)
+
+    public void RecalculateCharacterPositions() //Rethink where the various characters are after one's been removed
+    {
+
+        for (int i = 0; i < charactersPlayer.Count; i++)
+            charactersPlayer[i].position = i + 1;
+
+        for (int i = 0; i < charactersEnemy.Count; i++)
+            charactersEnemy[i].position = i + charactersPlayer.Count+1;
+    }
+
+    public void EndEncounter(bool isWon)
     {
         Debug.Log($"Just finished encounter: {battleID}");
         if (isWon) 

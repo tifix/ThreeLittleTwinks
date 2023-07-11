@@ -135,14 +135,14 @@ public class UIManager : MonoBehaviour
     public void SelectNextCharacter() 
     { 
         selectedCharacter++; 
-        if (selectedCharacter > BattleManager.instance.charactersPlayer.Length-1) selectedCharacter = 0;
+        if (selectedCharacter > BattleManager.instance.charactersPlayer.Count-1) selectedCharacter = 0;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }
     public void SelectPreviousCharacter() 
     { 
         selectedCharacter--; 
-        if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Length-1;
+        if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }

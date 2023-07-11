@@ -42,7 +42,10 @@ public class Action {
         if (owner.position < 5) //If the player is attacking
         {
             int hitPosition = owner.position + updatedData.range;
-            if (hitPosition > 7) {Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
+            if (hitPosition > + BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count-1].position) 
+            {Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
+            
+            
             if (hitPosition > 4) //Attack reaches the enemy
             {
                 Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
