@@ -56,6 +56,10 @@ public class mapManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
     }
+    private void Start()
+    {
+        UpdateNodeDisplay();
+    }
 
     //Debug for test-unlocking specific node
     void Update()
