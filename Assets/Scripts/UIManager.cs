@@ -16,12 +16,17 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] int selectedCharacter = 0;
     public GameObject screen_AbilitySelect;
+    public GameObject screen_EncounterSelect;
     public TMP_Text CaptionCharacterName;
+
     [Header("Targetting line parameters")]
-    [Tooltip("how many points is the curve made up of?"), SerializeField] int   targetCurvatureResolution;
-    [Tooltip("how tall should the curve be"),SerializeField]            float   targetBaseHeight, targetMaxHeight;
-    [Space(5)]
-    public LineRenderer targetLine;
+    [Tooltip("how many points is the curve made up of?"), SerializeField] int targetCurvatureResolution;
+    [Tooltip("how tall should the curve be"), SerializeField] float targetBaseHeight, targetMaxHeight;
+    
+    [Space(5), Header("Object references")]
+    public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
+    public Animator transitions;    //Screen transitions!
+
     //Individual ability value displayers
     public TMP_Text captionAbility1, captionAbility2, captionAbility3, captionAbility4;
     public TMP_Text descriptionAbility1, descriptionAbility2, descriptionAbility3, descriptionAbility4;
@@ -29,7 +34,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
 
-    [SerializeField] Vector3[] pos;
+    [SerializeField] Vector3[] pos; //Debug utility for the target line preview
 
     private void Awake()
     {
@@ -47,11 +52,15 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
     }
-    public void ToggleActionSelection(bool state) 
-    { 
-        selectedCharacter=0;
+    public void ToggleActionSelection(bool state)
+    {
+        selectedCharacter = 0;
         if (state) LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
-        screen_AbilitySelect.SetActive(state); 
+        screen_AbilitySelect.SetActive(state);
+    }
+    public void ToggleEncounterSelection(bool state)
+    {
+        screen_EncounterSelect.SetActive(state);
     }
 
     public void ShowTargetParabola(Vector3 init, Vector3 fin) 
