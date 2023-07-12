@@ -1,5 +1,7 @@
 /* This class handles UI, toggling various screens, screen transitions, button presses etc
  * 
+ * current Debug Keymap 
+ * SPACE - toggle Action selection menu
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +36,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
 
+    private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
+    [SerializeField] private float TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
     [SerializeField] Vector3[] pos; //Debug utility for the target line preview
 
     private void Awake()
@@ -44,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        targetLine.positionCount = 0;//clearing the target preview.
+        HideTargetParabola();
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
     }
 
@@ -52,6 +56,9 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
     }
+
+    //Switching between major game screens - from Map to encounter, from combat to Action selection
+    #region Screen transitions
     public void ToggleActionSelection(bool state)
     {
         selectedCharacter = 0;
@@ -62,8 +69,25 @@ public class UIManager : MonoBehaviour
     {
         screen_EncounterSelect.SetActive(state);
     }
+    #endregion
 
-    public void ShowTargetParabola(Vector3 init, Vector3 fin) 
+    //UI behaviours during combat
+    #region Combat UI & Effects
+    public void ShowAttackEffects(Vector3 init, Vector3 fin) => StartCoroutine(AttackEffectsProcess(init, fin));
+    public IEnumerator AttackEffectsProcess(Vector3 init, Vector3 fin) 
+    {
+        if (isAttackShowingNow) yield break;
+        isAttackShowingNow = true;
+        ShowTargetParabola(init, fin, true);
+        yield return new WaitForSeconds(0.5f);
+        GameObject HitFX = Instantiate(BattleManager.instance.HitMarker, fin, Quaternion.identity);
+
+
+        isAttackShowingNow = false;
+        yield return new WaitForSeconds(2);
+        Destroy(HitFX);
+    }
+    public void ShowTargetParabola(Vector3 init, Vector3 fin,bool hideAfterTime) 
     {
         //Drawing initial and final positions
         targetLine.positionCount = targetCurvatureResolution;
@@ -93,8 +117,15 @@ public class UIManager : MonoBehaviour
 
         targetLine.enabled = true;
         targetLine.SetPositions(trajectory);
-    }
+        if (hideAfterTime) Invoke("HideTargetParabola", TargetParabolaLifetime);
 
+    }
+    public void HideTargetParabola() { targetLine.positionCount = 0; }
+    #endregion
+
+    // Functionality of Ability selection menu - choosing which abilities which characters will cast in combat this turn
+    #region AbilitySelectMenu
+    //Load text-box data
     void LoadDataForCharacter(Character c) 
     {
         CaptionCharacterName.text = c.name;
@@ -126,26 +157,27 @@ public class UIManager : MonoBehaviour
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
     }
 
+    //Buttons for Ability selection menu - SetAbility sets the character's chosen ability to one of the 4 abilities, SelectNext/Previous cycles between player characters.
     public void SetAbility(int index) 
     { 
         BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen = BattleManager.instance.charactersPlayer[selectedCharacter].actionsAvalible[index];
         BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen.Initialise();
     }
-
     public void SelectNextCharacter() 
     { 
         selectedCharacter++; 
         if (selectedCharacter > BattleManager.instance.charactersPlayer.Count-1) selectedCharacter = 0;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
-    }
+    }       //cycle character + fetch new char's ability data
     public void SelectPreviousCharacter() 
     { 
         selectedCharacter--; 
         if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
-    }
+    }   //cycle character + fetch new char's ability data
+    #endregion
 
     public void OnDrawGizmos()
     {

@@ -1,6 +1,8 @@
 /* This class handles the flow of the battle - initialising characters, turn order etc.
  * 
- * 
+ * Current Debug mapping QWER character actions
+ * Alpha1 - WIN encounter
+ * Alpha9 - LOOSE encounter
  */
 
 using System.Collections;
@@ -37,11 +39,13 @@ public class BattleManager : MonoBehaviour
     //Execute character actions when the player presses corresponding keys.  Needs constrainment to 1 per turn.
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) { ExecuteCharacterAction(charactersPlayer[0]); }
-        if (Input.GetKeyDown(KeyCode.W)) { ExecuteCharacterAction(charactersPlayer[1]); }
-        if (Input.GetKeyDown(KeyCode.E)) { ExecuteCharacterAction(charactersPlayer[2]); }
-        if (Input.GetKeyDown(KeyCode.R)) { ExecuteCharacterAction(charactersPlayer[3]); }
-        if (Input.GetKeyDown(KeyCode.Alpha0)) { EndEncounter(true); }
+        if (!isInBattle) return;
+        if (Input.GetKeyDown(KeyCode.Q) && charactersPlayer.Count > 0)  ExecuteCharacterAction(charactersPlayer[0]); 
+        if (Input.GetKeyDown(KeyCode.W) && charactersPlayer.Count > 1)  ExecuteCharacterAction(charactersPlayer[1]); 
+        if (Input.GetKeyDown(KeyCode.E) && charactersPlayer.Count > 2)  ExecuteCharacterAction(charactersPlayer[2]); 
+        if (Input.GetKeyDown(KeyCode.R) && charactersPlayer.Count > 3)  ExecuteCharacterAction(charactersPlayer[3]); 
+        if (Input.GetKeyDown(KeyCode.Alpha0))   EndEncounter(true);
+        if (Input.GetKeyDown(KeyCode.Alpha9))   EndEncounter(false); 
     }
 
     void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
@@ -144,6 +148,7 @@ public class BattleManager : MonoBehaviour
 
     public void EndEncounter(bool isWon)
     {
+        isInBattle=false;
         Debug.Log($"Just finished encounter: {battleID}");
         if (isWon) 
         {

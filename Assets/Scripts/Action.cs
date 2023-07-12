@@ -37,36 +37,46 @@ public class Action {
     {
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
         Debug.Log($"{owner.name} at position {owner.position} is performing action {name} (range{updatedData.range})");
+        List<Character> en = BattleManager.instance.charactersEnemy;
+        List<Character> pl = BattleManager.instance.charactersPlayer;
 
-
-        if (owner.position < 5) //If the player is attacking
+        if (owner.position < pl.Count+1) //If the player is attacking
         {
             int hitPosition = owner.position + updatedData.range;
-            if (hitPosition > + BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count-1].position) 
-            {Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
-            
-            
-            if (hitPosition > 4) //Attack reaches the enemy
+
+            //Breaking if hitting out of range
+            if (hitPosition<0 || en.Count < 1 || hitPosition > en[en.Count-1].position) 
+            {Debug.LogWarning("Hitting beyond the enemies!"); return; } 
+                     
+            if (hitPosition > pl.Count) //Attack reaches the enemy
             {
                 Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
-                UIManager.instance.ShowTargetParabola(BattleManager.instance.characterPositions[owner.position-1].position, BattleManager.instance.characterPositions[hitPosition-1].position);
-                
-                BattleManager.instance.charactersEnemy[hitPosition - 5].TakeDamage(updatedData.damage);
-                GameObject HitFX =GameObject.Instantiate(BattleManager.instance.HitMarker, BattleManager.instance.characterPositions[hitPosition - 1].position, Quaternion.identity);
-                GameObject.Destroy(HitFX, 2);
+
+                //Apply Damage
+                BattleManager.instance.charactersEnemy[hitPosition - pl.Count-1].TakeDamage(updatedData.damage); 
+
+                //Show Snazzy effects
+                UIManager.instance.ShowAttackEffects(
+                                                    BattleManager.instance.characterPositions[owner.position - 1].position, 
+                                                    BattleManager.instance.characterPositions[hitPosition - 1].position);   
             }
             else            //Attack hits player's characters
             {
                 Debug.Log($"the attack is hitting player's own troops! at position {hitPosition}");
-                UIManager.instance.ShowTargetParabola(BattleManager.instance.characterPositions[owner.position-1].position, BattleManager.instance.characterPositions[hitPosition-1].position);
 
+                //Apply Damage
                 BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
-                GameObject HitFX = GameObject.Instantiate(BattleManager.instance.HitMarker, BattleManager.instance.characterPositions[hitPosition - 1].position, Quaternion.identity);
-                GameObject.Destroy(HitFX, 2);
+
+                //Show Snazzy effects
+                UIManager.instance.ShowAttackEffects(
+                                                    BattleManager.instance.characterPositions[owner.position - 1].position, 
+                                                    BattleManager.instance.characterPositions[hitPosition - 1].position);
             }
         }
         else            //if the enemy is attacking
         {
+            int hitPosition = owner.position + updatedData.range;
+            Debug.LogWarning($"Enemy attacking from position{hitPosition}");
             //ENEMY ATTACK LOGIC HERE!
         
         }/*

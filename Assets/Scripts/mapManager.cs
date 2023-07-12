@@ -58,7 +58,7 @@ public class mapManager : MonoBehaviour
     }
     private void Start()
     {
-        UpdateNodeDisplay();
+        //UpdateNodeDisplay();
     }
 
     //Debug for test-unlocking specific node

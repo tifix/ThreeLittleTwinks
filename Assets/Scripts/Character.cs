@@ -31,8 +31,9 @@ public class Character
         BattleManager.instance.characterPositions[position - 1].gameObject.GetComponent<SpriteRenderer>().color = Color.black;
         BattleManager.instance.characterPositions.RemoveAt(position - 1);
 
-        //Remove
-        BattleManager.instance.charactersEnemy.Remove(this);
+        //Remove from either enemies or players according to faction 
+        if(BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
+        else BattleManager.instance.charactersPlayer.Remove(this);
         BattleManager.instance.RecalculateCharacterPositions();
 
 
