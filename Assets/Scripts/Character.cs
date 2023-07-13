@@ -20,9 +20,36 @@ public class Character
     public void TakeDamage(float dmg)   //to be extended later with damage types 
     {
         hpCur -= dmg;
-        if (hpCur < 0) Die();
+        if (hpCur < 1) Die();
     }
-    
+
+    //Compares player characters based on their relative value
+    public Vector2 GetMostValuableTarget()
+    {
+        List<Character> possibleTargets = new ();    
+        foreach (Action action in actionsAvalible) 
+        {
+            //
+            int hitPosition = position - action.updatedData.range;
+        }
+
+        //List<int> targets = new List<int>();
+        //three archetypes of heroes - Nemesis, Righteous, Just.
+        //Nemesis chooses one character and tries to damage them whenever possible, Righteous tries to maximise damage, Just tries to maximise own team health and get enemy health evenly low
+
+        //target player with lowest health by default
+
+
+
+
+        //if have attack which character is vulnerable to, randomise using it instead
+
+        //if player character is on low health - prioritise finishing off
+
+
+        return new Vector2(1, 1);    //X-which attack to use, Y-whom to target 1,1 > 4,4
+    }
+
     //Kill character when health reaches 0 and do some funky stuff and effects in the future
     private void Die() 
     {

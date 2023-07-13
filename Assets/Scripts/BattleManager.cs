@@ -43,7 +43,11 @@ public class BattleManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && charactersPlayer.Count > 0)  ExecuteCharacterAction(charactersPlayer[0]); 
         if (Input.GetKeyDown(KeyCode.W) && charactersPlayer.Count > 1)  ExecuteCharacterAction(charactersPlayer[1]); 
         if (Input.GetKeyDown(KeyCode.E) && charactersPlayer.Count > 2)  ExecuteCharacterAction(charactersPlayer[2]); 
-        if (Input.GetKeyDown(KeyCode.R) && charactersPlayer.Count > 3)  ExecuteCharacterAction(charactersPlayer[3]); 
+        if (Input.GetKeyDown(KeyCode.R) && charactersPlayer.Count > 3)  ExecuteCharacterAction(charactersPlayer[3]);
+        if (Input.GetKeyDown(KeyCode.A) && charactersEnemy.Count > 0) ExecuteCharacterAction(charactersEnemy[0]);
+        if (Input.GetKeyDown(KeyCode.S) && charactersEnemy.Count > 1) ExecuteCharacterAction(charactersEnemy[1]);
+        if (Input.GetKeyDown(KeyCode.D) && charactersEnemy.Count > 2) ExecuteCharacterAction(charactersEnemy[2]);
+        if (Input.GetKeyDown(KeyCode.F) && charactersEnemy.Count > 3) ExecuteCharacterAction(charactersEnemy[3]);
         if (Input.GetKeyDown(KeyCode.Alpha0))   EndEncounter(true);
         if (Input.GetKeyDown(KeyCode.Alpha9))   EndEncounter(false); 
     }
@@ -75,6 +79,9 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning(temp.name);
         return temp as ActionBase;
     }
+
+
+
     #endregion
 
 

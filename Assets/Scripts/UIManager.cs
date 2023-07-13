@@ -22,9 +22,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text CaptionCharacterName;
 
     [Header("Targetting line parameters")]
-    [Tooltip("how many points is the curve made up of?"), SerializeField] int targetCurvatureResolution;
-    [Tooltip("how tall should the curve be"), SerializeField] float targetBaseHeight, targetMaxHeight;
-    
+    [Tooltip("how many points is the curve made up of?"), SerializeField] int   targetCurvatureResolution;
+    [Tooltip("how tall should the curve be"), SerializeField]           float   targetBaseHeight, targetMaxHeight;
+                                             [SerializeField]           float   TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
+
     [Space(5), Header("Object references")]
     public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
     public Animator transitions;    //Screen transitions!
@@ -36,8 +37,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
 
+    public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
+    public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
     private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
-    [SerializeField] private float TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
     [SerializeField] Vector3[] pos; //Debug utility for the target line preview
 
     private void Awake()
@@ -59,6 +61,7 @@ public class UIManager : MonoBehaviour
 
     //Switching between major game screens - from Map to encounter, from combat to Action selection
     #region Screen transitions
+    public void AnimatorTrigger(string s) { transitions.SetTrigger(s); }
     public void ToggleActionSelection(bool state)
     {
         selectedCharacter = 0;
@@ -129,7 +132,8 @@ public class UIManager : MonoBehaviour
     void LoadDataForCharacter(Character c) 
     {
         CaptionCharacterName.text = c.name;
-
+        SelectedArrow.transform.SetParent(BattleManager.instance.characterPositions[selectedCharacter]);
+        SelectedArrow.transform.localPosition = Vector3.zero;
 
         captionAbility1.text = c.actionsAvalible[0].name;
         captionAbility2.text = c.actionsAvalible[1].name;
@@ -156,12 +160,16 @@ public class UIManager : MonoBehaviour
         costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
     }
+    void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
 
     //Buttons for Ability selection menu - SetAbility sets the character's chosen ability to one of the 4 abilities, SelectNext/Previous cycles between player characters.
     public void SetAbility(int index) 
-    { 
-        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen = BattleManager.instance.charactersPlayer[selectedCharacter].actionsAvalible[index];
-        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen.Initialise();
+    {
+        Character c = BattleManager.instance.charactersPlayer[selectedCharacter];
+
+        SelectedTokens[selectedCharacter].SetActive(true);
+        c.actionChosen = c.actionsAvalible[index];
+        c.actionChosen.Initialise();
     }
     public void SelectNextCharacter() 
     { 

@@ -31,55 +31,55 @@ public class Action {
     public int ownerID;
 
     public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
-    
- 
-    public void Perform() 
+
+   
+    public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
-        Character owner = BattleManager.instance.GetCharacterByID(ownerID);
-        Debug.Log($"{owner.name} at position {owner.position} is performing action {name} (range{updatedData.range})");
-        List<Character> en = BattleManager.instance.charactersEnemy;
-        List<Character> pl = BattleManager.instance.charactersPlayer;
-
-        if (owner.position < pl.Count+1) //If the player is attacking
-        {
-            int hitPosition = owner.position + updatedData.range;
-
-            //Breaking if hitting out of range
-            if (hitPosition<0 || en.Count < 1 || hitPosition > en[en.Count-1].position) 
-            {Debug.LogWarning("Hitting beyond the enemies!"); return; } 
-                     
-            if (hitPosition > pl.Count) //Attack reaches the enemy
-            {
-                Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
-
-                //Apply Damage
-                BattleManager.instance.charactersEnemy[hitPosition - pl.Count-1].TakeDamage(updatedData.damage); 
-
-                //Show Snazzy effects
-                UIManager.instance.ShowAttackEffects(
-                                                    BattleManager.instance.characterPositions[owner.position - 1].position, 
-                                                    BattleManager.instance.characterPositions[hitPosition - 1].position);   
-            }
-            else            //Attack hits player's characters
-            {
-                Debug.Log($"the attack is hitting player's own troops! at position {hitPosition}");
-
-                //Apply Damage
-                BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
-
-                //Show Snazzy effects
-                UIManager.instance.ShowAttackEffects(
-                                                    BattleManager.instance.characterPositions[owner.position - 1].position, 
-                                                    BattleManager.instance.characterPositions[hitPosition - 1].position);
-            }
-        }
-        else            //if the enemy is attacking
-        {
-            int hitPosition = owner.position + updatedData.range;
-            Debug.LogWarning($"Enemy attacking from position{hitPosition}");
-            //ENEMY ATTACK LOGIC HERE!
-        
-        }/*
-        */
+        GetTargetCharacter().TakeDamage(updatedData.damage);
+        UIManager.instance.ShowAttackEffects(
+                                    BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
+                                    BattleManager.instance.characterPositions[GetTargetPosition()-1].position);
     }
+
+    public int GetTargetPosition() 
+    {
+        int hitPosition;
+        Character owner = BattleManager.instance.GetCharacterByID(ownerID);
+        if (owner.position < BattleManager.instance.charactersPlayer.Count + 1) //If the player is attacking
+             hitPosition = owner.position + updatedData.range;
+        else hitPosition = owner.position - updatedData.range;
+
+        if (hitPosition < 1 || 
+            BattleManager.instance.charactersEnemy.Count < 1 || 
+            hitPosition > BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count - 1].position)
+        {
+            Debug.LogWarning("Hitting beyond the enemies!");
+            return -999;
+        }
+        return hitPosition;
+    }       //Shorthand for getting the position targetted by this action based on the caster position
+    public Character GetTargetCharacter()
+    {
+        List<Character> pl = BattleManager.instance.charactersPlayer;                       //shorthand for reaing clarity
+        int hitPosition = GetTargetPosition();
+        if (hitPosition == -999) return null;   //Breaking if position invalid
+
+        if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count )      //If the player is attacking
+        {
+            if (hitPosition > pl.Count)
+                return BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1];  //factor in number of players to get accurate list position
+            else
+                return BattleManager.instance.charactersPlayer[hitPosition - 1];
+        }
+        else                                                                                //if the enemy is attacking
+        {
+            if (hitPosition < pl.Count + 1)
+                return BattleManager.instance.charactersPlayer[hitPosition - 1];
+            else
+                return BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1];  //factor in number of players to get accurate list position
+        }
+
+    } //Get the character hit by this current action
+
+
 }
