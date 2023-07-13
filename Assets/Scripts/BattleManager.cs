@@ -33,7 +33,7 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         StartEncounter("1"); //Initialise health to full and actions from base action values.
-
+        UIManager.instance.RefreshStatusCorners();  //Once character data is fully retrieved, update the current stats to match.
     }   
 
     //Execute character actions when the player presses corresponding keys.  Needs constrainment to 1 per turn.
@@ -55,6 +55,7 @@ public class BattleManager : MonoBehaviour
     void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
     {
         c.actionChosen.Perform();
+        UIManager.instance.RefreshStatusCorners();
     }
 
     #region utilities

@@ -36,6 +36,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text dmgAbility1, dmgAbility2, dmgAbility3, dmgAbility4;
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
+    //StatusPlayer and StatusEnemy    
+    public TMP_Text statusCharPlayer1, statusCharPlayer2, statusCharPlayer3, statusCharPlayer4;
+    public TMP_Text statusCharEnemy1, statusCharEnemy2, statusCharEnemy3, statusCharEnemy4;
 
     public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
@@ -52,6 +55,7 @@ public class UIManager : MonoBehaviour
     {
         HideTargetParabola();
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
+        //RefreshStatusCorners() IS CALLED ON START ON BATTLEMANAGER as it depends on character data loaded in start in BattleManager 
     }
 
     void Update()
@@ -75,7 +79,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     //UI behaviours during combat
-    #region Combat UI & Effects
+    #region Combat Effects
     public void ShowAttackEffects(Vector3 init, Vector3 fin) => StartCoroutine(AttackEffectsProcess(init, fin));
     public IEnumerator AttackEffectsProcess(Vector3 init, Vector3 fin) 
     {
@@ -127,7 +131,8 @@ public class UIManager : MonoBehaviour
     #endregion
 
     // Functionality of Ability selection menu - choosing which abilities which characters will cast in combat this turn
-    #region AbilitySelectMenu
+    #region PLAN UI
+
     //Load text-box data
     void LoadDataForCharacter(Character c) 
     {
@@ -160,14 +165,31 @@ public class UIManager : MonoBehaviour
         costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
     }
-    void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
+    void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
+    
+    public void RefreshStatusCorners() 
+    {
+        List<Character> stats = BattleManager.instance.charactersPlayer;
+        if (stats.Count > 0) statusCharPlayer1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}";
+        if (stats.Count > 1) statusCharPlayer2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}";
+        if (stats.Count > 2) statusCharPlayer3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}";
+        if (stats.Count > 3) statusCharPlayer4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}";
+
+        stats = BattleManager.instance.charactersEnemy;
+        if (stats.Count > 0) statusCharEnemy1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}";
+        if (stats.Count > 1) statusCharEnemy2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}";
+        if (stats.Count > 2) statusCharEnemy3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}";
+        if (stats.Count > 3) statusCharEnemy4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}";
+    }   //Refresh the textboxes displaying various character's health
+
 
     //Buttons for Ability selection menu - SetAbility sets the character's chosen ability to one of the 4 abilities, SelectNext/Previous cycles between player characters.
     public void SetAbility(int index) 
     {
         Character c = BattleManager.instance.charactersPlayer[selectedCharacter];
 
-        SelectedTokens[selectedCharacter].SetActive(true);
+        AnimatorTrigger("pulseActionToken"+ (selectedCharacter+1).ToString());
+        Debug.Log("pulseActionToken" + (selectedCharacter + 1).ToString());
         c.actionChosen = c.actionsAvalible[index];
         c.actionChosen.Initialise();
     }
@@ -185,6 +207,13 @@ public class UIManager : MonoBehaviour
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }   //cycle character + fetch new char's ability data
+
+    public void ToggleSelectedToken(bool state) => SelectedTokens[selectedCharacter].SetActive(state);  //Toggle ability selected token On/off for the character currently selected
+    public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); Debug.Log("Now activating"+index); }
+    #endregion
+
+    #region ACT UI
+
     #endregion
 
     public void OnDrawGizmos()
