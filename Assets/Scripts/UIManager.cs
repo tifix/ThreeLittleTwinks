@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [Tooltip("how many points is the curve made up of?"), SerializeField] int   targetCurvatureResolution;
     [Tooltip("how tall should the curve be"), SerializeField]           float   targetBaseHeight, targetMaxHeight;
                                              [SerializeField]           float   TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
+                                                                public  float   PreviewParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
 
     [Space(5), Header("Object references")]
     public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
@@ -43,6 +44,7 @@ public class UIManager : MonoBehaviour
     public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
     private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
+    public TMP_Text popupDamage_left, popupDamage_right;
     [SerializeField] Vector3[] pos; //Debug utility for the target line preview
 
     private void Awake()
@@ -85,7 +87,7 @@ public class UIManager : MonoBehaviour
     {
         if (isAttackShowingNow) yield break;
         isAttackShowingNow = true;
-        ShowTargetParabola(init, fin, true);
+        ShowTargetParabola(init, fin, TargetParabolaLifetime);
         yield return new WaitForSeconds(0.5f);
         GameObject HitFX = Instantiate(BattleManager.instance.HitMarker, fin, Quaternion.identity);
 
@@ -94,7 +96,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         Destroy(HitFX);
     }
-    public void ShowTargetParabola(Vector3 init, Vector3 fin,bool hideAfterTime) 
+    public void ShowTargetParabola(Vector3 init, Vector3 fin,float hideAfterTime) //Call with negative float to NOT hide
     {
         //Drawing initial and final positions
         targetLine.positionCount = targetCurvatureResolution;
@@ -124,7 +126,7 @@ public class UIManager : MonoBehaviour
 
         targetLine.enabled = true;
         targetLine.SetPositions(trajectory);
-        if (hideAfterTime) Invoke("HideTargetParabola", TargetParabolaLifetime);
+        if (hideAfterTime>0) Invoke("HideTargetParabola", hideAfterTime);
 
     }
     public void HideTargetParabola() { targetLine.positionCount = 0; }
@@ -213,7 +215,24 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region ACT UI
+    public void SetDamageTakenCaptions(Character attacker) 
+    {
+        
+        string damageDealerCaption =    $"{attacker.name} used {attacker.actionChosen.name}!";                  
+        string damageTakerCaption =     $"{attacker.actionChosen.GetTargetCharacter().name} has taken {attacker.actionChosen.updatedData.damage}dmg";    
 
+        if (attacker.position < BattleManager.instance.charactersPlayer.Count)  //if the position is within bounds of player characters, the player is attacking, ergo RHS takes damage
+        {
+            popupDamage_left.text = damageDealerCaption;
+            popupDamage_right.text = damageTakerCaption;
+        }
+        else
+        {
+            popupDamage_left.text = damageTakerCaption;
+            popupDamage_right.text = damageDealerCaption;
+        }
+
+    }
     #endregion
 
     public void OnDrawGizmos()

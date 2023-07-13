@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [System.Serializable]
 public struct ActionValues
 {
@@ -39,6 +38,20 @@ public class Action {
         UIManager.instance.ShowAttackEffects(
                                     BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
                                     BattleManager.instance.characterPositions[GetTargetPosition()-1].position);
+    }
+    public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
+    {
+        if (targetState) 
+        {
+            //Display target
+            UIManager.instance.ShowTargetParabola(
+                                                BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
+                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, UIManager.instance.PreviewParabolaLifetime
+                );
+            //TODO Display movement
+        }
+        else { UIManager.instance.HideTargetParabola(); }
+
     }
 
     public int GetTargetPosition() 

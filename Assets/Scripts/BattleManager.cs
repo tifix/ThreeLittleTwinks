@@ -52,11 +52,14 @@ public class BattleManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha9))   EndEncounter(false); 
     }
 
-    void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
+    public void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
     {
         c.actionChosen.Perform();
         UIManager.instance.RefreshStatusCorners();
     }
+    public void PreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(true);
+    public void EndPreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(false);
+    public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
 
     #region utilities
     //Gets character by their ID values
@@ -73,6 +76,11 @@ public class BattleManager : MonoBehaviour
 
         Debug.LogWarning("Failed to retrive character by ID");
         return null;
+    }
+    public Character GetCharacterByPosition(int position) 
+    {
+        if(position < charactersPlayer.Count)return charactersPlayer[position-1];
+        else return charactersEnemy[position-charactersPlayer.Count-1];
     }
     public ActionBase GetActionBaseByName(string name) 
     {
