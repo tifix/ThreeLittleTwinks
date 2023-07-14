@@ -70,11 +70,13 @@ public class Character
 
         //remove from character positions
         BattleManager.instance.characterPositions.RemoveAt(position - 1);
-        BattleManager.instance.RecalculateCharacterPositions();
 
         //Remove from either enemies or players according to faction 
         if (BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
         else BattleManager.instance.charactersPlayer.Remove(this);
+
+        //recalculate once removed
+        BattleManager.instance.RecalculateCharacterPositions();
 
         //Check if all chars are dead for ending the fight with victory/defeat
         if (BattleManager.instance.charactersEnemy.Count < 1)

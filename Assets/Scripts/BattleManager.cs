@@ -56,13 +56,13 @@ public class BattleManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))   EndEncounter(true);
         if (Input.GetKeyDown(KeyCode.Alpha9))   EndEncounter(false); 
     }
-
+    public void ExecuteCharacterAction(int index)=>ExecuteCharacterAction(charactersPlayer[index]);
     public void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
     {
-        c.actionChosen.Perform();
+        if(CheckIfActionValid(c.position)) c.actionChosen.Perform();
         UIManager.instance.RefreshStatusCorners();
     }
-    public void PreviewCharacterAction(Transform position) => GetCharacterFromPosition(position).actionChosen.Preview(true);
+    public void PreviewCharacterAction(Transform position) { if (CheckIfActionValid(GetCharacterFromPosition(position).position)) GetCharacterFromPosition(position).actionChosen.Preview(true); }
     public void EndPreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(false);
     public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
 
@@ -84,7 +84,7 @@ public class BattleManager : MonoBehaviour
     }
     public Character GetCharacterByPosition(int position) //To be tested
     {
-        if(position < charactersPlayer.Count)return charactersPlayer[position-1];
+        if(position-1 < charactersPlayer.Count)return charactersPlayer[position-1];
         else return charactersEnemy[position-charactersPlayer.Count-1];
     }
     public Character GetCharacterFromPosition(Transform t) 
@@ -109,6 +109,16 @@ public class BattleManager : MonoBehaviour
         return temp as ActionBase;
     }
 
+    public bool CheckIfActionValid(int position) 
+    {
+        string s;
+        try { s= GetCharacterByPosition(position).actionChosen.name; }
+        catch { return false; }
+
+        if(s.Length<1) return false;
+        Debug.Log(s + " is valid");
+        return true;
+    }
 
 
     #endregion
@@ -127,7 +137,7 @@ public class BattleManager : MonoBehaviour
             charactersPlayer[i].position = i + 1;
 
             //Initialising action instances from base action Scriptable Objects
-            charactersPlayer[i].actionChosen.Initialise(); ;
+            //charactersPlayer[i].actionChosen.Initialise(); ;
             foreach (Action a in charactersPlayer[i].actionsAvalible) a.Initialise();
 
             //initialising action owners
@@ -179,7 +189,7 @@ public class BattleManager : MonoBehaviour
             charactersPlayer[i].position = i + 1;
 
         for (int i = 0; i < charactersEnemy.Count; i++)
-            charactersEnemy[i].position = i + charactersPlayer.Count+1;
+            charactersEnemy[i].position = i + charactersPlayer.Count+1;   //count increases by 1 natively
     }
 
     public void EndEncounter(bool isWon)

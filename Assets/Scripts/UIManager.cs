@@ -1,7 +1,7 @@
 /* This class handles UI, toggling various screens, screen transitions, button presses etc
  * 
  * current Debug Keymap 
- * SPACE - toggle Action selection menu
+ * SPACE - switch between PLAN and ACT phases
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -32,12 +32,20 @@ public class UIManager : MonoBehaviour
     public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
     public Animator transitions;    //Screen transitions!
 
-    //Individual ability value displayers
+    //Individual ability value displayers - PLAN
     public TMP_Text captionAbility1, captionAbility2, captionAbility3, captionAbility4;
     public TMP_Text descriptionAbility1, descriptionAbility2, descriptionAbility3, descriptionAbility4;
     public TMP_Text dmgAbility1, dmgAbility2, dmgAbility3, dmgAbility4;
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
+
+    //Individual ability value displayers - ACT
+    public TMP_Text captionAbility1_act, captionAbility2_act, captionAbility3_act, captionAbility4_act;
+    public TMP_Text casterAbility1_act, casterAbility2_act, casterAbility3_act, casterAbility4_act;
+    public TMP_Text dmgAbility1_act, dmgAbility2_act, dmgAbility3_act, dmgAbility4_act;
+    public TMP_Text rangeAbility1_act, rangeAbility2_act, rangeAbility3_act, rangeAbility4_act;
+    public TMP_Text costAbility1_act, costAbility2_act, costAbility3_act, costAbility4_act;
+
     //StatusPlayer and StatusEnemy    
     public TMP_Text statusCharPlayer1, statusCharPlayer2, statusCharPlayer3, statusCharPlayer4;
     public TMP_Text statusCharEnemy1, statusCharEnemy2, statusCharEnemy3, statusCharEnemy4;
@@ -94,6 +102,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
             SelectedArrow.SetActive(false);
             AnimatorTrigger("SwitchToAct");
         }    
@@ -187,6 +196,7 @@ public class UIManager : MonoBehaviour
         costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
     }
+
     void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
     
     public void RefreshStatusCorners() 
@@ -235,6 +245,48 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region ACT UI
+    public void LoadActionDescriptions()
+    {
+        if (BattleManager.instance.CheckIfActionValid(1))
+        {
+            captionAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.name;
+            casterAbility1_act.text = BattleManager.instance.charactersPlayer[0].name;
+            dmgAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.damage.ToString();
+            rangeAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.range.ToString();
+            costAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.cost.ToString();
+        }
+        else { captionAbility1_act.text = "DEAD"; dmgAbility1_act.text = ""; rangeAbility1_act.text = ""; costAbility1_act.text = ""; }
+        if (BattleManager.instance.CheckIfActionValid(2))
+        {
+            captionAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.name;
+            casterAbility2_act.text = BattleManager.instance.charactersPlayer[1].name;
+            dmgAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.damage.ToString();
+            rangeAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.range.ToString();
+            costAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.cost.ToString();
+        }
+        else { captionAbility2_act.text = "DEAD"; dmgAbility2_act.text = ""; rangeAbility2_act.text = ""; costAbility2_act.text = ""; }
+
+        if (BattleManager.instance.CheckIfActionValid(3))
+        {
+
+            captionAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.name;
+            casterAbility3_act.text = BattleManager.instance.charactersPlayer[2].name;
+            dmgAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.damage.ToString();
+            rangeAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.range.ToString();
+            costAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.cost.ToString();
+        }
+        else { captionAbility3_act.text = "DEAD"; dmgAbility3_act.text = ""; rangeAbility3_act.text = ""; costAbility3_act.text = ""; }
+        if (BattleManager.instance.CheckIfActionValid(4)) 
+        {
+            captionAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.name;
+            casterAbility4_act.text = BattleManager.instance.charactersPlayer[3].name;
+            dmgAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.damage.ToString();
+            rangeAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.range.ToString();
+            costAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.cost.ToString();
+        }
+        else { captionAbility4_act.text = "DEAD"; dmgAbility4_act.text = ""; rangeAbility4_act.text = ""; costAbility4_act.text = ""; }
+
+    }   //Load details of actions chosen in plan phase and displays them on execute actions panel
     public void SetDamageTakenCaptions(Character attacker) 
     {
         
