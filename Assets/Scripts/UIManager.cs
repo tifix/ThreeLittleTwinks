@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 using static Unity.Burst.Intrinsics.X86;
+using Unity.VisualScripting;
 
 [ExecuteInEditMode]
 public class UIManager : MonoBehaviour
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
     private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
     public TMP_Text popupDamage_left, popupDamage_right;
+    private List<Character> initialCharacterData =new();
     [SerializeField] Vector3[] pos; //Debug utility for the target line preview
 
     private void Awake()
@@ -56,13 +58,15 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         HideTargetParabola();
+        initialCharacterData.AddRange(BattleManager.instance.charactersPlayer);
+        initialCharacterData.AddRange(BattleManager.instance.charactersEnemy);
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
         //RefreshStatusCorners() IS CALLED ON START ON BATTLEMANAGER as it depends on character data loaded in start in BattleManager 
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
+        if (Input.GetKeyDown(KeyCode.Space)) SwitchBetweenPlanActPhases();  //ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
     }
 
     //Switching between major game screens - from Map to encounter, from combat to Action selection
@@ -77,6 +81,22 @@ public class UIManager : MonoBehaviour
     public void ToggleEncounterSelection(bool state)
     {
         screen_EncounterSelect.SetActive(state);
+    }
+    public void SwitchBetweenPlanActPhases() 
+    {
+        bool isPlanning = !BattleManager.instance.isPlanningStage;
+        BattleManager.instance.isPlanningStage = isPlanning;
+
+        if (isPlanning)
+        {
+            SelectedArrow.SetActive(true);
+            AnimatorTrigger("SwitchToPlan");
+        }
+        else
+        {
+            SelectedArrow.SetActive(false);
+            AnimatorTrigger("SwitchToAct");
+        }    
     }
     #endregion
 
@@ -172,16 +192,16 @@ public class UIManager : MonoBehaviour
     public void RefreshStatusCorners() 
     {
         List<Character> stats = BattleManager.instance.charactersPlayer;
-        if (stats.Count > 0) statusCharPlayer1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}";
-        if (stats.Count > 1) statusCharPlayer2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}";
-        if (stats.Count > 2) statusCharPlayer3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}";
-        if (stats.Count > 3) statusCharPlayer4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}";
+        if (stats.Count > 0) statusCharPlayer1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharPlayer1.text = $"{initialCharacterData[0].name} DEAD";
+        if (stats.Count > 1) statusCharPlayer2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharPlayer2.text = $"{initialCharacterData[1].name} DEAD";
+        if (stats.Count > 2) statusCharPlayer3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharPlayer3.text = $"{initialCharacterData[2].name} DEAD";
+        if (stats.Count > 3) statusCharPlayer4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharPlayer4.text = $"{initialCharacterData[3].name} DEAD"; 
 
         stats = BattleManager.instance.charactersEnemy;
-        if (stats.Count > 0) statusCharEnemy1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}";
-        if (stats.Count > 1) statusCharEnemy2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}";
-        if (stats.Count > 2) statusCharEnemy3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}";
-        if (stats.Count > 3) statusCharEnemy4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}";
+        if (stats.Count > 0) statusCharEnemy1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharEnemy1.text = $"{initialCharacterData[4].name} DEAD";
+        if (stats.Count > 1) statusCharEnemy2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharEnemy2.text = $"{initialCharacterData[5].name} DEAD";
+        if (stats.Count > 2) statusCharEnemy3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharEnemy3.text = $"{initialCharacterData[6].name} DEAD";
+        if (stats.Count > 3) statusCharEnemy4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharEnemy4.text = $"{initialCharacterData[7].name} DEAD";
     }   //Refresh the textboxes displaying various character's health
 
 
@@ -223,11 +243,13 @@ public class UIManager : MonoBehaviour
 
         if (attacker.position < BattleManager.instance.charactersPlayer.Count)  //if the position is within bounds of player characters, the player is attacking, ergo RHS takes damage
         {
+            AnimatorTrigger("takeDamageRight");
             popupDamage_left.text = damageDealerCaption;
             popupDamage_right.text = damageTakerCaption;
         }
         else
         {
+            AnimatorTrigger("takeDamageLeft");
             popupDamage_left.text = damageTakerCaption;
             popupDamage_right.text = damageDealerCaption;
         }

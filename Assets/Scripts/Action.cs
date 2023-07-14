@@ -38,6 +38,7 @@ public class Action {
         UIManager.instance.ShowAttackEffects(
                                     BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
                                     BattleManager.instance.characterPositions[GetTargetPosition()-1].position);
+        UIManager.instance.SetDamageTakenCaptions(BattleManager.instance.GetCharacterByID(ownerID));
     }
     public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
     {
@@ -46,7 +47,7 @@ public class Action {
             //Display target
             UIManager.instance.ShowTargetParabola(
                                                 BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
-                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, UIManager.instance.PreviewParabolaLifetime
+                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, -1
                 );
             //TODO Display movement
         }

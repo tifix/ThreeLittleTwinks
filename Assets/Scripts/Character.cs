@@ -19,8 +19,8 @@ public class Character
 
     public void TakeDamage(float dmg)   //to be extended later with damage types 
     {
-        hpCur -= dmg;
-        if (hpCur < 1) Die();
+        if(hpCur>0) hpCur -= dmg;   //Take damage only if alive to avoid repeat Death calls
+        if (hpCur < 1) Die();       //if pushed to death with this attack - die
     }
 
     //Compares player characters based on their relative value
@@ -51,29 +51,42 @@ public class Character
     }
 
     //Kill character when health reaches 0 and do some funky stuff and effects in the future
-    private void Die() 
+    private void Die()
     {
         Debug.LogWarning($"The character {name} has just died! Someone get the cheap roses!");
         //Reshuffle positions, since the corpse is no longer a target
         BattleManager.instance.characterPositions[position - 1].gameObject.GetComponent<SpriteRenderer>().color = Color.black;
-        BattleManager.instance.characterPositions.RemoveAt(position - 1);
 
-        //Remove from either enemies or players according to faction 
-        if(BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
-        else BattleManager.instance.charactersPlayer.Remove(this);
+        //remove any tokens - buffs, debuffs, actions avalible
+        try
+        {
+            GameObject GO = BattleManager.instance.characterPositions[position - 1].gameObject;
+            for (int i = 0; i < GO.transform.childCount; i++)
+            {
+                if (GO.transform.GetChild(i).CompareTag("token")) GameObject.Destroy(GO.transform.GetChild(i).gameObject);
+            }
+        }
+        catch { Debug.LogWarning("Action Token missing, cannot destroy"); }
+
+        //remove from character positions
+        BattleManager.instance.characterPositions.RemoveAt(position - 1);
         BattleManager.instance.RecalculateCharacterPositions();
 
+        //Remove from either enemies or players according to faction 
+        if (BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
+        else BattleManager.instance.charactersPlayer.Remove(this);
 
         //Check if all chars are dead for ending the fight with victory/defeat
-        if (BattleManager.instance.charactersEnemy.Count < 1) 
+        if (BattleManager.instance.charactersEnemy.Count < 1)
         {
             Debug.Log("All enemies defeated! Victory!");
             BattleManager.instance.EndEncounter(true);
         }
         if (BattleManager.instance.charactersPlayer.Count < 1)
         {
-            Debug.Log("All player champtions defeated! Victory!");
+            Debug.LogWarning("All player champtions defeated! GAME OVER!");
             BattleManager.instance.EndEncounter(false);
         }
+        
     }
 }

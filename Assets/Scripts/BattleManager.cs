@@ -13,6 +13,8 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public bool isInBattle = true;
+    public bool isPlanningStage = true;
+
     //Data of player characters and enemy characters
     public List <Character> charactersPlayer =  new List<Character>(4);
     public List <Character> charactersEnemy =   new List<Character>(4);
@@ -40,10 +42,13 @@ public class BattleManager : MonoBehaviour
     void Update()
     {
         if (!isInBattle) return;
-        if (Input.GetKeyDown(KeyCode.Q) && charactersPlayer.Count > 0)  ExecuteCharacterAction(charactersPlayer[0]); 
-        if (Input.GetKeyDown(KeyCode.W) && charactersPlayer.Count > 1)  ExecuteCharacterAction(charactersPlayer[1]); 
-        if (Input.GetKeyDown(KeyCode.E) && charactersPlayer.Count > 2)  ExecuteCharacterAction(charactersPlayer[2]); 
-        if (Input.GetKeyDown(KeyCode.R) && charactersPlayer.Count > 3)  ExecuteCharacterAction(charactersPlayer[3]);
+        if (!isPlanningStage) 
+        {
+            if (Input.GetKeyDown(KeyCode.Q) && charactersPlayer.Count > 0) ExecuteCharacterAction(charactersPlayer[0]);
+            if (Input.GetKeyDown(KeyCode.W) && charactersPlayer.Count > 1) ExecuteCharacterAction(charactersPlayer[1]);
+            if (Input.GetKeyDown(KeyCode.E) && charactersPlayer.Count > 2) ExecuteCharacterAction(charactersPlayer[2]);
+            if (Input.GetKeyDown(KeyCode.R) && charactersPlayer.Count > 3) ExecuteCharacterAction(charactersPlayer[3]);
+        }
         if (Input.GetKeyDown(KeyCode.A) && charactersEnemy.Count > 0) ExecuteCharacterAction(charactersEnemy[0]);
         if (Input.GetKeyDown(KeyCode.S) && charactersEnemy.Count > 1) ExecuteCharacterAction(charactersEnemy[1]);
         if (Input.GetKeyDown(KeyCode.D) && charactersEnemy.Count > 2) ExecuteCharacterAction(charactersEnemy[2]);
@@ -57,7 +62,7 @@ public class BattleManager : MonoBehaviour
         c.actionChosen.Perform();
         UIManager.instance.RefreshStatusCorners();
     }
-    public void PreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(true);
+    public void PreviewCharacterAction(Transform position) => GetCharacterFromPosition(position).actionChosen.Preview(true);
     public void EndPreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(false);
     public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
 
@@ -77,10 +82,25 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning("Failed to retrive character by ID");
         return null;
     }
-    public Character GetCharacterByPosition(int position) 
+    public Character GetCharacterByPosition(int position) //To be tested
     {
         if(position < charactersPlayer.Count)return charactersPlayer[position-1];
         else return charactersEnemy[position-charactersPlayer.Count-1];
+    }
+    public Character GetCharacterFromPosition(Transform t) 
+    {
+        for (int i = 0; i < characterPositions.Count; i++)
+        {
+            if (characterPositions[i].position.Equals(t.position)) 
+            {
+                i++;
+                Debug.Log($"this be position: {i}");
+                return GetCharacterByPosition(i);
+            }
+        }
+        Debug.LogWarning("INVALID POSITION REEEE");
+        return new Character();
+
     }
     public ActionBase GetActionBaseByName(string name) 
     {
