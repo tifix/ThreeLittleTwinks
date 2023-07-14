@@ -16,11 +16,14 @@ public class Character
     public float hpMax=100;
     public Action[] actionsAvalible= new Action[4];
     public Action actionChosen;
+    public string ElementType;
 
     public void TakeDamage(float dmg)   //to be extended later with damage types 
     {
+        //if (ElementType == "Water" && dmg.El
         hpCur -= dmg;
         if (hpCur < 0) Die();
+        Debug.Log("Damage has been taken");
     }
     
     //Kill character when health reaches 0 and do some funky stuff and effects in the future

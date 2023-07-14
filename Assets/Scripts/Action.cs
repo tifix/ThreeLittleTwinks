@@ -30,36 +30,50 @@ public class Action {
     public ActionValues updatedData;
     public int ownerID;
 
-    public void Initialise() { updatedData = baseData.ActionValues; name = updatedData.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
+    public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
     
  
     public void Perform() 
     {
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
-
         Debug.Log($"{owner.name} at position {owner.position} is performing action");
+
 
         if (owner.position < 5) //If the player is attacking
         {
             int hitPosition = owner.position + updatedData.range;
+            if (hitPosition > 7) {Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
             if (hitPosition > 4) //Attack reaches the enemy
             {
                 Debug.Log($"the attack is hitting the enemy at spot {hitPosition} ");
                 BattleManager.instance.charactersEnemy[hitPosition - 5].TakeDamage(updatedData.damage);
                 BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
             }
-            else            //Attack hits player's characters
+            else  //Attack hits player's characters
             {
                 Debug.Log($"the attack is hitting player's own troops! at position {hitPosition}");
                 BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
                 BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
             }
         }
-        else            //if the enemy is attacking
+        else if (owner.position > 4)  //if the enemy is attacking
         {
-            //ENEMY ATTACK LOGIC HERE!
+            int hitPosition = owner.position + updatedData.range;
+            if (hitPosition < 0) { Debug.LogWarning("Hitting beyond the enemies!"); return; } //Breaking if hitting out of range
+            if (hitPosition < 5) //Attack reaches the Player units
+            {
+                Debug.Log($"the attack is hitting the player unit's at spot {hitPosition} ");
+                BattleManager.instance.charactersEnemy[hitPosition - 5].TakeDamage(updatedData.damage);
+                BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
+            }
+            else  //Attack hits enemy characters
+            {
+                Debug.Log($"the attack is hitting Enemies own troops! at position {hitPosition}");
+                BattleManager.instance.charactersPlayer[hitPosition - 1].TakeDamage(updatedData.damage);
+                BattleManager.instance.HitMarker.transform.position = BattleManager.instance.characterPositions[hitPosition].position;
+            }
+
+        }
         
-        }/*
-        */
     }
 }

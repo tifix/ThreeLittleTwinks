@@ -15,6 +15,6 @@ MonoBehaviour:
   name: Punch
   ActionValues:
     description: Just walk up to 'em and give 'em a whack
-    damage: 1
+    damage: 15
     cost: 1
-    range: 2
+    range: 3

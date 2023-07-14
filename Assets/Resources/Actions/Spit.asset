@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Spit
   ActionValues:
-    description: brt
-    damage: 1
+    description: Small damage but collosal disrespect.
+    damage: 10
     cost: 1
-    range: 6
+    range: 4
