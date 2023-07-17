@@ -16,11 +16,14 @@ public class Character
     public float hpMax=100;
     public Action[] actionsAvalible= new Action[4];
     public Action actionChosen;
+    public string ElementType;
 
     public void TakeDamage(float dmg)   //to be extended later with damage types 
     {
-        if(hpCur>0) hpCur -= dmg;   //Take damage only if alive to avoid repeat Death calls
-        if (hpCur < 1) Die();       //if pushed to death with this attack - die
+        //if (ElementType == "Water" && dmg.El
+        if(hpCur>0) hpCur -= dmg;               //Take damage only if alive to avoid repeat Death calls
+        if (hpCur < 0) Die();                   //if pushed to death with this attack - die
+        Debug.Log("Damage has been taken");
     }
 
     //Compares player characters based on their relative value

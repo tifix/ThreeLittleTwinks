@@ -30,7 +30,6 @@ public class Action {
     public int ownerID;
 
     public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
-
    
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {

@@ -3,6 +3,7 @@
  * current Debug Keymap 
  * SPACE - switch between PLAN and ACT phases
  */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,7 +71,6 @@ public class UIManager : MonoBehaviour
         initialCharacterData.AddRange(BattleManager.instance.charactersEnemy);
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
         //RefreshStatusCorners() IS CALLED ON START ON BATTLEMANAGER as it depends on character data loaded in start in BattleManager 
-    }
 
     void Update()
     {
@@ -170,6 +170,17 @@ public class UIManager : MonoBehaviour
         CaptionCharacterName.text = c.name;
         SelectedArrow.transform.SetParent(BattleManager.instance.characterPositions[selectedCharacter]);
         SelectedArrow.transform.localPosition = Vector3.zero;
+    }
+    public void ToggleActionSelection(bool state) 
+    { 
+        selectedCharacter=0;
+        if (state) LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
+        screen_AbilitySelect.SetActive(state); 
+    }
+
+    void LoadDataForCharacter(Character c) 
+    {
+        CaptionCharacterName.text = c.name;
 
         captionAbility1.text = c.actionsAvalible[0].name;
         captionAbility2.text = c.actionsAvalible[1].name;
@@ -316,5 +327,25 @@ public class UIManager : MonoBehaviour
         {
             Gizmos.DrawSphere(pos[i], .3f);
         }
+
+    public void SetAbility(int index) 
+    { 
+        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen = BattleManager.instance.charactersPlayer[selectedCharacter].actionsAvalible[index];
+        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen.Initialise();
+    }
+
+    public void SelectNextCharacter() 
+    { 
+        selectedCharacter++; 
+        if (selectedCharacter > BattleManager.instance.charactersPlayer.Length-1) selectedCharacter = 0;
+
+        LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
+    }
+    public void SelectPreviousCharacter() 
+    { 
+        selectedCharacter--; 
+        if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Length-1;
+
+        LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }
 }
