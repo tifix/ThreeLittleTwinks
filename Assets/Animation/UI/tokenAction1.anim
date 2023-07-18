@@ -58,7 +58,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Canvas_UI/DisplayCharacters/spr_p1/Token_ActionChosen - 1
+    path: Canvas_UI/DisplayCharacters/spr_p1/ActionToken1
   m_FloatCurves: []
   m_PPtrCurves: []
   m_SampleRate: 60
@@ -69,7 +69,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3171867636
+      path: 591112542
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -141,7 +141,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Canvas_UI/DisplayCharacters/spr_p1/Token_ActionChosen - 1
+    path: Canvas_UI/DisplayCharacters/spr_p1/ActionToken1
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -187,7 +187,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Canvas_UI/DisplayCharacters/spr_p1/Token_ActionChosen - 1
+    path: Canvas_UI/DisplayCharacters/spr_p1/ActionToken1
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -233,7 +233,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Canvas_UI/DisplayCharacters/spr_p1/Token_ActionChosen - 1
+    path: Canvas_UI/DisplayCharacters/spr_p1/ActionToken1
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []

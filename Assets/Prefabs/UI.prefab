@@ -8787,7 +8787,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9528302, g: 0.100047186, b: 0.100047186, a: 1}
+  m_Color: {r: 0.41509432, g: 0.22477747, b: 0.28704706, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -16615,7 +16615,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9528302, g: 0.100047186, b: 0.100047186, a: 1}
+  m_Color: {r: 0.6981132, g: 0.31252578, b: 0.28583124, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -17279,7 +17279,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9528302, g: 0.100047186, b: 0.100047186, a: 1}
+  m_Color: {r: 0.5283019, g: 0.2711285, b: 0.2711285, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -17449,7 +17449,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440753160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2200007, y: -1, z: -0.016821023}
+  m_LocalPosition: {x: -3.2200007, y: -1.18, z: -0.016821023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17499,7 +17499,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.6698113, b: 0.122147225, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.64583325, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -18823,7 +18823,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.6698113, b: 0.122147225, a: 1}
+  m_Color: {r: 0.18777141, g: 0.7264151, b: 0.2867059, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -19489,7 +19489,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829703654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.8600006, y: -1, z: -0.016821023}
+  m_LocalPosition: {x: -6.8600006, y: -0.56, z: -0.016821023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19539,7 +19539,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.6698113, b: 0.122147225, a: 1}
+  m_Color: {r: 0.382808, g: 0.5283019, b: 0.2761125, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -19702,7 +19702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1879441669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19983,7 +19983,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.6698113, b: 0.122147225, a: 1}
+  m_Color: {r: 0.30758277, g: 0.3773585, b: 0.3202693, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -25827,7 +25827,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9528302, g: 0.100047186, b: 0.100047186, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -27463,7 +27463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -33311,7 +33311,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -33457,6 +33457,26 @@ MonoBehaviour:
   costAbility2: {fileID: 155436579252887222}
   costAbility3: {fileID: 7585817684475625663}
   costAbility4: {fileID: 997746228982761469}
+  captionAbility1_act: {fileID: 321063469}
+  captionAbility2_act: {fileID: 1270865294352610223}
+  captionAbility3_act: {fileID: 7808090196807098700}
+  captionAbility4_act: {fileID: 5903700516983476715}
+  casterAbility1_act: {fileID: 93409801}
+  casterAbility2_act: {fileID: 7711252678609089076}
+  casterAbility3_act: {fileID: 2139665782718814756}
+  casterAbility4_act: {fileID: 4536458138793951562}
+  dmgAbility1_act: {fileID: 352247616}
+  dmgAbility2_act: {fileID: 4695921473398064148}
+  dmgAbility3_act: {fileID: 5038711186151547191}
+  dmgAbility4_act: {fileID: 8603413174147226389}
+  rangeAbility1_act: {fileID: 2029261655}
+  rangeAbility2_act: {fileID: 2865465702418384318}
+  rangeAbility3_act: {fileID: 3841192125556891163}
+  rangeAbility4_act: {fileID: 5535611323631538447}
+  costAbility1_act: {fileID: 1020616232}
+  costAbility2_act: {fileID: 7670024831360565820}
+  costAbility3_act: {fileID: 7120726464707792850}
+  costAbility4_act: {fileID: 531136388483449354}
   statusCharPlayer1: {fileID: 1519310147}
   statusCharPlayer2: {fileID: 166301381}
   statusCharPlayer3: {fileID: 1519581000}
@@ -33470,7 +33490,7 @@ MonoBehaviour:
   - {fileID: 371473347}
   - {fileID: 2028357313}
   - {fileID: 550399284}
-  SelectedArrow: {fileID: 0}
+  SelectedArrow: {fileID: 1663797988896499319}
   popupDamage_left: {fileID: 1059424809}
   popupDamage_right: {fileID: 552056277}
   pos:
@@ -34978,7 +34998,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -36125,7 +36145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

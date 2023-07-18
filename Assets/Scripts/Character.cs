@@ -11,7 +11,8 @@ using UnityEngine;
 public class Character
 {
     public string name = "DefaultCharacter";
-    public int position;                        //each character stores data of it's own position (counting from 1 from the left to right)
+    public int position;
+    public bool isDead = false;//each character stores data of it's own position (counting from 1 from the left to right)
     public float hpCur=100;
     public float hpMax=100;
     public Action[] actionsAvalible= new Action[4];
@@ -22,7 +23,7 @@ public class Character
     {
         //if (ElementType == "Water" && dmg.El
         if(hpCur>0) hpCur -= dmg;               //Take damage only if alive to avoid repeat Death calls
-        if (hpCur < 0) Die();                   //if pushed to death with this attack - die
+        if (hpCur < 1) Die();                   //if pushed to death with this attack - die
         Debug.Log("Damage has been taken");
     }
 
@@ -57,7 +58,8 @@ public class Character
     private void Die()
     {
         Debug.LogWarning($"The character {name} has just died! Someone get the cheap roses!");
-        //Reshuffle positions, since the corpse is no longer a target
+        isDead = true;
+
         BattleManager.instance.characterPositions[position - 1].gameObject.GetComponent<SpriteRenderer>().color = Color.black;
 
         //remove any tokens - buffs, debuffs, actions avalible
@@ -72,14 +74,16 @@ public class Character
         catch { Debug.LogWarning("Action Token missing, cannot destroy"); }
 
         //remove from character positions
-        BattleManager.instance.characterPositions.RemoveAt(position - 1);
+        //BattleManager.instance.characterPositions.RemoveAt(position - 1);
 
         //Remove from either enemies or players according to faction 
-        if (BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
-        else BattleManager.instance.charactersPlayer.Remove(this);
+        //if (BattleManager.instance.charactersEnemy.Contains(this)) BattleManager.instance.charactersEnemy.Remove(this);
+        //else BattleManager.instance.charactersPlayer.Remove(this);
 
         //recalculate once removed
         BattleManager.instance.RecalculateCharacterPositions();
+
+        UIManager.instance.RefreshStatusCorners();
 
         //Check if all chars are dead for ending the fight with victory/defeat
         if (BattleManager.instance.charactersEnemy.Count < 1)

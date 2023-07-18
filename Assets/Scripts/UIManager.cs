@@ -12,6 +12,7 @@ using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 using static Unity.Burst.Intrinsics.X86;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 [ExecuteInEditMode]
 public class UIManager : MonoBehaviour
@@ -24,10 +25,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text CaptionCharacterName;
 
     [Header("Targetting line parameters")]
-    [Tooltip("how many points is the curve made up of?"), SerializeField] int   targetCurvatureResolution;
-    [Tooltip("how tall should the curve be"), SerializeField]           float   targetBaseHeight, targetMaxHeight;
-                                             [SerializeField]           float   TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
-                                                                public  float   PreviewParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
+    [Tooltip("how many points is the curve made up of?"), SerializeField] int targetCurvatureResolution;
+    [Tooltip("how tall should the curve be"), SerializeField] float targetBaseHeight, targetMaxHeight;
+    [SerializeField] float TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
+    public float PreviewParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
 
     [Space(5), Header("Object references")]
     public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text dmgAbility1, dmgAbility2, dmgAbility3, dmgAbility4;
     public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
     public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
+    public TMP_Text buttonCaptionAbility1, buttonCaptionAbility2, buttonCaptionAbility3, buttonCaptionAbility4;
 
     //Individual ability value displayers - ACT
     public TMP_Text captionAbility1_act, captionAbility2_act, captionAbility3_act, captionAbility4_act;
@@ -55,8 +57,8 @@ public class UIManager : MonoBehaviour
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
     private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
     public TMP_Text popupDamage_left, popupDamage_right;
-    private List<Character> initialCharacterData =new();
-    [SerializeField] Vector3[] pos; //Debug utility for the target line preview
+    private List<Character> initialCharacterData = new();
+    Vector3[] pos = new Vector3[0]; //Debug utility for the target line preview
 
     private void Awake()
     {
@@ -71,7 +73,7 @@ public class UIManager : MonoBehaviour
         initialCharacterData.AddRange(BattleManager.instance.charactersEnemy);
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
         //RefreshStatusCorners() IS CALLED ON START ON BATTLEMANAGER as it depends on character data loaded in start in BattleManager 
-
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) SwitchBetweenPlanActPhases();  //ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
@@ -86,11 +88,12 @@ public class UIManager : MonoBehaviour
         if (state) LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
         screen_AbilitySelect.SetActive(state);
     }
+
     public void ToggleEncounterSelection(bool state)
     {
         screen_EncounterSelect.SetActive(state);
     }
-    public void SwitchBetweenPlanActPhases() 
+    public void SwitchBetweenPlanActPhases()
     {
         bool isPlanning = !BattleManager.instance.isPlanningStage;
         BattleManager.instance.isPlanningStage = isPlanning;
@@ -105,14 +108,14 @@ public class UIManager : MonoBehaviour
             LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
             SelectedArrow.SetActive(false);
             AnimatorTrigger("SwitchToAct");
-        }    
+        }
     }
     #endregion
 
     //UI behaviours during combat
     #region Combat Effects
     public void ShowAttackEffects(Vector3 init, Vector3 fin) => StartCoroutine(AttackEffectsProcess(init, fin));
-    public IEnumerator AttackEffectsProcess(Vector3 init, Vector3 fin) 
+    public IEnumerator AttackEffectsProcess(Vector3 init, Vector3 fin)
     {
         if (isAttackShowingNow) yield break;
         isAttackShowingNow = true;
@@ -125,37 +128,37 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         Destroy(HitFX);
     }
-    public void ShowTargetParabola(Vector3 init, Vector3 fin,float hideAfterTime) //Call with negative float to NOT hide
+    public void ShowTargetParabola(Vector3 init, Vector3 fin, float hideAfterTime) //Call with negative float to NOT hide
     {
         //Drawing initial and final positions
         targetLine.positionCount = targetCurvatureResolution;
         Vector3[] trajectory = new Vector3[targetCurvatureResolution];
         pos = new Vector3[targetCurvatureResolution];
-        trajectory[0] = new Vector3(init.x,init.y+ targetBaseHeight,init.z); 
-        trajectory[targetCurvatureResolution-1] = new Vector3(fin.x, fin.y + targetBaseHeight, fin.z);
+        trajectory[0] = new Vector3(init.x, init.y + targetBaseHeight, init.z);
+        trajectory[targetCurvatureResolution - 1] = new Vector3(fin.x, fin.y + targetBaseHeight, fin.z);
 
         //Determining natural peak height by solving for midpoint coordinate
-        float peakY = -1 * ((init.x+fin.x)/2-init.x) * ((init.x + fin.x) / 2 - fin.x);
+        float peakY = -1 * ((init.x + fin.x) / 2 - init.x) * ((init.x + fin.x) / 2 - fin.x);
 
         Vector3 midPosition;
-        for (int i = 1; i < targetCurvatureResolution-1; i++)
+        for (int i = 1; i < targetCurvatureResolution - 1; i++)
         {
             midPosition = (targetCurvatureResolution - (float)i) / targetCurvatureResolution * init + ((float)i / targetCurvatureResolution * fin); //getting X from curve resolution
-            float y = -1 * (midPosition.x - init.x)*(midPosition.x - fin.x);                                                          //The equation of the curve
+            float y = -1 * (midPosition.x - init.x) * (midPosition.x - fin.x);                                                          //The equation of the curve
 
             //Lerp the curve so that the height of both end-points and peak is consistent and adjustable
             float relativeY = Mathf.InverseLerp(0, peakY, y); //this represents how far up th
-            y = Mathf.Lerp(targetBaseHeight,targetMaxHeight, relativeY);
+            y = Mathf.Lerp(targetBaseHeight, targetMaxHeight, relativeY);
 
             //Exporting values to Gizmos and LineRenderer
-            midPosition +=  y * Vector3.up;
+            midPosition += y * Vector3.up;
             trajectory[i] = midPosition;
             pos[i] = midPosition;
         }
 
         targetLine.enabled = true;
         targetLine.SetPositions(trajectory);
-        if (hideAfterTime>0) Invoke("HideTargetParabola", hideAfterTime);
+        if (hideAfterTime > 0) Invoke("HideTargetParabola", hideAfterTime);
 
     }
     public void HideTargetParabola() { targetLine.positionCount = 0; }
@@ -165,22 +168,11 @@ public class UIManager : MonoBehaviour
     #region PLAN UI
 
     //Load text-box data
-    void LoadDataForCharacter(Character c) 
+    void LoadDataForCharacter(Character c)
     {
         CaptionCharacterName.text = c.name;
         SelectedArrow.transform.SetParent(BattleManager.instance.characterPositions[selectedCharacter]);
         SelectedArrow.transform.localPosition = Vector3.zero;
-    }
-    public void ToggleActionSelection(bool state) 
-    { 
-        selectedCharacter=0;
-        if (state) LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
-        screen_AbilitySelect.SetActive(state); 
-    }
-
-    void LoadDataForCharacter(Character c) 
-    {
-        CaptionCharacterName.text = c.name;
 
         captionAbility1.text = c.actionsAvalible[0].name;
         captionAbility2.text = c.actionsAvalible[1].name;
@@ -206,53 +198,134 @@ public class UIManager : MonoBehaviour
         costAbility2.text = c.actionsAvalible[1].updatedData.cost.ToString();
         costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
+
+        buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
     }
 
     void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
-    
-    public void RefreshStatusCorners() 
+
+    public void RefreshStatusCorners()
     {
         List<Character> stats = BattleManager.instance.charactersPlayer;
-        if (stats.Count > 0) statusCharPlayer1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharPlayer1.text = $"{initialCharacterData[0].name} DEAD";
-        if (stats.Count > 1) statusCharPlayer2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharPlayer2.text = $"{initialCharacterData[1].name} DEAD";
-        if (stats.Count > 2) statusCharPlayer3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharPlayer3.text = $"{initialCharacterData[2].name} DEAD";
-        if (stats.Count > 3) statusCharPlayer4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharPlayer4.text = $"{initialCharacterData[3].name} DEAD"; 
+        if (!stats[0].isDead) statusCharPlayer1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharPlayer1.text = $"{initialCharacterData[0].name} DEAD";
+        if (!stats[1].isDead) statusCharPlayer2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharPlayer2.text = $"{initialCharacterData[1].name} DEAD";
+        if (!stats[2].isDead) statusCharPlayer3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharPlayer3.text = $"{initialCharacterData[2].name} DEAD";
+        if (!stats[3].isDead) statusCharPlayer4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharPlayer4.text = $"{initialCharacterData[3].name} DEAD";
 
         stats = BattleManager.instance.charactersEnemy;
-        if (stats.Count > 0) statusCharEnemy1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharEnemy1.text = $"{initialCharacterData[4].name} DEAD";
-        if (stats.Count > 1) statusCharEnemy2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharEnemy2.text = $"{initialCharacterData[5].name} DEAD";
-        if (stats.Count > 2) statusCharEnemy3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharEnemy3.text = $"{initialCharacterData[6].name} DEAD";
-        if (stats.Count > 3) statusCharEnemy4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharEnemy4.text = $"{initialCharacterData[7].name} DEAD";
+        if (!stats[0].isDead) statusCharEnemy1.text = $"{stats[0].name}: {stats[0].hpCur}/ {stats[0].hpMax}"; else statusCharEnemy1.text = $"{initialCharacterData[4].name} DEAD";
+        if (!stats[1].isDead) statusCharEnemy2.text = $"{stats[1].name}: {stats[1].hpCur}/ {stats[1].hpMax}"; else statusCharEnemy2.text = $"{initialCharacterData[5].name} DEAD";
+        if (!stats[2].isDead) statusCharEnemy3.text = $"{stats[2].name}: {stats[2].hpCur}/ {stats[2].hpMax}"; else statusCharEnemy3.text = $"{initialCharacterData[6].name} DEAD";
+        if (!stats[3].isDead) statusCharEnemy4.text = $"{stats[3].name}: {stats[3].hpCur}/ {stats[3].hpMax}"; else statusCharEnemy4.text = $"{initialCharacterData[7].name} DEAD";
     }   //Refresh the textboxes displaying various character's health
 
 
     //Buttons for Ability selection menu - SetAbility sets the character's chosen ability to one of the 4 abilities, SelectNext/Previous cycles between player characters.
-    public void SetAbility(int index) 
+    public void SetAbility(int index)
     {
-        Character c = BattleManager.instance.charactersPlayer[selectedCharacter];
+        Character c;
+        try { c = BattleManager.instance.charactersPlayer[selectedCharacter]; } //if out of bounds, break
+        catch { Debug.LogWarning("out of bounds call on ability setting"); return; }
 
-        AnimatorTrigger("pulseActionToken"+ (selectedCharacter+1).ToString());
-        Debug.Log("pulseActionToken" + (selectedCharacter + 1).ToString());
         c.actionChosen = c.actionsAvalible[index];
         c.actionChosen.Initialise();
+
+        //Find apropriate action token and pulse it
+        Transform tokenParent=null;
+        try
+        {
+            tokenParent = BattleManager.instance.characterPositions[selectedCharacter];
+            for (int i = 0; i < tokenParent.childCount; i++)
+            {
+                if (tokenParent.GetChild(i).CompareTag("token")) { AnimatorTrigger("pulse" + tokenParent.GetChild(i).name); Debug.Log("pulse" + tokenParent.GetChild(i).name);return; }
+            }
+        }
+        catch { Debug.LogWarning("Action Token missing, cannot destroy"); }
     }
-    public void SelectNextCharacter() 
-    { 
-        selectedCharacter++; 
-        if (selectedCharacter > BattleManager.instance.charactersPlayer.Count-1) selectedCharacter = 0;
+
+    public void SelectNextCharacter()
+    {
+        if (selectedCharacter == -999) selectedCharacter = 0;   //Loading OUT of movement selection if that was the last one chosen
+        
+        else selectedCharacter++;
+        if (selectedCharacter > BattleManager.instance.charactersPlayer.Count - 1 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//     //0
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }       //cycle character + fetch new char's ability data
-    public void SelectPreviousCharacter() 
-    { 
-        selectedCharacter--; 
-        if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
+    public void SelectPreviousCharacter()
+    {
+        if (selectedCharacter == -999) selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1; //Loading OUT of movement selection if that was the last one chosen
+        
+        else selectedCharacter--;
+        if (selectedCharacter < 0 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }   //cycle character + fetch new char's ability data
+    public void SwapMovementOnMovementScreen(int index) 
+    {
+        if (selectedCharacter == -999) 
+        {
+            BattleManager.instance.ChangePlayerMovements(index, (BattleManager.instance.PlayerMovementDirection[index] > 0 && BattleManager.instance.PlayerMovementDirection[index] <3) || BattleManager.instance.PlayerMovementDirection[index]<-2);
+            ShowMovementInsteadOfActions(); 
+        }
+    }
+
+    public void ShowMovementInsteadOfActions()
+    {
+        CaptionCharacterName.text = "MOVEMENT";
+
+        captionAbility1.text = "Character 1";
+        captionAbility2.text = "Character 2";
+        captionAbility3.text = "Character 3";
+        captionAbility4.text = "Character 4";
+
+        buttonCaptionAbility1.text = "Switch"; buttonCaptionAbility2.text = "Switch"; buttonCaptionAbility3.text = "Switch"; buttonCaptionAbility4.text = "Switch";
+
+        if (BattleManager.instance.PlayerMovementDirection[0] == 0) descriptionAbility1.text = "Dodge not set";
+        else if (BattleManager.instance.PlayerMovementDirection[0]>2) descriptionAbility1.text = "Will dodge left";
+        else descriptionAbility1.text = "Will dodge right";
+
+        if (BattleManager.instance.PlayerMovementDirection[1] == 0) descriptionAbility2.text = "Dodge not set";
+        else if(BattleManager.instance.PlayerMovementDirection[1] < 0) descriptionAbility2.text = "Will dodge left";
+        else descriptionAbility2.text = "Will dodge right";
+
+        if (BattleManager.instance.PlayerMovementDirection[2] == 0) descriptionAbility3.text = "Dodge not set";
+        else if (BattleManager.instance.PlayerMovementDirection[2] < 0) descriptionAbility3.text = "Will dodge left";
+        else descriptionAbility3.text = "Will dodge right";
+
+        if (BattleManager.instance.PlayerMovementDirection[3] == 0) descriptionAbility4.text = "Dodge not set";
+        else if (BattleManager.instance.PlayerMovementDirection[3] < -2) descriptionAbility4.text = "Will dodge right";
+        else descriptionAbility4.text = "Will dodge left";
+
+        dmgAbility1.text = "";
+        dmgAbility2.text = "";
+        dmgAbility3.text = "";
+        dmgAbility4.text = "";
+
+        rangeAbility1.text = "";
+        rangeAbility2.text = "";
+        rangeAbility3.text = "";
+        rangeAbility4.text = "";
+
+        costAbility1.text = "";
+        costAbility2.text = "";
+        costAbility3.text = "";
+        costAbility4.text = "";
+    }
+
+    //
+    /*    void LoadDataForMovement()  //Funky lil window which shows player movement rather than
+    {
+    
+    }
+
+     * 
+     * 
+    */
 
     public void ToggleSelectedToken(bool state) => SelectedTokens[selectedCharacter].SetActive(state);  //Toggle ability selected token On/off for the character currently selected
-    public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); Debug.Log("Now activating"+index); }
+    public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); Debug.Log("Now activating" + index); }
+    public void DisableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(false); Debug.Log("Now activating" + index); }
     #endregion
 
     #region ACT UI
@@ -287,7 +360,7 @@ public class UIManager : MonoBehaviour
             costAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.cost.ToString();
         }
         else { captionAbility3_act.text = "DEAD"; dmgAbility3_act.text = ""; rangeAbility3_act.text = ""; costAbility3_act.text = ""; }
-        if (BattleManager.instance.CheckIfActionValid(4)) 
+        if (BattleManager.instance.CheckIfActionValid(4))
         {
             captionAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.name;
             casterAbility4_act.text = BattleManager.instance.charactersPlayer[3].name;
@@ -298,11 +371,11 @@ public class UIManager : MonoBehaviour
         else { captionAbility4_act.text = "DEAD"; dmgAbility4_act.text = ""; rangeAbility4_act.text = ""; costAbility4_act.text = ""; }
 
     }   //Load details of actions chosen in plan phase and displays them on execute actions panel
-    public void SetDamageTakenCaptions(Character attacker) 
+    public void SetDamageTakenCaptions(Character attacker)
     {
-        
-        string damageDealerCaption =    $"{attacker.name} used {attacker.actionChosen.name}!";                  
-        string damageTakerCaption =     $"{attacker.actionChosen.GetTargetCharacter().name} has taken {attacker.actionChosen.updatedData.damage}dmg";    
+
+        string damageDealerCaption = $"{attacker.name} used {attacker.actionChosen.name}!";
+        string damageTakerCaption = $"{attacker.actionChosen.GetTargetCharacter().name} has taken {attacker.actionChosen.updatedData.damage}dmg";
 
         if (attacker.position < BattleManager.instance.charactersPlayer.Count)  //if the position is within bounds of player characters, the player is attacking, ergo RHS takes damage
         {
@@ -322,30 +395,10 @@ public class UIManager : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        if(pos.Length>0)
-        for (int i = 0; i < pos.Length; i++)
-        {
-            Gizmos.DrawSphere(pos[i], .3f);
-        }
-
-    public void SetAbility(int index) 
-    { 
-        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen = BattleManager.instance.charactersPlayer[selectedCharacter].actionsAvalible[index];
-        BattleManager.instance.charactersPlayer[selectedCharacter].actionChosen.Initialise();
-    }
-
-    public void SelectNextCharacter() 
-    { 
-        selectedCharacter++; 
-        if (selectedCharacter > BattleManager.instance.charactersPlayer.Length-1) selectedCharacter = 0;
-
-        LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
-    }
-    public void SelectPreviousCharacter() 
-    { 
-        selectedCharacter--; 
-        if (selectedCharacter < 0) selectedCharacter = BattleManager.instance.charactersPlayer.Length-1;
-
-        LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
+        if (pos.Length > 0)
+            for (int i = 0; i < pos.Length; i++)
+            {
+                Gizmos.DrawSphere(pos[i], .3f);
+            }
     }
 }

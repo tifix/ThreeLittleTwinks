@@ -30,18 +30,21 @@ public class Action {
     public int ownerID;
 
     public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
-   
+
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
         GetTargetCharacter().TakeDamage(updatedData.damage);
         UIManager.instance.ShowAttackEffects(
                                     BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
-                                    BattleManager.instance.characterPositions[GetTargetPosition()-1].position);
+                                    BattleManager.instance.characterPositions[GetTargetPosition() - 1].position);
         UIManager.instance.SetDamageTakenCaptions(BattleManager.instance.GetCharacterByID(ownerID));
+
+        //hide the selection token once used
+        if (GetOwnerCharacter().position< BattleManager.instance.charactersPlayer.Count + 1) UIManager.instance.AnimatorTrigger("hideActionToken" + (GetOwnerCharacter().position).ToString()); //offset by -1?
     }
     public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
     {
-        if (targetState) 
+        if (targetState)
         {
             //Display target
             UIManager.instance.ShowTargetParabola(
@@ -54,16 +57,16 @@ public class Action {
 
     }
 
-    public int GetTargetPosition() 
+    public int GetTargetPosition()
     {
         int hitPosition;
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
         if (owner.position < BattleManager.instance.charactersPlayer.Count + 1) //If the player is attacking
-             hitPosition = owner.position + updatedData.range;
+            hitPosition = owner.position + updatedData.range;
         else hitPosition = owner.position - updatedData.range;
 
-        if (hitPosition < 1 || 
-            BattleManager.instance.charactersEnemy.Count < 1 || 
+        if (hitPosition < 1 ||
+            BattleManager.instance.charactersEnemy.Count < 1 ||
             hitPosition > BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count - 1].position)
         {
             Debug.LogWarning("Hitting beyond the enemies!");
@@ -77,7 +80,7 @@ public class Action {
         int hitPosition = GetTargetPosition();
         if (hitPosition == -999) return null;   //Breaking if position invalid
 
-        if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count )      //If the player is attacking
+        if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count)      //If the player is attacking
         {
             if (hitPosition > pl.Count)
                 return BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1];  //factor in number of players to get accurate list position
@@ -94,5 +97,5 @@ public class Action {
 
     } //Get the character hit by this current action
 
-
+    public Character GetOwnerCharacter()  { return BattleManager.instance.GetCharacterByID(ownerID); }
 }
