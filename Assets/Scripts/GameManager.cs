@@ -19,5 +19,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (CHEAT_timescale!=1)Time.timeScale= CHEAT_timescale;
+
     }
 }

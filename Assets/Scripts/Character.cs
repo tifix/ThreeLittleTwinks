@@ -98,4 +98,10 @@ public class Character
         }
         
     }
+
+    public bool CheckIsThisPlayer() 
+    {
+        if (position < BattleManager.instance.charactersPlayer.Count + 1) return true;
+        else return false;
+    }
 }

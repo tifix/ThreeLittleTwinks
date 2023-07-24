@@ -44,18 +44,22 @@ public class Action {
     }
     public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
     {
+        //BattleManager.BattleStage stage = BattleManager.instance.currentStatus;
+
         if (targetState)
         {
-            //Display target
+            //Display target parabola
             UIManager.instance.ShowTargetParabola(
-                                                BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
+                                                BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
                                                 BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, -1
                 );
-            //TODO Display movement
+
+
         }
-        else { UIManager.instance.HideTargetParabola(); }
+        else { UIManager.instance.HideTargetParabola(); UIManager.instance.MovePreviewArrow.SetActive(false); }
 
     }
+
 
     public int GetTargetPosition()
     {

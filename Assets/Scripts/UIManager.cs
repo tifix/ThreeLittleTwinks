@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text buttonCaptionAbility1, buttonCaptionAbility2, buttonCaptionAbility3, buttonCaptionAbility4;
 
     //Individual ability value displayers - ACT
+    //[Space(2), Header("ACT phase references")]
+    // TMP_Text CaptionWhoseTurnNow;
     public TMP_Text captionAbility1_act, captionAbility2_act, captionAbility3_act, captionAbility4_act;
     public TMP_Text casterAbility1_act, casterAbility2_act, casterAbility3_act, casterAbility4_act;
     public TMP_Text dmgAbility1_act, dmgAbility2_act, dmgAbility3_act, dmgAbility4_act;
@@ -55,7 +57,8 @@ public class UIManager : MonoBehaviour
 
     public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
-    private bool isAttackShowingNow = false;    //Checker for ensuring an attack plays out before a next one is started
+    public GameObject MovePreviewArrow;                                     //Arrow showing where a character's going to move
+    private bool isAttackShowingNow = false;                                //Checker for ensuring an attack plays out before a next one is started
     public TMP_Text popupDamage_left, popupDamage_right;
     private List<Character> initialCharacterData = new();
     Vector3[] pos = new Vector3[0]; //Debug utility for the target line preview
@@ -74,10 +77,7 @@ public class UIManager : MonoBehaviour
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
         //RefreshStatusCorners() IS CALLED ON START ON BATTLEMANAGER as it depends on character data loaded in start in BattleManager 
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) SwitchBetweenPlanActPhases();  //ToggleActionSelection(!screen_AbilitySelect.activeInHierarchy); //LoadDataForCharacter(BattleManager.instance.charactersPlayer[0]);
-    }
+
 
     //Switching between major game screens - from Map to encounter, from combat to Action selection
     #region Screen transitions
@@ -93,20 +93,19 @@ public class UIManager : MonoBehaviour
     {
         screen_EncounterSelect.SetActive(state);
     }
-    public void SwitchBetweenPlanActPhases()
+    public void SwitchBetweenPlanActPhases(bool isNowPlanning)
     {
-        bool isPlanning = !BattleManager.instance.isPlanningStage;
-        BattleManager.instance.isPlanningStage = isPlanning;
-
-        if (isPlanning)
+        if (isNowPlanning)
         {
             SelectedArrow.SetActive(true);
+
             AnimatorTrigger("SwitchToPlan");
         }
         else
         {
             LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
             SelectedArrow.SetActive(false);
+
             AnimatorTrigger("SwitchToAct");
         }
     }
@@ -162,6 +161,18 @@ public class UIManager : MonoBehaviour
 
     }
     public void HideTargetParabola() { targetLine.positionCount = 0; }
+    public void ShowMoveArrow(Transform from, int whichEnemy)
+    {
+        GameObject arrow = MovePreviewArrow;
+        arrow.SetActive(true);
+        arrow.transform.SetParent(from); //sets parent to the moving character
+
+        float distance_x = 0.01f;
+        distance_x *= BattleManager.instance.EnemyMovementDirection[whichEnemy];
+        arrow.transform.localScale = new Vector3(distance_x, 0.01f, 0.01f);                                             //scales depending on move distance
+        arrow.transform.localPosition = Vector3.zero;
+    }
+
     #endregion
 
     // Functionality of Ability selection menu - choosing which abilities which characters will cast in combat this turn

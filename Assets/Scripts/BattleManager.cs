@@ -11,14 +11,17 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 
 public class BattleManager : MonoBehaviour
 {
+    public enum BattleStage {planning, playerAct,playerMove, enemyAct, enemyMove};
     public static BattleManager instance;
     [Header("Game current state")]
-    [Tooltip("the 'Level' the player is currently playing ")]                   public string   battleID = "1";
+    [Tooltip("the 'Level' the player is currently playing ")]                     public string battleID = "1";
     [Tooltip("is the entire encounter finished? ")]                                 public bool isInBattle = true;
+                                                                             public BattleStage currentStatus = BattleStage.planning;
                                                                                     public bool isPlanningStage = true;
                                                                                     private int CurrentActionPoints;
     [Tooltip("formerly TurnCounter - whether it's enemies or player's turn to act")]public bool isEnemyTurn = false;
@@ -28,12 +31,7 @@ public class BattleManager : MonoBehaviour
     public List <Character> charactersEnemy =   new List<Character>(4);
     public List<Transform> characterPositions = new List<Transform>(8);
 
-    //Data of player characters and enemy characters
-    // shorthand from characterPositions
-    //public List<GameObject> PlayerSprites;
-    //public List<GameObject> EnemySprites;
-
-    [SerializeField] Vector3 PlayerSwapPosition;
+    Vector3 PlayerSwapPosition; 
     public string SceneTranisiton;
 
     [Header("Object references, prefabs")]
@@ -43,15 +41,14 @@ public class BattleManager : MonoBehaviour
     
     public int      MaxActionPoints = 4;                        //Amount of actions and movements the player can make
     public int[]    PlayerMovementActions = { 1, 1, 1, 1 };     //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
-    public int[]    PlayerMovementDirection = { 0, 0, 0, 0 };   // keeps track of what position units have been prepped to move too, -1 = left, 1 = right, 0 = No Movement prepped.
+    public int[]    PlayerMovementDirection = { 0, 0, 0, 0 };   //keeps track of what position units have been prepped to move too, -1 = left, 1 = right, 0 = No Movement prepped.
     
     public int      MaxEnemyActions = 4;                        //Amount of Actions enemy can make
     private int     EnemyActions = 4;
     public float    EnemyAttackDelay = 2f;
-    public int      EnemyCounter = 0;
+    public int      EnemyCounter = 1;
     public int[]    EnemyMovementActions = { 1, 1, 1, 1 };      //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
     public int[]    EnemyMovementDirection = { 1, -1, -1, -1 }; // keeps track of what position units have been prepped to move too, -1 = left, 1 = right, 0 = No Movement prepped.
-    public int      PlayerCharacterSelection = 3;
     public bool     OutOfTokens = true;                         //For refilling player and enemy tokens, if this is true during player turn, player actions are refilled and This variable becomes false.
 
     //Assign instance if none found, otherwise destroy
@@ -64,29 +61,79 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         StartEncounter("1");                        //Initialise health to full and actions from base action values.
+        StartCoroutine(BattleFlow());
         UIManager.instance.RefreshStatusCorners();  //Once character data is fully retrieved, update the current stats to match.
-    }   
-
-    //Turn Flow
+    }
     void Update()
     {
-        if (!isInBattle) return;
-        //if (!isPlanningStage) 
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            if (isEnemyTurn == false) { PlayerTurn(); PlayerUnitAttacking(); SelectingPlayerUnit(); }           //PreparingPlayerMovements(); 
-            if (isEnemyTurn == true) { EnemyTurn(); EnemyAttacks(); PlayerReactions(); SelectingPlayerUnit(); }
-        }
+            if (currentStatus != BattleStage.planning) currentStatus = BattleStage.planning;
+            else currentStatus= BattleStage.playerAct;
+        } 
+         
     }
-    public void ExecuteCharacterAction(int index)=>ExecuteCharacterAction(charactersPlayer[index]);
-    public void ExecuteCharacterAction(Character c)    //Execute the selected action of a given Character.
+
+    //Turn Flow
+    public IEnumerator BattleFlow() 
     {
-        if(CheckIfValidAttacker(c.position)) c.actionChosen.Perform();
-        UIManager.instance.RefreshStatusCorners();
+        startOfRound:
+        UIManager.instance.SwitchBetweenPlanActPhases(true);
+
+        while (!isInBattle || isPlanningStage) yield return new WaitForSeconds(0.5f);
+
+        while (isInBattle && !isPlanningStage) 
+        {
+            //Show targetted position for actions chosen, enact one of the selected actions
+            if (currentStatus == BattleStage.playerAct) 
+            {
+                //Switch Animator to show the prepared actions panel
+
+                //Player chooses an action
+                while (true) yield return new WaitForSeconds(0.5f);
+
+                //Switch Animator to show the prepared moves panel
+            }
+            //show where enemies are aiming and planning to move, hold until player chooses a movement
+            else if (currentStatus == BattleStage.playerMove) 
+            {
+                //ShowPlayerMovesHere
+                PlayerMoves();
+
+                //Switch Animator to show nothin 
+                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
+            }
+            //perform the enemy attack and enemy move
+            else if(currentStatus == BattleStage.enemyAct) 
+            {
+                EnemyAct();
+
+                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
+            }
+            else if (currentStatus == BattleStage.enemyMove) 
+            {
+                EnemyMove(EnemyCounter);
+
+                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
+            }
+
+            if (true) goto startOfRound;
+        }
+
+        //Battle would naturally end here
     }
+
+    public void PreviewCharacterAction(int position) { if (CheckIfActionValid(position)) GetCharacterByPosition(position).actionChosen.Preview(true); }
     public void PreviewCharacterAction(Transform position) { if (CheckIfActionValid(GetCharacterBySprite(position).position)) GetCharacterBySprite(position).actionChosen.Preview(true); }
     public void EndPreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(false);
     public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
     
+    public void PreviewEnemyBehaviour() { if (CheckIfActionValid(GetCharacterByPosition(EnemyCounter).position)) 
+        { 
+            GetCharacterByPosition(EnemyCounter).actionChosen.Preview(true);
+            UIManager.instance.ShowMoveArrow(GetSpriteByPosition(4 + EnemyCounter), EnemyCounter - 1);
+        } }
+
     //Convenient shorthands for retrieving one kind of data from another - character data from position, sprite by position ETC
     #region utilities
     //Gets character by their ID values
@@ -149,7 +196,7 @@ public class BattleManager : MonoBehaviour
 
     public bool CheckIfValidAttacker(int position) 
     {
-        if (CheckIfActionValid(position) && !GetCharacterByPosition(position).isDead) return true;
+        if (CheckIfActionValid(position) && !GetCharacterByPosition(position).isDead) { Debug.Log(GetCharacterByPosition(position).name+" is a valid attacker"); return true; }
         else return false;
     }          //If the player exists, has an attack equipped and is alive - can attack
     public bool CheckIfActionValid(int position)
@@ -159,7 +206,7 @@ public class BattleManager : MonoBehaviour
         catch { return false; }
 
         if(s.Length<1) return false;
-        Debug.Log(s + " is valid");
+        //Debug.Log(s + " is valid");
         return true;
     }             //if the character exists, has an action equipped, action is valid and can be enacted
     #endregion
@@ -222,11 +269,12 @@ public class BattleManager : MonoBehaviour
 
             if (charactersEnemy[i].actionChosen == null) charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];
         }
-        isEnemyTurn = true;
+        isEnemyTurn = true; EnemyCounter = 1;
     }    //Initialise health to full and actions from base action values.
     public void EndEncounter(bool isWon)
     {
         isInBattle = false;
+        StopCoroutine(BattleFlow());
         Debug.Log($"Just finished encounter: {battleID}");
         if (isWon)
         {
@@ -273,27 +321,15 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
-    void SelectingPlayerUnit()
+    void EnemyTurn()
     {
-        //This is for selecting character you want to plan movements for
-        if (Input.GetKeyDown(KeyCode.Q) && GetCharacterByPosition(1).isDead==false )
-        {
-            PlayerCharacterSelection = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.W) && GetCharacterByPosition(2).isDead == false)
-        {
-            PlayerCharacterSelection = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && GetCharacterByPosition(3).isDead == false)
-        {
-            PlayerCharacterSelection = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.R) && GetCharacterByPosition(4).isDead == false)
-        {
-            PlayerCharacterSelection = 3;
-        }
+        if (!OutOfTokens && isEnemyTurn == true) { EnemyActions = MaxEnemyActions; OutOfTokens = true; }
 
+        if (EnemyActions == 0)
+        {
+            isEnemyTurn = false;
+            EnemyCounter = 1;
+        }
     }
 
     public void ChangePlayerMovements(int index,bool isNowMovingLeft) //Left/Right to decide whether moving left/right by ONE tile. Or three if last/first member
@@ -311,134 +347,79 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void PlayerUnitAttacking()
+    void PlayerAttacking()
     {
         if (isEnemyTurn == false)
         {
-
-            if (Input.GetKeyDown(KeyCode.Alpha1) && CheckIfValidAttacker(1) ==true)
-            {
-                ExecuteCharacterAction(charactersPlayer[0]);
-                CurrentActionPoints -= GetCharacterByPosition(1).actionChosen.updatedData.cost;
-                if (CheckIfValidAttacker(5) == true)
-                {
-                    EnemyReactions(0);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2) && CheckIfValidAttacker(2) == true)
-            {
-                ExecuteCharacterAction(charactersPlayer[1]);
-                CurrentActionPoints -= GetCharacterByPosition(2).actionChosen.updatedData.cost;
-                if (CheckIfValidAttacker(6) == true)
-                {
-                    EnemyReactions(1);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3) && CheckIfValidAttacker(3) == true)
-            {
-                ExecuteCharacterAction(charactersPlayer[2]);
-                CurrentActionPoints -= GetCharacterByPosition(2).actionChosen.updatedData.cost;
-                if (CheckIfValidAttacker(7) == true)
-                {
-                    EnemyReactions(2);
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4) && CheckIfValidAttacker(4) == true)
-            {
-                ExecuteCharacterAction(charactersPlayer[3]);
-                CurrentActionPoints -= GetCharacterByPosition(3).actionChosen.updatedData.cost;
-                if (CheckIfValidAttacker(8) == true)
-                {
-                    EnemyReactions(3);
-                }
-            }
+            if (Input.GetKeyDown(KeyCode.Alpha1) && CheckIfValidAttacker(1) == true)    CharacterAct(1);
+            if (Input.GetKeyDown(KeyCode.Alpha2) && CheckIfValidAttacker(2) == true)    CharacterAct(2);
+            if (Input.GetKeyDown(KeyCode.Alpha3) && CheckIfValidAttacker(3) == true)    CharacterAct(3);
+            if (Input.GetKeyDown(KeyCode.Alpha4) && CheckIfValidAttacker(4) == true)    CharacterAct(4);     
         }
     }
-
-    void EnemyReactions(int EnemyIndex)
+    public void CharacterAct(int position) //Execute the character's action and trigger a corresponding enemy reaction (player 3, triggers enemy 3)
     {
-        Debug.Log("enemy Unit " + EnemyIndex + " needs help");
-        EnemyMovementActions[EnemyIndex] = 0;
-        SwappingCharacterElements(charactersEnemy, EnemyIndex+4, (EnemyIndex + 4 + EnemyMovementDirection[EnemyIndex]));
-        SwappingArrayElements(EnemyMovementActions, EnemyIndex, (EnemyIndex + EnemyMovementDirection[EnemyIndex]));
-        SwappingTransformElements(characterPositions, (EnemyIndex + 4), ((EnemyIndex + 4) + (EnemyMovementDirection[EnemyIndex])));
-        //SwappingGameObjectElements(EnemySprites, EnemyIndex, (EnemyIndex + EnemyMovementDirection[EnemyIndex]));
-        Debug.Log("enemy Unit " + EnemyIndex + " has moved");
+        Character c = GetCharacterByPosition(position);
+        if (CheckIfValidAttacker(c.position) == false) return;
+
+        if (c.CheckIsThisPlayer())                  //if it's player character acting
+        {
+            if (CurrentActionPoints < c.actionChosen.updatedData.cost) return;
+            CurrentActionPoints -= c.actionChosen.updatedData.cost;
+        }
+
+        c.actionChosen.Perform();
+
+
+        UIManager.instance.RefreshStatusCorners();
+    }
+
+
+    //this manages moving the player units, so they can move one place to the left or one place to the right, once for each character during the enemies turn
+    public void PlayerMoves()
+    {
+        if (isEnemyTurn == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1) && PlayerMovementActions[0] == 1) PlayerMove(1);
+            if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerMovementActions[1] == 1) PlayerMove(2);
+            if (Input.GetKeyDown(KeyCode.Alpha3) && PlayerMovementActions[2] == 1) PlayerMove(3);
+            if (Input.GetKeyDown(KeyCode.Alpha4) && PlayerMovementActions[3] == 1) PlayerMove(4);
+        }
         RecalculateCharacterPositions();
     }
-    void EnemyTurn()
+    public void PlayerMove(int position)
     {
-        if (!OutOfTokens && isEnemyTurn == true) { EnemyActions = MaxEnemyActions; OutOfTokens = true; }
-
-        if (EnemyActions == 0)
-        {
-            isEnemyTurn = false;
-            EnemyCounter = 0;
-        }
+        int i = -position - 1;
+        PlayerMovementActions[i] = 0;
+        SwappingCharacterElements(charactersPlayer, i, (i + PlayerMovementDirection[i]));
+        SwappingArrayElements(PlayerMovementActions, i, (i + PlayerMovementDirection[i]));
+        SwappingTransformElements(characterPositions, i, (i + PlayerMovementDirection[i]));
+        SwappingArrayElements(PlayerMovementDirection, i, (i + PlayerMovementDirection[i]));
+        Debug.Log($"Player Unit {position} has moved!");
     }
 
     // this is set to have each character in a row attack, so each enemy hits once per turn. the max amount of actions for enemies for now is the same as the player
-    void EnemyAttacks()
+    void EnemyAct()
     {
-        if (isEnemyTurn == true)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                ExecuteCharacterAction(charactersEnemy[EnemyCounter]);
-                EnemyCounter += 1;
-                EnemyActions -= 1;
-            }
-        }
+        CharacterAct(4+EnemyCounter);
+        EnemyCounter += 1;
+        EnemyActions -= 1;
     }
 
-    //this manages moving the player units, so they can move one place to the left or one place to the right, once for each character during the enemies turn
-    public void PlayerReactions()
+
+    void EnemyMove(int EnemyIndex)
     {
-        if (isEnemyTurn == true)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1) && PlayerMovementActions[0] == 1)
-            {
-                PlayerMovementActions[0] = 0;
-                SwappingCharacterElements(charactersPlayer, 0, (0 + PlayerMovementDirection[0]));
-                SwappingArrayElements(PlayerMovementActions, 0, (0 + PlayerMovementDirection[0]));
-                SwappingTransformElements(characterPositions, 0, (0 + PlayerMovementDirection[0]));
-                //SwappingGameObjectElements(PlayerSprites , 0, (0 + PlayerMovementDirection[0]));
-                SwappingArrayElements(PlayerMovementDirection, 0, (0 + PlayerMovementDirection[0]));
-                Debug.Log("Player Unit 1 has moved");
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerMovementActions[1] == 1)
-            {
-                PlayerMovementActions[1] = 0;
-                SwappingCharacterElements(charactersPlayer, 1, (1 + PlayerMovementDirection[1]));
-                SwappingArrayElements(PlayerMovementActions, 1, (1 + PlayerMovementDirection[1]));
-                SwappingTransformElements(characterPositions, 1, (1 + PlayerMovementDirection[1]));
-                //SwappingGameObjectElements(PlayerSprites, 1, (1 + PlayerMovementDirection[1]));
-                SwappingArrayElements(PlayerMovementDirection, 1, (1 + PlayerMovementDirection[1]));
-                Debug.Log("Player Unit 2 has moved");
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3) && PlayerMovementActions[2] == 1)
-            {
-                PlayerMovementActions[2] = 0;
-                SwappingCharacterElements(charactersPlayer, 2, (2 + PlayerMovementDirection[2]));
-                SwappingArrayElements(PlayerMovementActions, 2, (2 + PlayerMovementDirection[2]));
-                SwappingTransformElements(characterPositions, 2, (2 + PlayerMovementDirection[2]));
-                //SwappingGameObjectElements(PlayerSprites, 2, (2 + PlayerMovementDirection[2]));
-                SwappingArrayElements(PlayerMovementDirection, 2, (2 + PlayerMovementDirection[2]));
-                Debug.Log("Player Unit 3 has moved");
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4) && PlayerMovementActions[3] == 1)
-            {
-                PlayerMovementActions[3] = 0;
-                SwappingCharacterElements(charactersPlayer, 3, (3 + PlayerMovementDirection[3]));
-                SwappingArrayElements(PlayerMovementActions, 3, (3 + PlayerMovementDirection[3]));
-                SwappingTransformElements(characterPositions, 3, (3 + PlayerMovementDirection[3]));
-                //SwappingGameObjectElements(PlayerSprites, 3, (3 + PlayerMovementDirection[3]));
-                SwappingArrayElements(PlayerMovementDirection, 3, (3 + PlayerMovementDirection[3]));
-                Debug.Log("Player Unit 4 has moved");
-            }
-        }
+        Debug.Log($"enemy Unit {EnemyIndex} is moving to spot {EnemyIndex + EnemyMovementDirection[EnemyIndex]}");
+        EnemyMovementActions[EnemyIndex] = 0;
+        SwappingCharacterElements(charactersEnemy, EnemyIndex-1, (EnemyIndex-1 + EnemyMovementDirection[EnemyIndex-1]));                  //Swap enemy character data
+        SwappingArrayElements(EnemyMovementActions, EnemyIndex-1, (EnemyIndex-1 + EnemyMovementDirection[EnemyIndex-1]));                 //swap enemy movement choices
+        SwappingTransformElements(characterPositions, (EnemyIndex + 4), ((EnemyIndex + 4) + (EnemyMovementDirection[EnemyIndex]))); //swap enemy sprites
+        Debug.Log("enemy Unit " + EnemyIndex + " has moved");
         RecalculateCharacterPositions();
     }
+
+
+
     #endregion
 
 
