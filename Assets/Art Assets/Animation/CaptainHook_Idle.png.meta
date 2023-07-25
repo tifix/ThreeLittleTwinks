@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -45,12 +45,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 100000
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -110,12 +110,12 @@ TextureImporter:
       name: CaptainHook_Idle_0
       rect:
         serializedVersion: 2
-        x: 246
-        y: 8674
-        width: 570
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,12 +131,12 @@ TextureImporter:
       name: CaptainHook_Idle_1
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 8674
-        width: 569
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,12 +152,12 @@ TextureImporter:
       name: CaptainHook_Idle_2
       rect:
         serializedVersion: 2
-        x: 2408
-        y: 8674
-        width: 572
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: CaptainHook_Idle_3
       rect:
         serializedVersion: 2
-        x: 3490
-        y: 8673
-        width: 570
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,12 +194,12 @@ TextureImporter:
       name: CaptainHook_Idle_4
       rect:
         serializedVersion: 2
-        x: 4573
-        y: 8673
-        width: 570
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,12 +215,12 @@ TextureImporter:
       name: CaptainHook_Idle_5
       rect:
         serializedVersion: 2
-        x: 5656
-        y: 8674
-        width: 570
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,12 +236,12 @@ TextureImporter:
       name: CaptainHook_Idle_6
       rect:
         serializedVersion: 2
-        x: 6702
-        y: 8674
-        width: 606
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,12 +257,12 @@ TextureImporter:
       name: CaptainHook_Idle_7
       rect:
         serializedVersion: 2
-        x: 7785
-        y: 8674
-        width: 605
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,12 +278,12 @@ TextureImporter:
       name: CaptainHook_Idle_8
       rect:
         serializedVersion: 2
-        x: 8868
-        y: 8673
-        width: 602
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,12 +299,12 @@ TextureImporter:
       name: CaptainHook_Idle_9
       rect:
         serializedVersion: 2
-        x: 9983
-        y: 8673
-        width: 570
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 9720
+        y: 8658
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -320,12 +320,12 @@ TextureImporter:
       name: CaptainHook_Idle_10
       rect:
         serializedVersion: 2
-        x: 209
-        y: 7591
-        width: 607
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,12 +341,12 @@ TextureImporter:
       name: CaptainHook_Idle_11
       rect:
         serializedVersion: 2
-        x: 1292
-        y: 7591
-        width: 606
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,12 +362,12 @@ TextureImporter:
       name: CaptainHook_Idle_12
       rect:
         serializedVersion: 2
-        x: 2375
-        y: 7591
-        width: 605
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -383,12 +383,12 @@ TextureImporter:
       name: CaptainHook_Idle_13
       rect:
         serializedVersion: 2
-        x: 3453
-        y: 7591
-        width: 607
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,12 +404,12 @@ TextureImporter:
       name: CaptainHook_Idle_14
       rect:
         serializedVersion: 2
-        x: 4536
-        y: 7591
-        width: 607
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -425,12 +425,12 @@ TextureImporter:
       name: CaptainHook_Idle_15
       rect:
         serializedVersion: 2
-        x: 5619
-        y: 7591
-        width: 607
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -446,12 +446,12 @@ TextureImporter:
       name: CaptainHook_Idle_16
       rect:
         serializedVersion: 2
-        x: 6702
-        y: 7591
-        width: 606
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -467,12 +467,12 @@ TextureImporter:
       name: CaptainHook_Idle_17
       rect:
         serializedVersion: 2
-        x: 7764
-        y: 7591
-        width: 626
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -488,12 +488,12 @@ TextureImporter:
       name: CaptainHook_Idle_18
       rect:
         serializedVersion: 2
-        x: 8844
-        y: 7591
-        width: 626
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -509,12 +509,12 @@ TextureImporter:
       name: CaptainHook_Idle_19
       rect:
         serializedVersion: 2
-        x: 9983
-        y: 7591
-        width: 570
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 9720
+        y: 7578
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -530,12 +530,12 @@ TextureImporter:
       name: CaptainHook_Idle_20
       rect:
         serializedVersion: 2
-        x: 188
-        y: 6510
-        width: 628
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -551,12 +551,12 @@ TextureImporter:
       name: CaptainHook_Idle_21
       rect:
         serializedVersion: 2
-        x: 1271
-        y: 6510
-        width: 628
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -572,12 +572,12 @@ TextureImporter:
       name: CaptainHook_Idle_22
       rect:
         serializedVersion: 2
-        x: 2364
-        y: 6510
-        width: 616
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -593,12 +593,12 @@ TextureImporter:
       name: CaptainHook_Idle_23
       rect:
         serializedVersion: 2
-        x: 3447
-        y: 6510
-        width: 613
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -614,12 +614,12 @@ TextureImporter:
       name: CaptainHook_Idle_24
       rect:
         serializedVersion: 2
-        x: 4530
-        y: 6508
-        width: 618
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -635,12 +635,12 @@ TextureImporter:
       name: CaptainHook_Idle_25
       rect:
         serializedVersion: 2
-        x: 5613
-        y: 6510
-        width: 618
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -656,12 +656,12 @@ TextureImporter:
       name: CaptainHook_Idle_26
       rect:
         serializedVersion: 2
-        x: 6656
-        y: 6510
-        width: 658
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -677,12 +677,12 @@ TextureImporter:
       name: CaptainHook_Idle_27
       rect:
         serializedVersion: 2
-        x: 7738
-        y: 6510
-        width: 654
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -698,12 +698,12 @@ TextureImporter:
       name: CaptainHook_Idle_28
       rect:
         serializedVersion: 2
-        x: 8821
-        y: 6510
-        width: 654
-        height: 1064
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -719,12 +719,12 @@ TextureImporter:
       name: CaptainHook_Idle_29
       rect:
         serializedVersion: 2
-        x: 9983
-        y: 6508
-        width: 570
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 9720
+        y: 6498
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -740,12 +740,12 @@ TextureImporter:
       name: CaptainHook_Idle_30
       rect:
         serializedVersion: 2
-        x: 164
-        y: 5429
-        width: 652
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -761,12 +761,12 @@ TextureImporter:
       name: CaptainHook_Idle_31
       rect:
         serializedVersion: 2
-        x: 1246
-        y: 5429
-        width: 652
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -782,12 +782,12 @@ TextureImporter:
       name: CaptainHook_Idle_32
       rect:
         serializedVersion: 2
-        x: 2325
-        y: 6254
-        width: 12
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -803,12 +803,12 @@ TextureImporter:
       name: CaptainHook_Idle_33
       rect:
         serializedVersion: 2
-        x: 2338
-        y: 5429
-        width: 642
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -824,12 +824,12 @@ TextureImporter:
       name: CaptainHook_Idle_34
       rect:
         serializedVersion: 2
-        x: 3406
-        y: 6254
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -845,12 +845,12 @@ TextureImporter:
       name: CaptainHook_Idle_35
       rect:
         serializedVersion: 2
-        x: 3432
-        y: 5429
-        width: 628
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -866,12 +866,12 @@ TextureImporter:
       name: CaptainHook_Idle_36
       rect:
         serializedVersion: 2
-        x: 4489
-        y: 6254
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -887,12 +887,12 @@ TextureImporter:
       name: CaptainHook_Idle_37
       rect:
         serializedVersion: 2
-        x: 4515
-        y: 5429
-        width: 628
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -908,12 +908,12 @@ TextureImporter:
       name: CaptainHook_Idle_38
       rect:
         serializedVersion: 2
-        x: 5572
-        y: 6254
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 5418
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -929,12 +929,12 @@ TextureImporter:
       name: CaptainHook_Idle_39
       rect:
         serializedVersion: 2
-        x: 5598
-        y: 5429
-        width: 628
-        height: 1066
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -950,12 +950,12 @@ TextureImporter:
       name: CaptainHook_Idle_40
       rect:
         serializedVersion: 2
-        x: 6739
-        y: 5429
-        width: 569
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -971,12 +971,12 @@ TextureImporter:
       name: CaptainHook_Idle_41
       rect:
         serializedVersion: 2
-        x: 7818
-        y: 5429
-        width: 572
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -992,12 +992,12 @@ TextureImporter:
       name: CaptainHook_Idle_42
       rect:
         serializedVersion: 2
-        x: 8900
-        y: 5429
-        width: 570
-        height: 1065
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1013,12 +1013,12 @@ TextureImporter:
       name: CaptainHook_Idle_43
       rect:
         serializedVersion: 2
-        x: 3421
-        y: 6211
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1034,12 +1034,12 @@ TextureImporter:
       name: CaptainHook_Idle_44
       rect:
         serializedVersion: 2
-        x: 4501
-        y: 6211
-        width: 19
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1055,12 +1055,12 @@ TextureImporter:
       name: CaptainHook_Idle_45
       rect:
         serializedVersion: 2
-        x: 5583
-        y: 6211
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1076,12 +1076,12 @@ TextureImporter:
       name: CaptainHook_Idle_46
       rect:
         serializedVersion: 2
-        x: 246
-        y: 4346
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1097,12 +1097,12 @@ TextureImporter:
       name: CaptainHook_Idle_47
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 4346
-        width: 569
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 4338
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1118,12 +1118,12 @@ TextureImporter:
       name: CaptainHook_Idle_48
       rect:
         serializedVersion: 2
-        x: 2408
-        y: 4346
-        width: 572
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1139,12 +1139,12 @@ TextureImporter:
       name: CaptainHook_Idle_49
       rect:
         serializedVersion: 2
-        x: 3490
-        y: 4346
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1160,12 +1160,12 @@ TextureImporter:
       name: CaptainHook_Idle_50
       rect:
         serializedVersion: 2
-        x: 4573
-        y: 4346
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1181,12 +1181,12 @@ TextureImporter:
       name: CaptainHook_Idle_51
       rect:
         serializedVersion: 2
-        x: 5656
-        y: 4346
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1202,12 +1202,12 @@ TextureImporter:
       name: CaptainHook_Idle_52
       rect:
         serializedVersion: 2
-        x: 6739
-        y: 4346
-        width: 569
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1223,12 +1223,12 @@ TextureImporter:
       name: CaptainHook_Idle_53
       rect:
         serializedVersion: 2
-        x: 7818
-        y: 4346
-        width: 572
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1244,12 +1244,12 @@ TextureImporter:
       name: CaptainHook_Idle_54
       rect:
         serializedVersion: 2
-        x: 8900
-        y: 4346
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1265,12 +1265,12 @@ TextureImporter:
       name: CaptainHook_Idle_55
       rect:
         serializedVersion: 2
-        x: 246
-        y: 3263
-        width: 570
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1286,12 +1286,12 @@ TextureImporter:
       name: CaptainHook_Idle_56
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 3263
-        width: 569
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 3258
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1307,12 +1307,12 @@ TextureImporter:
       name: CaptainHook_Idle_57
       rect:
         serializedVersion: 2
-        x: 2408
-        y: 3263
-        width: 569
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1328,12 +1328,12 @@ TextureImporter:
       name: CaptainHook_Idle_58
       rect:
         serializedVersion: 2
-        x: 3458
-        y: 3263
-        width: 602
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1349,12 +1349,12 @@ TextureImporter:
       name: CaptainHook_Idle_59
       rect:
         serializedVersion: 2
-        x: 4541
-        y: 3263
-        width: 602
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1370,12 +1370,12 @@ TextureImporter:
       name: CaptainHook_Idle_60
       rect:
         serializedVersion: 2
-        x: 5621
-        y: 3263
-        width: 605
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1391,12 +1391,12 @@ TextureImporter:
       name: CaptainHook_Idle_61
       rect:
         serializedVersion: 2
-        x: 6702
-        y: 3263
-        width: 606
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1412,12 +1412,12 @@ TextureImporter:
       name: CaptainHook_Idle_62
       rect:
         serializedVersion: 2
-        x: 7785
-        y: 3263
-        width: 602
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1433,12 +1433,12 @@ TextureImporter:
       name: CaptainHook_Idle_63
       rect:
         serializedVersion: 2
-        x: 8863
-        y: 3263
-        width: 607
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1454,12 +1454,12 @@ TextureImporter:
       name: CaptainHook_Idle_64
       rect:
         serializedVersion: 2
-        x: 209
-        y: 2180
-        width: 607
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1475,12 +1475,12 @@ TextureImporter:
       name: CaptainHook_Idle_65
       rect:
         serializedVersion: 2
-        x: 1292
-        y: 2180
-        width: 607
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 2178
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1496,12 +1496,12 @@ TextureImporter:
       name: CaptainHook_Idle_66
       rect:
         serializedVersion: 2
-        x: 2375
-        y: 2180
-        width: 605
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1517,12 +1517,12 @@ TextureImporter:
       name: CaptainHook_Idle_67
       rect:
         serializedVersion: 2
-        x: 3453
-        y: 2180
-        width: 607
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1538,12 +1538,12 @@ TextureImporter:
       name: CaptainHook_Idle_68
       rect:
         serializedVersion: 2
-        x: 4515
-        y: 2180
-        width: 628
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1559,12 +1559,12 @@ TextureImporter:
       name: CaptainHook_Idle_69
       rect:
         serializedVersion: 2
-        x: 5598
-        y: 2180
-        width: 628
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1580,12 +1580,12 @@ TextureImporter:
       name: CaptainHook_Idle_70
       rect:
         serializedVersion: 2
-        x: 6681
-        y: 2180
-        width: 628
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1601,12 +1601,12 @@ TextureImporter:
       name: CaptainHook_Idle_71
       rect:
         serializedVersion: 2
-        x: 7764
-        y: 2180
-        width: 626
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1622,12 +1622,12 @@ TextureImporter:
       name: CaptainHook_Idle_72
       rect:
         serializedVersion: 2
-        x: 8857
-        y: 2180
-        width: 613
-        height: 1067
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1643,12 +1643,12 @@ TextureImporter:
       name: CaptainHook_Idle_73
       rect:
         serializedVersion: 2
-        x: 203
-        y: 1102
-        width: 613
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1664,12 +1664,12 @@ TextureImporter:
       name: CaptainHook_Idle_74
       rect:
         serializedVersion: 2
-        x: 1282
-        y: 1102
-        width: 617
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 1098
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1685,12 +1685,12 @@ TextureImporter:
       name: CaptainHook_Idle_75
       rect:
         serializedVersion: 2
-        x: 2364
-        y: 1102
-        width: 616
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1706,12 +1706,12 @@ TextureImporter:
       name: CaptainHook_Idle_76
       rect:
         serializedVersion: 2
-        x: 3411
-        y: 1102
-        width: 654
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1080
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1727,12 +1727,12 @@ TextureImporter:
       name: CaptainHook_Idle_77
       rect:
         serializedVersion: 2
-        x: 4494
-        y: 1102
-        width: 654
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2160
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1748,12 +1748,12 @@ TextureImporter:
       name: CaptainHook_Idle_78
       rect:
         serializedVersion: 2
-        x: 5574
-        y: 1102
-        width: 657
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3240
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1769,12 +1769,12 @@ TextureImporter:
       name: CaptainHook_Idle_79
       rect:
         serializedVersion: 2
-        x: 6656
-        y: 1102
-        width: 658
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 4320
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1790,12 +1790,12 @@ TextureImporter:
       name: CaptainHook_Idle_80
       rect:
         serializedVersion: 2
-        x: 7738
-        y: 1102
-        width: 657
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5400
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1811,12 +1811,12 @@ TextureImporter:
       name: CaptainHook_Idle_81
       rect:
         serializedVersion: 2
-        x: 8816
-        y: 1926
-        width: 14
-        height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 6480
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1832,12 +1832,12 @@ TextureImporter:
       name: CaptainHook_Idle_82
       rect:
         serializedVersion: 2
-        x: 8842
-        y: 1102
-        width: 628
-        height: 1062
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 7560
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1853,12 +1853,12 @@ TextureImporter:
       name: CaptainHook_Idle_83
       rect:
         serializedVersion: 2
-        x: 8831
-        y: 1884
-        width: 20
-        height: 18
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 8640
+        y: 18
+        width: 1080
+        height: 1080
+      alignment: 9
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1866,321 +1866,6 @@ TextureImporter:
       bones: []
       spriteID: 3182d1745ab441a4e983b9c4d6c46fc6
       internalID: 2093161417
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_84
-      rect:
-        serializedVersion: 2
-        x: 162
-        y: 843
-        width: 14
-        height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 63fc591578ab4854aac32646769db664
-      internalID: 1519603812
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_85
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 0
-        width: 628
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 523474d6990f54a478440bea75376eb2
-      internalID: -837155004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_86
-      rect:
-        serializedVersion: 2
-        x: 1245
-        y: 843
-        width: 12
-        height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e9b41d686b8e9ef4eb05f9e5e5fe68f4
-      internalID: -1119515736
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_87
-      rect:
-        serializedVersion: 2
-        x: 1266
-        y: 0
-        width: 632
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 58d763dc37aa5ab42bbe8a26b6ee3c28
-      internalID: -1435557453
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_88
-      rect:
-        serializedVersion: 2
-        x: 2325
-        y: 843
-        width: 12
-        height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 80f10a4dee471bb47b8f96f484d09a29
-      internalID: 1840661741
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_89
-      rect:
-        serializedVersion: 2
-        x: 2349
-        y: 0
-        width: 631
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ed685aa1f880c684fa36dfa285de3615
-      internalID: 1655427850
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_90
-      rect:
-        serializedVersion: 2
-        x: 3490
-        y: 0
-        width: 570
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9c283687547dc3747aaa290541220f2f
-      internalID: -127987649
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_91
-      rect:
-        serializedVersion: 2
-        x: 4573
-        y: 0
-        width: 570
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a870c911cb40838428c96fb6c64a8f69
-      internalID: 1018045112
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_92
-      rect:
-        serializedVersion: 2
-        x: 5656
-        y: 0
-        width: 570
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a6bbdbe7bfde7e848aec5de5cd0529de
-      internalID: -1251645355
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_93
-      rect:
-        serializedVersion: 2
-        x: 6739
-        y: 0
-        width: 569
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4304b69e02e136b438c5a647b20e22b6
-      internalID: -761201824
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_94
-      rect:
-        serializedVersion: 2
-        x: 7818
-        y: 0
-        width: 572
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 77cb74ffba300434f883817aac891fb1
-      internalID: 380154921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_95
-      rect:
-        serializedVersion: 2
-        x: 8900
-        y: 0
-        width: 587
-        height: 1085
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 66af76ac918d9aa4a9bbef5993fde906
-      internalID: -1391801052
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_96
-      rect:
-        serializedVersion: 2
-        x: 173
-        y: 801
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 485d41995ccd9d246a1246b550fa3d1d
-      internalID: 292750938
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_97
-      rect:
-        serializedVersion: 2
-        x: 1255
-        y: 801
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8032223fcb527424591cbded44052d6c
-      internalID: -1969518375
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CaptainHook_Idle_98
-      rect:
-        serializedVersion: 2
-        x: 2338
-        y: 801
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0e0eefaf022a6a143890e5278e21b336
-      internalID: 1433291151
       vertices: []
       indices: 
       edges: []
@@ -2197,103 +1882,88 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       CaptainHook_Idle_30: 918214749
+      CaptainHook_Idle_21: 1643787963
+      CaptainHook_Idle_34: 1245041226
       CaptainHook_Idle_11: 298708675
-      CaptainHook_Idle_89: 1655427850
+      CaptainHook_Idle_3: -815428003
+      CaptainHook_Idle_35: 587976153
+      CaptainHook_Idle_74: 789597866
       CaptainHook_Idle_36: -916284280
-      CaptainHook_Idle_75: -1839512367
+      CaptainHook_Idle_42: 1237224162
+      CaptainHook_Idle_43: 1679279930
+      CaptainHook_Idle_72: 182693066
+      CaptainHook_Idle_23: -512804390
       CaptainHook_Idle_46: -1121116709
+      CaptainHook_Idle_19: 2028589513
+      CaptainHook_Idle_31: 1588987127
+      CaptainHook_Idle_75: -1839512367
       CaptainHook_Idle_52: 1497945335
       CaptainHook_Idle_6: 1261140468
       CaptainHook_Idle_77: -759269199
       CaptainHook_Idle_50: 733649199
+      CaptainHook_Idle_45: 888840124
       CaptainHook_Idle_29: 225772542
-      CaptainHook_Idle_95: -1391801052
+      CaptainHook_Idle_57: 89460422
+      CaptainHook_Idle_7: -629207582
       CaptainHook_Idle_27: -1369955963
-      CaptainHook_Idle_82: -1887894787
+      CaptainHook_Idle_63: 1878337049
+      CaptainHook_Idle_14: 166936369
       CaptainHook_Idle_13: 728052528
+      CaptainHook_Idle_22: -254195
       CaptainHook_Idle_53: 1062060978
-      CaptainHook_Idle_88: 1840661741
+      CaptainHook_Idle_82: -1887894787
+      CaptainHook_Idle_0: -994867931
       CaptainHook_Idle_1: -497413845
       CaptainHook_Idle_28: -416688174
       CaptainHook_Idle_65: 533237903
-      CaptainHook_Idle_67: -1414264006
+      CaptainHook_Idle_33: -1999216173
       CaptainHook_Idle_8: 1141975575
       CaptainHook_Idle_49: -1227546021
+      CaptainHook_Idle_67: -1414264006
+      CaptainHook_Idle_80: 722440613
       CaptainHook_Idle_73: 454174194
+      CaptainHook_Idle_44: -219449041
+      CaptainHook_Idle_71: -1807233582
       CaptainHook_Idle_54: 1818856618
-      CaptainHook_Idle_92: -1251645355
+      CaptainHook_Idle_79: 51850369
+      CaptainHook_Idle_10: 293920475
+      CaptainHook_Idle_60: -505238000
       CaptainHook_Idle_25: 849620905
-      CaptainHook_Idle_78: 97327602
+      CaptainHook_Idle_56: 1358591531
+      CaptainHook_Idle_18: -1209454109
+      CaptainHook_Idle_62: -154325868
+      CaptainHook_Idle_4: 211617798
       CaptainHook_Idle_15: 1493541279
-      CaptainHook_Idle_87: -1435557453
-      CaptainHook_Idle_97: -1969518375
+      CaptainHook_Idle_12: 1744062264
+      CaptainHook_Idle_20: 125721430
+      CaptainHook_Idle_41: -892903120
       CaptainHook_Idle_51: -1320220324
-      CaptainHook_Idle_64: -1700596012
+      CaptainHook_Idle_66: -1829930653
       CaptainHook_Idle_58: 1034392835
+      CaptainHook_Idle_9: -893258014
+      CaptainHook_Idle_64: -1700596012
+      CaptainHook_Idle_78: 97327602
+      CaptainHook_Idle_32: -766306326
+      CaptainHook_Idle_59: -2036976218
+      CaptainHook_Idle_38: -630116745
       CaptainHook_Idle_83: 2093161417
       CaptainHook_Idle_16: -1758544308
       CaptainHook_Idle_39: -1795865555
+      CaptainHook_Idle_70: -6569535
+      CaptainHook_Idle_69: -602218625
+      CaptainHook_Idle_81: -171727404
       CaptainHook_Idle_48: 1278377444
       CaptainHook_Idle_17: 2008975082
       CaptainHook_Idle_40: 142207420
       CaptainHook_Idle_24: 285117644
       CaptainHook_Idle_5: 883097126
-      CaptainHook_Idle_47: 1920021557
-      CaptainHook_Idle_90: -127987649
-      CaptainHook_Idle_68: 1785734765
-      CaptainHook_Idle_76: 1070692517
-      CaptainHook_Idle_55: -1135541032
-      CaptainHook_Idle_21: 1643787963
-      CaptainHook_Idle_34: 1245041226
-      CaptainHook_Idle_3: -815428003
-      CaptainHook_Idle_35: 587976153
-      CaptainHook_Idle_98: 1433291151
-      CaptainHook_Idle_74: 789597866
-      CaptainHook_Idle_72: 182693066
-      CaptainHook_Idle_42: 1237224162
-      CaptainHook_Idle_43: 1679279930
-      CaptainHook_Idle_23: -512804390
-      CaptainHook_Idle_19: 2028589513
-      CaptainHook_Idle_31: 1588987127
-      CaptainHook_Idle_85: -837155004
-      CaptainHook_Idle_94: 380154921
-      CaptainHook_Idle_91: 1018045112
-      CaptainHook_Idle_57: 89460422
-      CaptainHook_Idle_45: 888840124
-      CaptainHook_Idle_7: -629207582
-      CaptainHook_Idle_63: 1878337049
-      CaptainHook_Idle_14: 166936369
-      CaptainHook_Idle_22: -254195
-      CaptainHook_Idle_0: -994867931
-      CaptainHook_Idle_86: -1119515736
-      CaptainHook_Idle_33: -1999216173
-      CaptainHook_Idle_80: 722440613
-      CaptainHook_Idle_44: -219449041
-      CaptainHook_Idle_71: -1807233582
-      CaptainHook_Idle_79: 51850369
-      CaptainHook_Idle_10: 293920475
-      CaptainHook_Idle_60: -505238000
-      CaptainHook_Idle_56: 1358591531
-      CaptainHook_Idle_18: -1209454109
-      CaptainHook_Idle_62: -154325868
-      CaptainHook_Idle_4: 211617798
-      CaptainHook_Idle_12: 1744062264
-      CaptainHook_Idle_20: 125721430
-      CaptainHook_Idle_41: -892903120
-      CaptainHook_Idle_66: -1829930653
-      CaptainHook_Idle_96: 292750938
-      CaptainHook_Idle_9: -893258014
-      CaptainHook_Idle_93: -761201824
-      CaptainHook_Idle_32: -766306326
-      CaptainHook_Idle_59: -2036976218
-      CaptainHook_Idle_38: -630116745
-      CaptainHook_Idle_81: -171727404
-      CaptainHook_Idle_70: -6569535
-      CaptainHook_Idle_69: -602218625
       CaptainHook_Idle_26: 1345637120
       CaptainHook_Idle_2: 979330889
       CaptainHook_Idle_37: -482129316
-      CaptainHook_Idle_84: 1519603812
+      CaptainHook_Idle_47: 1920021557
+      CaptainHook_Idle_68: 1785734765
+      CaptainHook_Idle_76: 1070692517
+      CaptainHook_Idle_55: -1135541032
       CaptainHook_Idle_61: -1225327218
   spritePackingTag: 
   pSDRemoveMatte: 0
