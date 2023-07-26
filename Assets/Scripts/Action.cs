@@ -33,6 +33,7 @@ public class Action {
 
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
+        Debug.LogWarning($"Performing attack {name}");
         GetTargetCharacter().TakeDamage(updatedData.damage);
         UIManager.instance.ShowAttackEffects(
                                     BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
@@ -44,20 +45,14 @@ public class Action {
     }
     public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
     {
-        //BattleManager.BattleStage stage = BattleManager.instance.currentStatus;
-
         if (targetState)
         {
             //Display target parabola
             UIManager.instance.ShowTargetParabola(
                                                 BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
-                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, -1
-                );
-
-
+                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, -1);
         }
         else { UIManager.instance.HideTargetParabola(); UIManager.instance.MovePreviewArrow.SetActive(false); }
-
     }
 
 

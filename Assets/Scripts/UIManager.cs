@@ -54,6 +54,10 @@ public class UIManager : MonoBehaviour
     //StatusPlayer and StatusEnemy    
     public TMP_Text statusCharPlayer1, statusCharPlayer2, statusCharPlayer3, statusCharPlayer4;
     public TMP_Text statusCharEnemy1, statusCharEnemy2, statusCharEnemy3, statusCharEnemy4;
+    
+    //names for characters when dodging
+    public TMP_Text moveName1, moveName2, moveName3, moveName4;
+    public TMP_Text moveDir1, moveDir2, moveDir3, moveDir4;
 
     public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
     public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
@@ -92,22 +96,6 @@ public class UIManager : MonoBehaviour
     public void ToggleEncounterSelection(bool state)
     {
         screen_EncounterSelect.SetActive(state);
-    }
-    public void SwitchBetweenPlanActPhases(bool isNowPlanning)
-    {
-        if (isNowPlanning)
-        {
-            SelectedArrow.SetActive(true);
-
-            AnimatorTrigger("SwitchToPlan");
-        }
-        else
-        {
-            LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
-            SelectedArrow.SetActive(false);
-
-            AnimatorTrigger("SwitchToAct");
-        }
     }
     #endregion
 
@@ -172,7 +160,7 @@ public class UIManager : MonoBehaviour
         arrow.transform.localScale = new Vector3(distance_x, 0.01f, 0.01f);                                             //scales depending on move distance
         arrow.transform.localPosition = Vector3.zero;
     }
-
+    public void HideMoveArrow() => MovePreviewArrow.SetActive(false);
     #endregion
 
     // Functionality of Ability selection menu - choosing which abilities which characters will cast in combat this turn
@@ -213,7 +201,26 @@ public class UIManager : MonoBehaviour
         buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
     }
 
+    //Load data for the dodge window
+    public void LoadDataForMoves() 
+    {
+        List<Character> stats = BattleManager.instance.charactersPlayer;
+        if (!stats[0].isDead) { moveName1.text = $"{stats[0].name}"; moveDir1.text = MoveDirectionToText(0); } else moveName1.text = $"{initialCharacterData[0].name} DEAD";
+        if (!stats[1].isDead) { moveName2.text = $"{stats[1].name}"; moveDir2.text = MoveDirectionToText(1); } else moveName2.text = $"{initialCharacterData[1].name} DEAD";
+        if (!stats[2].isDead) { moveName3.text = $"{stats[2].name}"; moveDir3.text = MoveDirectionToText(2); } else moveName3.text = $"{initialCharacterData[2].name} DEAD";
+        if (!stats[3].isDead) { moveName4.text = $"{stats[3].name}"; moveDir4.text = MoveDirectionToText(3); } else moveName4.text = $"{initialCharacterData[3].name} DEAD";
+    }
+
     void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
+
+    string MoveDirectionToText(int index) 
+    {
+        string s = "";
+        if (BattleManager.instance.PlayerMovementDirection[index] > 0) s = "will dodge right";
+        else s = "will dodge right";
+
+        return s;
+    } 
 
     public void RefreshStatusCorners()
     {

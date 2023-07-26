@@ -16,15 +16,13 @@ using UnityEngine.UIElements;
 
 public class BattleManager : MonoBehaviour
 {
-    public enum BattleStage {planning, playerAct,playerMove, enemyAct, enemyMove};
+    public enum BattleStage {planning, playerAct,playerMove, enemyAct};
     public static BattleManager instance;
     [Header("Game current state")]
     [Tooltip("the 'Level' the player is currently playing ")]                     public string battleID = "1";
     [Tooltip("is the entire encounter finished? ")]                                 public bool isInBattle = true;
-                                                                             public BattleStage currentStatus = BattleStage.planning;
-                                                                                    public bool isPlanningStage = true;
-                                                                                    private int CurrentActionPoints;
-    [Tooltip("formerly TurnCounter - whether it's enemies or player's turn to act")]public bool isEnemyTurn = false;
+                                                                             public BattleStage curStage = BattleStage.planning;
+                                                                              [SerializeField] private int CurrentActionPoints;
 
     //Data of player characters and enemy characters
     public List <Character> charactersPlayer =  new List<Character>(4);
@@ -39,12 +37,11 @@ public class BattleManager : MonoBehaviour
     [Tooltip("This is the default action to enact if none are assigned")]   public Action DefaultAction;
 
     
-    public int      MaxActionPoints = 4;                        //Amount of actions and movements the player can make
+    public int      ActionsPerCharacter = 1;                        //Amount of actions and movements the player can make
     public int[]    PlayerMovementActions = { 1, 1, 1, 1 };     //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
     public int[]    PlayerMovementDirection = { 0, 0, 0, 0 };   //keeps track of what position units have been prepped to move too, -1 = left, 1 = right, 0 = No Movement prepped.
     
-    public int      MaxEnemyActions = 4;                        //Amount of Actions enemy can make
-    private int     EnemyActions = 4;
+    public int      ActionsPerEnemy = 1;                        //Amount of Actions enemy can make
     public float    EnemyAttackDelay = 2f;
     public int      EnemyCounter = 1;
     public int[]    EnemyMovementActions = { 1, 1, 1, 1 };      //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
@@ -66,73 +63,130 @@ public class BattleManager : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space)) SwitchBetweenPlanActPhases();         
+    }
+    public void SwitchBetweenPlanActPhases() 
+    {
+        if (curStage != BattleStage.planning) curStage = BattleStage.planning;
+        else curStage = BattleStage.playerAct;
+
+        if (curStage == BattleStage.planning)
         {
-            if (currentStatus != BattleStage.planning) currentStatus = BattleStage.planning;
-            else currentStatus= BattleStage.playerAct;
-        } 
-         
+            UIManager.instance.SelectedArrow.SetActive(true);
+            UIManager.instance.MovePreviewArrow.SetActive(false);
+
+            UIManager.instance.AnimatorTrigger("SwitchToPlan");
+        }
+        else
+        {
+            UIManager.instance.LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
+            UIManager.instance.SelectedArrow.SetActive(false);
+
+            UIManager.instance.AnimatorTrigger("SwitchToAct");
+        }
     }
 
-    //Turn Flow
+    //////////////////    MAIN Turn Flow   ////////////////////////////////
     public IEnumerator BattleFlow() 
     {
-        startOfRound:
-        UIManager.instance.SwitchBetweenPlanActPhases(true);
-
-        while (!isInBattle || isPlanningStage) yield return new WaitForSeconds(0.5f);
-
-        while (isInBattle && !isPlanningStage) 
+    startOfRound:
+        while (!isInBattle || curStage == BattleStage.planning) 
+        {
+            yield return new WaitForSeconds(0.5f);
+            //Debug.Log($" Standing by in plan");
+        } 
+        while (isInBattle && curStage != BattleStage.planning) 
         {
             //Show targetted position for actions chosen, enact one of the selected actions
-            if (currentStatus == BattleStage.playerAct) 
+            if (curStage == BattleStage.playerAct)
             {
-                //Switch Animator to show the prepared actions panel
+                Debug.Log($" entered act");
+                StartPlayerTurn();
 
-                //Player chooses an action
-                while (true) yield return new WaitForSeconds(0.5f);
-
-                //Switch Animator to show the prepared moves panel
+                //Wait for player to choose an action
+                while (curStage == BattleStage.playerAct)
+                {
+                    yield return new WaitForEndOfFrame();
+                    PlayerAttacking();                          //Keybind attacks, supplementing the UI ones enabled
+                    //Debug.Log($" standing by in Act");
+                }
             }
             //show where enemies are aiming and planning to move, hold until player chooses a movement
-            else if (currentStatus == BattleStage.playerMove) 
+            else if (curStage == BattleStage.playerMove)
             {
-                //ShowPlayerMovesHere
-                PlayerMoves();
+                Debug.Log($" entered move");
 
-                //Switch Animator to show nothin 
-                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
+                //Switch Animator to show the prepared moves panel
+                UIManager.instance.AnimatorTrigger("SwitchToMove");
+                
+                //Wait for player to choose a move
+                while (curStage == BattleStage.playerMove)
+                {
+                    yield return new WaitForEndOfFrame();
+                    PreviewEnemyBehaviour();                //Preview what the enemy is about to do, where to move
+                    PlayerMoves();                          //Keybind moves, supplementing the UI ones enabled
+                    Debug.Log($" standing by in Move");;
+                }
             }
-            //perform the enemy attack and enemy move
-            else if(currentStatus == BattleStage.enemyAct) 
+            else if(curStage == BattleStage.enemyAct) 
             {
+                Debug.Log($" entered enemy actions");
+                UIManager.instance.HideMoveArrow();    
+                //Switch Animator to show nothing 
+
                 EnemyAct();
-
-                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
-            }
-            else if (currentStatus == BattleStage.enemyMove) 
-            {
+                yield return new WaitForSeconds(EnemyAttackDelay);
                 EnemyMove(EnemyCounter);
 
-                yield return new WaitForSeconds(1f);    //Wait a bit for a smoother transition
+                //perform the enemy attack and enemy move
+                while (curStage == BattleStage.enemyAct)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                    Debug.Log($" standing by in enemy actions"); ;
+                }
             }
 
-            if (true) goto startOfRound;
+
+            if (curStage == BattleStage.planning) goto startOfRound;
         }
 
         //Battle would naturally end here
     }
 
-    public void PreviewCharacterAction(int position) { if (CheckIfActionValid(position)) GetCharacterByPosition(position).actionChosen.Preview(true); }
-    public void PreviewCharacterAction(Transform position) { if (CheckIfActionValid(GetCharacterBySprite(position).position)) GetCharacterBySprite(position).actionChosen.Preview(true); }
+    #region targetting and action previews
+    public void PreviewCharacterAction(int position) 
+    { 
+        if (CheckIfActionValid(position)) 
+        {
+            if(!GetCharacterByPosition(position).CheckIsThisPlayer())   //if not player than preview only if on move stage
+            {
+                if (curStage == BattleStage.playerMove) GetCharacterByPosition(position).actionChosen.Preview(true);     
+            }
+            else if(curStage == BattleStage.playerAct || curStage == BattleStage.playerMove) 
+                GetCharacterByPosition(position).actionChosen.Preview(true);                    //if player then preview in act and move stages
+
+        }  
+    }        
+    public void PreviewCharacterAction(Transform position) 
+    {
+        if (CheckIfActionValid(GetCharacterBySprite(position).position))
+        {
+            PreviewCharacterAction(GetPositionByCharacter(GetCharacterBySprite(position)));
+        }
+    }   //redirects to PreviewCharacterAction(int)
     public void EndPreviewCharacterAction(int position) => GetCharacterByPosition(position).actionChosen.Preview(false);
     public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
     
-    public void PreviewEnemyBehaviour() { if (CheckIfActionValid(GetCharacterByPosition(EnemyCounter).position)) 
+    public void PreviewEnemyBehaviour() 
+    {
+        if (CheckIfActionValid(GetCharacterByPosition(4+EnemyCounter).position) && curStage == BattleStage.playerMove)  //if the pleyer is moving, preview what the enemy is going to do
         { 
-            GetCharacterByPosition(EnemyCounter).actionChosen.Preview(true);
+            GetCharacterByPosition(4 + EnemyCounter).actionChosen.Preview(true);
             UIManager.instance.ShowMoveArrow(GetSpriteByPosition(4 + EnemyCounter), EnemyCounter - 1);
-        } }
+        } 
+    }
+    #endregion
+
 
     //Convenient shorthands for retrieving one kind of data from another - character data from position, sprite by position ETC
     #region utilities
@@ -163,7 +217,6 @@ public class BattleManager : MonoBehaviour
             if (characterPositions[i].position.Equals(t.position)) 
             {
                 i++;
-                Debug.Log($"this be position: {i}");
                 return GetCharacterByPosition(i);
             }
         }
@@ -171,6 +224,22 @@ public class BattleManager : MonoBehaviour
         return new Character();
 
     }       //Returns character object given it's sprite displayer
+    public int GetPositionBySprite(Transform t) 
+    {
+        for (int i = 0; i < characterPositions.Count; i++)
+        {
+            if (characterPositions[i].position.Equals(t.position))
+            {
+                i++;
+                Debug.Log($"this be position: {i}");
+                return i+1;
+            }
+        }
+        Debug.LogWarning("INVALID POSITION REEEE");
+        return 1;
+
+    }
+
     public Transform GetSpriteByPosition(int position)
     {
         return characterPositions[position - 1];
@@ -269,7 +338,7 @@ public class BattleManager : MonoBehaviour
 
             if (charactersEnemy[i].actionChosen == null) charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];
         }
-        isEnemyTurn = true; EnemyCounter = 1;
+        EnemyCounter = 1;
     }    //Initialise health to full and actions from base action values.
     public void EndEncounter(bool isWon)
     {
@@ -306,14 +375,13 @@ public class BattleManager : MonoBehaviour
     }
 
     #region turn logic
-    void PlayerTurn()   //Refresh action tokens..? -Mick
+    void StartPlayerTurn()   //Refresh action tokens..? -Mick
     {
-        // when player turn starts, restore action points to maximum, the value inside MaxActionPoints Variable.
-        if (OutOfTokens && isEnemyTurn == false) { CurrentActionPoints = MaxActionPoints; OutOfTokens = false; }
+        // when player turn starts, restore action points to maximum, the value inside ActionsPerCharacter Variable.
+        if (OutOfTokens) { CurrentActionPoints = ActionsPerCharacter; OutOfTokens = false; }
 
         if (CurrentActionPoints == 0)
         {
-            isEnemyTurn = true;
             for(int i = 0; i < 4; i++)
             {
                 //PlayerMovementActions[i] = 1;
@@ -321,17 +389,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    void EnemyTurn()
-    {
-        if (!OutOfTokens && isEnemyTurn == true) { EnemyActions = MaxEnemyActions; OutOfTokens = true; }
-
-        if (EnemyActions == 0)
-        {
-            isEnemyTurn = false;
-            EnemyCounter = 1;
-        }
-    }
-
     public void ChangePlayerMovements(int index,bool isNowMovingLeft) //Left/Right to decide whether moving left/right by ONE tile. Or three if last/first member
     {
         //This actually deciding movements for the player unit selected,
@@ -349,13 +406,10 @@ public class BattleManager : MonoBehaviour
 
     void PlayerAttacking()
     {
-        if (isEnemyTurn == false)
-        {
             if (Input.GetKeyDown(KeyCode.Alpha1) && CheckIfValidAttacker(1) == true)    CharacterAct(1);
             if (Input.GetKeyDown(KeyCode.Alpha2) && CheckIfValidAttacker(2) == true)    CharacterAct(2);
             if (Input.GetKeyDown(KeyCode.Alpha3) && CheckIfValidAttacker(3) == true)    CharacterAct(3);
             if (Input.GetKeyDown(KeyCode.Alpha4) && CheckIfValidAttacker(4) == true)    CharacterAct(4);     
-        }
     }
     public void CharacterAct(int position) //Execute the character's action and trigger a corresponding enemy reaction (player 3, triggers enemy 3)
     {
@@ -364,12 +418,12 @@ public class BattleManager : MonoBehaviour
 
         if (c.CheckIsThisPlayer())                  //if it's player character acting
         {
-            if (CurrentActionPoints < c.actionChosen.updatedData.cost) return;
+            if (CurrentActionPoints < c.actionChosen.updatedData.cost) { curStage = BattleStage.playerMove; return; }
             CurrentActionPoints -= c.actionChosen.updatedData.cost;
         }
 
         c.actionChosen.Perform();
-
+        if (CurrentActionPoints < c.actionChosen.updatedData.cost && curStage == BattleStage.playerAct) curStage = BattleStage.playerMove;   //prgress to move stage if action points exhausted
 
         UIManager.instance.RefreshStatusCorners();
     }
@@ -378,24 +432,27 @@ public class BattleManager : MonoBehaviour
     //this manages moving the player units, so they can move one place to the left or one place to the right, once for each character during the enemies turn
     public void PlayerMoves()
     {
-        if (isEnemyTurn == true)
-        {
             if (Input.GetKeyDown(KeyCode.Alpha1) && PlayerMovementActions[0] == 1) PlayerMove(1);
             if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerMovementActions[1] == 1) PlayerMove(2);
             if (Input.GetKeyDown(KeyCode.Alpha3) && PlayerMovementActions[2] == 1) PlayerMove(3);
             if (Input.GetKeyDown(KeyCode.Alpha4) && PlayerMovementActions[3] == 1) PlayerMove(4);
-        }
+
         RecalculateCharacterPositions();
     }
     public void PlayerMove(int position)
     {
-        int i = -position - 1;
+        int i = position - 1;
         PlayerMovementActions[i] = 0;
+        Debug.Log($"moving at {position}");
         SwappingCharacterElements(charactersPlayer, i, (i + PlayerMovementDirection[i]));
         SwappingArrayElements(PlayerMovementActions, i, (i + PlayerMovementDirection[i]));
         SwappingTransformElements(characterPositions, i, (i + PlayerMovementDirection[i]));
         SwappingArrayElements(PlayerMovementDirection, i, (i + PlayerMovementDirection[i]));
         Debug.Log($"Player Unit {position} has moved!");
+
+        //after the player action is performed, proceed to the enemy action
+        curStage = BattleStage.enemyAct;
+        UIManager.instance.AnimatorTrigger("SwitchToAct");
     }
 
     // this is set to have each character in a row attack, so each enemy hits once per turn. the max amount of actions for enemies for now is the same as the player
@@ -403,7 +460,6 @@ public class BattleManager : MonoBehaviour
     {
         CharacterAct(4+EnemyCounter);
         EnemyCounter += 1;
-        EnemyActions -= 1;
     }
 
 
@@ -416,6 +472,8 @@ public class BattleManager : MonoBehaviour
         SwappingTransformElements(characterPositions, (EnemyIndex + 4), ((EnemyIndex + 4) + (EnemyMovementDirection[EnemyIndex]))); //swap enemy sprites
         Debug.Log("enemy Unit " + EnemyIndex + " has moved");
         RecalculateCharacterPositions();
+
+        curStage = BattleStage.playerAct;
     }
 
 
