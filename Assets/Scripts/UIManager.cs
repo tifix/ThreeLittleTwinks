@@ -205,10 +205,17 @@ public class UIManager : MonoBehaviour
     public void LoadDataForMoves() 
     {
         List<Character> stats = BattleManager.instance.charactersPlayer;
-        if (!stats[0].isDead) { moveName1.text = $"{stats[0].name}"; moveDir1.text = MoveDirectionToText(0); } else moveName1.text = $"{initialCharacterData[0].name} DEAD";
-        if (!stats[1].isDead) { moveName2.text = $"{stats[1].name}"; moveDir2.text = MoveDirectionToText(1); } else moveName2.text = $"{initialCharacterData[1].name} DEAD";
-        if (!stats[2].isDead) { moveName3.text = $"{stats[2].name}"; moveDir3.text = MoveDirectionToText(2); } else moveName3.text = $"{initialCharacterData[2].name} DEAD";
-        if (!stats[3].isDead) { moveName4.text = $"{stats[3].name}"; moveDir4.text = MoveDirectionToText(3); } else moveName4.text = $"{initialCharacterData[3].name} DEAD";
+        if (!stats[0].isDead) { moveName1.text = $"{stats[0].name}"; moveDir1.text = MoveDirectionToText(0); } 
+        else moveName1.text = $"{initialCharacterData[0].name} DEAD";
+
+        if (!stats[1].isDead) { moveName2.text = $"{stats[1].name}"; moveDir2.text = MoveDirectionToText(1); } 
+        else moveName2.text = $"{initialCharacterData[1].name} DEAD";
+
+        if (!stats[2].isDead) { moveName3.text = $"{stats[2].name}"; moveDir3.text = MoveDirectionToText(2); } 
+        else moveName3.text = $"{initialCharacterData[2].name} DEAD";
+
+        if (!stats[3].isDead) { moveName4.text = $"{stats[3].name}"; moveDir4.text = MoveDirectionToText(3); } 
+        else moveName4.text = $"{initialCharacterData[3].name} DEAD";
     }
 
     void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
@@ -331,15 +338,6 @@ public class UIManager : MonoBehaviour
         costAbility4.text = "";
     }
 
-    //
-    /*    void LoadDataForMovement()  //Funky lil window which shows player movement rather than
-    {
-    
-    }
-
-     * 
-     * 
-    */
 
     public void ToggleSelectedToken(bool state) => SelectedTokens[selectedCharacter].SetActive(state);  //Toggle ability selected token On/off for the character currently selected
     public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); Debug.Log("Now activating" + index); }
@@ -347,44 +345,69 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region ACT UI
-    public void LoadActionDescriptions()
+    public void LoadActionDescriptions()    //Loads the descriptions of chosen actions within the act GUI; full descriptions for actions, empty if action's been used, DEAD if the character is dead
     {
-        if (BattleManager.instance.CheckIfActionValid(1))
+        //Loading the action chosen for the character in the first slot
+        if (BattleManager.instance.CheckIfValidAction(1))
         {
             captionAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.name;
-            casterAbility1_act.text = BattleManager.instance.charactersPlayer[0].name;
-            dmgAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.damage.ToString();
-            rangeAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.range.ToString();
-            costAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.cost.ToString();
+            casterAbility1_act.text  = BattleManager.instance.charactersPlayer[0].name;
+            dmgAbility1_act.text     = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.damage.ToString();
+            rangeAbility1_act.text   = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.range.ToString();
+            costAbility1_act.text    = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.cost.ToString();
+        }
+        else if (!BattleManager.instance.charactersPlayer[0].isDead) 
+        {
+            casterAbility1_act.text  = BattleManager.instance.charactersPlayer[0].name;
+            captionAbility1_act.text = "";  dmgAbility1_act.text = ""; rangeAbility1_act.text = ""; costAbility1_act.text = "";
         }
         else { captionAbility1_act.text = "DEAD"; dmgAbility1_act.text = ""; rangeAbility1_act.text = ""; costAbility1_act.text = ""; }
-        if (BattleManager.instance.CheckIfActionValid(2))
+
+        //Loading the action chosen for the character in the second slot
+        if (BattleManager.instance.CheckIfValidAction(2))
         {
             captionAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.name;
-            casterAbility2_act.text = BattleManager.instance.charactersPlayer[1].name;
-            dmgAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.damage.ToString();
-            rangeAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.range.ToString();
-            costAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.cost.ToString();
+            casterAbility2_act.text  = BattleManager.instance.charactersPlayer[1].name;
+            dmgAbility2_act.text     = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.damage.ToString();
+            rangeAbility2_act.text   = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.range.ToString();
+            costAbility2_act.text    = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.cost.ToString();
+        }
+        else if (!BattleManager.instance.charactersPlayer[1].isDead)
+        {
+            casterAbility2_act.text  = BattleManager.instance.charactersPlayer[1].name;
+            captionAbility2_act.text = ""; dmgAbility2_act.text = ""; rangeAbility2_act.text = ""; costAbility2_act.text = "";
         }
         else { captionAbility2_act.text = "DEAD"; dmgAbility2_act.text = ""; rangeAbility2_act.text = ""; costAbility2_act.text = ""; }
 
-        if (BattleManager.instance.CheckIfActionValid(3))
+        //Loading the action chosen for the character in the third slot
+        if (BattleManager.instance.CheckIfValidAction(3))
         {
-
             captionAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.name;
-            casterAbility3_act.text = BattleManager.instance.charactersPlayer[2].name;
-            dmgAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.damage.ToString();
-            rangeAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.range.ToString();
-            costAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.cost.ToString();
+            casterAbility3_act.text  = BattleManager.instance.charactersPlayer[2].name;
+            dmgAbility3_act.text     = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.damage.ToString();
+            rangeAbility3_act.text   = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.range.ToString();
+            costAbility3_act.text    = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.cost.ToString();
+        }
+        else if (!BattleManager.instance.charactersPlayer[2].isDead)
+        {
+            casterAbility3_act.text  = BattleManager.instance.charactersPlayer[2].name;
+            captionAbility3_act.text = ""; dmgAbility3_act.text = ""; rangeAbility3_act.text = ""; costAbility3_act.text = "";
         }
         else { captionAbility3_act.text = "DEAD"; dmgAbility3_act.text = ""; rangeAbility3_act.text = ""; costAbility3_act.text = ""; }
-        if (BattleManager.instance.CheckIfActionValid(4))
+
+        //Loading the action chosen for the character in the fourth slot
+        if (BattleManager.instance.CheckIfValidAction(4))
         {
             captionAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.name;
-            casterAbility4_act.text = BattleManager.instance.charactersPlayer[3].name;
-            dmgAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.damage.ToString();
-            rangeAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.range.ToString();
-            costAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.cost.ToString();
+            casterAbility4_act.text  = BattleManager.instance.charactersPlayer[3].name;
+            dmgAbility4_act.text     = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.damage.ToString();
+            rangeAbility4_act.text   = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.range.ToString();
+            costAbility4_act.text    = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.cost.ToString();
+        }
+        else if (!BattleManager.instance.charactersPlayer[3].isDead)
+        {
+            casterAbility4_act.text  = BattleManager.instance.charactersPlayer[3].name;
+            captionAbility4_act.text = ""; dmgAbility4_act.text = ""; rangeAbility4_act.text = ""; costAbility4_act.text = "";
         }
         else { captionAbility4_act.text = "DEAD"; dmgAbility4_act.text = ""; rangeAbility4_act.text = ""; costAbility4_act.text = ""; }
 
