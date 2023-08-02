@@ -1099,10 +1099,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa0cf6f952f6b943bd9a5338d80543f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CHEAT_setDefaults: 1
   battleID: 1
   isInBattle: 1
   curStage: 0
-  CurrentActionPoints: 1
+  PlayerMovementDirection: 00000000000000000000000000000000
+  EnemyMovementDirection: 0100000002000000ffffffffffffffff
   charactersPlayer:
   - name: Big Bad Wolf
     position: 0
@@ -1498,7 +1500,12 @@ MonoBehaviour:
   - {fileID: 1223222133}
   - {fileID: 1392290577}
   - {fileID: 814976625}
-  SceneTranisiton: 
+  venganceMax: 5
+  ActionsPerEnemy: 1
+  PlayerMovementActions: 01000000010000000100000001000000
+  EnemyMovementActions: 01000000010000000100000001000000
+  EnemyAttackDelay: 1
+  EnemyCounter: 1
   HitMarker: {fileID: 1684212363503120386, guid: f2df3b6750eea074b88b22895cfab75b, type: 3}
   DefaultAction:
     name: 
@@ -1509,15 +1516,6 @@ MonoBehaviour:
       cost: 0
       range: 0
     ownerID: 0
-  ActionsPerCharacter: 1
-  PlayerMovementActions: 01000000010000000100000001000000
-  PlayerMovementDirection: 00000000000000000000000000000000
-  ActionsPerEnemy: 1
-  EnemyAttackDelay: 1
-  EnemyCounter: 1
-  EnemyMovementActions: 01000000010000000100000001000000
-  EnemyMovementDirection: 0100000002000000ffffffffffffffff
-  OutOfTokens: 1
 --- !u!4 &1343875845
 Transform:
   m_ObjectHideFlags: 0
@@ -3127,7 +3125,7 @@ PrefabInstance:
       objectReference: {fileID: 1267619503}
     - target: {fileID: 5028131357227241406, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: selectedCharacter
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5028131357227241406, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: CaptionWhoseTurnNow

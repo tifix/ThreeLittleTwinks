@@ -17,55 +17,54 @@ using UnityEngine.UIElements;
 [ExecuteInEditMode]
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
-
-    [SerializeField] int selectedCharacter = 0;
-    public GameObject screen_AbilitySelect;
-    public GameObject screen_EncounterSelect;
-    public TMP_Text CaptionCharacterName;
+    public static       UIManager instance;
+    public              int          selectedCharacter = 0;
+    [SerializeField]    GameObject   screen_AbilitySelect;
+    [SerializeField]    GameObject   screen_EncounterSelect;
+    [SerializeField]    TMP_Text     CaptionCharacterName;
 
     [Header("Targetting line parameters")]
-    [Tooltip("how many points is the curve made up of?"), SerializeField] int targetCurvatureResolution;
-    [Tooltip("how tall should the curve be"), SerializeField] float targetBaseHeight, targetMaxHeight;
-    [SerializeField] float TargetParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
-    public float PreviewParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
-
+    [Tooltip("how many points is the curve made up of?"),   SerializeField]         int     targetCurvatureResolution;
+    [Tooltip("how tall should the curve be"),               SerializeField]         float   targetBaseHeight, targetMaxHeight;
+                                                           [SerializeField]         float   TargetParabolaLifetime = 0.5f;      //Checker for ensuring an attack plays out before a next one is started
+                                                                             public float   PreviewParabolaLifetime = 0.5f;    //Checker for ensuring an attack plays out before a next one is started
     [Space(5), Header("Object references")]
-    public LineRenderer targetLine; //the Line renderer rendering the targetting parabola from attacker to attackee
     public Animator transitions;    //Screen transitions!
 
     //Individual ability value displayers - PLAN
-    public TMP_Text captionAbility1, captionAbility2, captionAbility3, captionAbility4;
-    public TMP_Text descriptionAbility1, descriptionAbility2, descriptionAbility3, descriptionAbility4;
-    public TMP_Text dmgAbility1, dmgAbility2, dmgAbility3, dmgAbility4;
-    public TMP_Text rangeAbility1, rangeAbility2, rangeAbility3, rangeAbility4;
-    public TMP_Text costAbility1, costAbility2, costAbility3, costAbility4;
-    public TMP_Text buttonCaptionAbility1, buttonCaptionAbility2, buttonCaptionAbility3, buttonCaptionAbility4;
+    [Space(2), Header("PLAN phase")]
+    public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
+    [SerializeField] TMP_Text captionAbility1,      captionAbility2,        captionAbility3,        captionAbility4;
+    [SerializeField] TMP_Text descriptionAbility1,  descriptionAbility2,    descriptionAbility3,    descriptionAbility4;
+    [SerializeField] TMP_Text dmgAbility1,          dmgAbility2,            dmgAbility3,            dmgAbility4;
+    [SerializeField] TMP_Text rangeAbility1,        rangeAbility2,          rangeAbility3,          rangeAbility4;
+    [SerializeField] TMP_Text costAbility1,         costAbility2,           costAbility3,           costAbility4;
+    [SerializeField] TMP_Text buttonCaptionAbility1,buttonCaptionAbility2,  buttonCaptionAbility3,  buttonCaptionAbility4;
 
     //Individual ability value displayers - ACT
-    //[Space(2), Header("ACT phase references")]
-    // TMP_Text CaptionWhoseTurnNow;
-    public TMP_Text captionAbility1_act, captionAbility2_act, captionAbility3_act, captionAbility4_act;
-    public TMP_Text casterAbility1_act, casterAbility2_act, casterAbility3_act, casterAbility4_act;
-    public TMP_Text dmgAbility1_act, dmgAbility2_act, dmgAbility3_act, dmgAbility4_act;
-    public TMP_Text rangeAbility1_act, rangeAbility2_act, rangeAbility3_act, rangeAbility4_act;
-    public TMP_Text costAbility1_act, costAbility2_act, costAbility3_act, costAbility4_act;
+    [Space(2), Header("ACT phase")]
+    public  GameObject      MovePreviewArrow;                                   //Arrow showing where a character's going to move
+    public  LineRenderer    targetLine;                                         //the Line renderer rendering the targetting parabola from attacker to attackee
+            Vector3[]       pos = new Vector3[0];                               //target line preview positions for GIZMOS
+            bool            isAttackShowingNow = false;                         //Checker for ensuring an attack plays out before a next one is started
+    [Tooltip("top-of screen who hit who"), SerializeField] TMP_Text popupDamage_left, popupDamage_right;      
+    [SerializeField] TMP_Text captionAbility1_act,  captionAbility2_act,    captionAbility3_act,    captionAbility4_act;
+    [SerializeField] TMP_Text casterAbility1_act,   casterAbility2_act,     casterAbility3_act,     casterAbility4_act;
+    [SerializeField] TMP_Text dmgAbility1_act,      dmgAbility2_act,        dmgAbility3_act,        dmgAbility4_act;
+    [SerializeField] TMP_Text rangeAbility1_act,    rangeAbility2_act,      rangeAbility3_act,      rangeAbility4_act;
+    [SerializeField] TMP_Text costAbility1_act,     costAbility2_act,       costAbility3_act,       costAbility4_act;
 
     //StatusPlayer and StatusEnemy    
-    public TMP_Text statusCharPlayer1, statusCharPlayer2, statusCharPlayer3, statusCharPlayer4;
-    public TMP_Text statusCharEnemy1, statusCharEnemy2, statusCharEnemy3, statusCharEnemy4;
+    [SerializeField] TMP_Text statusCharPlayer1, statusCharPlayer2, statusCharPlayer3, statusCharPlayer4;
+    [SerializeField] TMP_Text statusCharEnemy1, statusCharEnemy2, statusCharEnemy3, statusCharEnemy4;
     
     //names for characters when dodging
-    public TMP_Text moveName1, moveName2, moveName3, moveName4;
-    public TMP_Text moveDir1, moveDir2, moveDir3, moveDir4;
+    [SerializeField] TMP_Text moveName1, moveName2, moveName3, moveName4;
+    [SerializeField] TMP_Text moveDir1, moveDir2, moveDir3, moveDir4;
 
-    public List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
-    public GameObject SelectedArrow;                                        //Arrow showing which character's abilities are getting assigned
-    public GameObject MovePreviewArrow;                                     //Arrow showing where a character's going to move
-    private bool isAttackShowingNow = false;                                //Checker for ensuring an attack plays out before a next one is started
-    public TMP_Text popupDamage_left, popupDamage_right;
-    private List<Character> initialCharacterData = new();
-    Vector3[] pos = new Vector3[0]; //Debug utility for the target line preview
+    public  List<GameObject> SelectedTokens = new List<GameObject>(4);       //The action selected tokens
+            List<Character>  initialCharacterData = new();
+            
 
     private void Awake()
     {
@@ -204,18 +203,24 @@ public class UIManager : MonoBehaviour
     //Load data for the dodge window
     public void LoadDataForMoves() 
     {
+        //If moved already, state so, otherwise show how the character can move, otherwise they are dead
+
         List<Character> stats = BattleManager.instance.charactersPlayer;
-        if (!stats[0].isDead) { moveName1.text = $"{stats[0].name}"; moveDir1.text = MoveDirectionToText(0); } 
-        else moveName1.text = $"{initialCharacterData[0].name} DEAD";
+        if (BattleManager.instance.PlayerMovementActions[0] < 1) { moveDir1.text = "already moved"; }
+        else if (!stats[0].isDead) { moveName1.text = $"position 1 "; moveDir1.text = MoveDirectionToText(0); } 
+        else moveName1.text = $"{initialCharacterData[0].name} is DEAD";
 
-        if (!stats[1].isDead) { moveName2.text = $"{stats[1].name}"; moveDir2.text = MoveDirectionToText(1); } 
-        else moveName2.text = $"{initialCharacterData[1].name} DEAD";
+        if (BattleManager.instance.PlayerMovementActions[1] < 1) { moveDir2.text = "already moved"; }
+        else if (!stats[1].isDead) { moveName2.text = $"position 2"; moveDir2.text = MoveDirectionToText(1); }
+        else moveName2.text = $"{initialCharacterData[1].name} is DEAD";
 
-        if (!stats[2].isDead) { moveName3.text = $"{stats[2].name}"; moveDir3.text = MoveDirectionToText(2); } 
-        else moveName3.text = $"{initialCharacterData[2].name} DEAD";
+        if (BattleManager.instance.PlayerMovementActions[2] < 1) { moveDir3.text = "already moved"; }
+        else if (!stats[2].isDead) { moveName3.text = $"position 3"; moveDir3.text = MoveDirectionToText(2); }
+        else moveName3.text = $"{initialCharacterData[2].name} is DEAD";
 
-        if (!stats[3].isDead) { moveName4.text = $"{stats[3].name}"; moveDir4.text = MoveDirectionToText(3); } 
-        else moveName4.text = $"{initialCharacterData[3].name} DEAD";
+        if (BattleManager.instance.PlayerMovementActions[3] < 1) { moveDir4.text = "already moved"; }
+        else if (!stats[3].isDead) { moveName4.text = $"position 4"; moveDir4.text = MoveDirectionToText(3); }
+        else moveName4.text = $"{initialCharacterData[3].name} is DEAD";
     }
 
     void LoadDataDefault() => LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]); //Load data for currently selected character, [0] by default
@@ -224,7 +229,7 @@ public class UIManager : MonoBehaviour
     {
         string s = "";
         if (BattleManager.instance.PlayerMovementDirection[index] > 0) s = "will dodge right";
-        else s = "will dodge right";
+        else s = "will dodge left";
 
         return s;
     } 
@@ -246,27 +251,7 @@ public class UIManager : MonoBehaviour
 
 
     //Buttons for Ability selection menu - SetAbility sets the character's chosen ability to one of the 4 abilities, SelectNext/Previous cycles between player characters.
-    public void SetAbility(int index)
-    {
-        Character c;
-        try { c = BattleManager.instance.charactersPlayer[selectedCharacter]; } //if out of bounds, break
-        catch { Debug.LogWarning("out of bounds call on ability setting"); return; }
-
-        c.actionChosen = c.actionsAvalible[index];
-        c.actionChosen.Initialise();
-
-        //Find apropriate action token and pulse it
-        Transform tokenParent=null;
-        try
-        {
-            tokenParent = BattleManager.instance.characterPositions[selectedCharacter];
-            for (int i = 0; i < tokenParent.childCount; i++)
-            {
-                if (tokenParent.GetChild(i).CompareTag("token")) { AnimatorTrigger("pulse" + tokenParent.GetChild(i).name); Debug.Log("pulse" + tokenParent.GetChild(i).name);return; }
-            }
-        }
-        catch { Debug.LogWarning("Action Token missing, cannot destroy"); }
-    }
+    public void SetAbility(int index) => BattleManager.instance.SelectAction(index, selectedCharacter);
 
     public void SelectNextCharacter()
     {
@@ -299,28 +284,28 @@ public class UIManager : MonoBehaviour
     {
         CaptionCharacterName.text = "MOVEMENT";
 
-        captionAbility1.text = "Character 1";
-        captionAbility2.text = "Character 2";
-        captionAbility3.text = "Character 3";
-        captionAbility4.text = "Character 4";
+        captionAbility1.text = "Position 1";
+        captionAbility2.text = "Position 2";
+        captionAbility3.text = "Position 3";
+        captionAbility4.text = "Position 4";
 
         buttonCaptionAbility1.text = "Switch"; buttonCaptionAbility2.text = "Switch"; buttonCaptionAbility3.text = "Switch"; buttonCaptionAbility4.text = "Switch";
 
-        if (BattleManager.instance.PlayerMovementDirection[0] == 0) descriptionAbility1.text = "Dodge not set";
-        else if (BattleManager.instance.PlayerMovementDirection[0]>2) descriptionAbility1.text = "Will dodge left";
-        else descriptionAbility1.text = "Will dodge right";
+        if (BattleManager.instance.PlayerMovementDirection[0] == 0) descriptionAbility1.text = "swap not set";
+        else if (BattleManager.instance.PlayerMovementDirection[0]>2) descriptionAbility1.text = "Will swap left";
+        else descriptionAbility1.text = "Will swap right";
 
-        if (BattleManager.instance.PlayerMovementDirection[1] == 0) descriptionAbility2.text = "Dodge not set";
-        else if(BattleManager.instance.PlayerMovementDirection[1] < 0) descriptionAbility2.text = "Will dodge left";
-        else descriptionAbility2.text = "Will dodge right";
+        if (BattleManager.instance.PlayerMovementDirection[1] == 0) descriptionAbility2.text = "swap not set";
+        else if(BattleManager.instance.PlayerMovementDirection[1] < 0) descriptionAbility2.text = "Will swap left";
+        else descriptionAbility2.text = "Will swap right";
 
-        if (BattleManager.instance.PlayerMovementDirection[2] == 0) descriptionAbility3.text = "Dodge not set";
-        else if (BattleManager.instance.PlayerMovementDirection[2] < 0) descriptionAbility3.text = "Will dodge left";
-        else descriptionAbility3.text = "Will dodge right";
+        if (BattleManager.instance.PlayerMovementDirection[2] == 0) descriptionAbility3.text = "swap not set";
+        else if (BattleManager.instance.PlayerMovementDirection[2] < 0) descriptionAbility3.text = "Will swap left";
+        else descriptionAbility3.text = "Will swap right";
 
-        if (BattleManager.instance.PlayerMovementDirection[3] == 0) descriptionAbility4.text = "Dodge not set";
-        else if (BattleManager.instance.PlayerMovementDirection[3] < -2) descriptionAbility4.text = "Will dodge right";
-        else descriptionAbility4.text = "Will dodge left";
+        if (BattleManager.instance.PlayerMovementDirection[3] == 0) descriptionAbility4.text = "swap not set";
+        else if (BattleManager.instance.PlayerMovementDirection[3] < -2) descriptionAbility4.text = "Will swap right";
+        else descriptionAbility4.text = "Will swap left";
 
         dmgAbility1.text = "";
         dmgAbility2.text = "";

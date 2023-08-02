@@ -21,6 +21,12 @@ public struct ActionValues
     public ActionValues(string _description, int _damage, int _cost, int _range) { description = _description; damage = _damage;cost = _cost; range = _range; }
 }
 
+public struct Target
+{
+    public int[] positionsHit;
+    public GameManager.Logic multiTargetLogic;
+}
+
 [System.Serializable]
 public class Action {
 

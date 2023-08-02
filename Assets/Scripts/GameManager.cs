@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum Logic {And, Xor, Or};
+
     [SerializeField] private float CHEAT_timescale = 1;
     // Start is called before the first frame update
     void Start()
