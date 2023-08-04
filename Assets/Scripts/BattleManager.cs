@@ -230,23 +230,14 @@ public class BattleManager : MonoBehaviour
     public void PreviewCharacterAction(int position) 
     { 
         if (CheckIfValidAction(position)) 
-        {
-            //if(!GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.playerMove)   //if not player than preview only if on move stage
-                //GetCharacterByPosition(position).actionChosen.Preview(true);     
-            
+        { 
             if(GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.playerAct) 
                 GetCharacterByPosition(position).actionChosen.Preview(true);                                  //if player then preview in act stage
         }  
     }        
-    public void PreviewCharacterAction(Transform position) 
-    {
-        if (CheckIfValidAction(GetCharacterBySprite(position).position))
-        {
-            PreviewCharacterAction(GetPositionByCharacter(GetCharacterBySprite(position)));
-        }
-    }   //redirects to PreviewCharacterAction(int)
+    public void PreviewCharacterAction(Transform position) => PreviewCharacterAction(GetPositionByCharacter(GetCharacterBySprite(position))); //redirects to PreviewCharacterAction(int)
     public void EndPreviewCharacterAction(int position) {if(GetCharacterByPosition(position).actionChosen!=null) GetCharacterByPosition(position).actionChosen.Preview(false); } 
-    public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
+    //public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
     public void PreviewEnemyBehaviour() 
     {
         if (CheckIfValidAction(GetCharacterByPosition(4+EnemyCounter).position) && curStage == BattleStage.playerMove)  //if the pleyer is moving, preview what the enemy is going to do
