@@ -15,8 +15,9 @@ MonoBehaviour:
   name: Spit
   ActionValues:
     description: Small damage but collosal disrespect.
-    damage: 10
+    damage: 2
     cost: 1
     targets:
       positionsHit: 0300000004000000
       multiTargetLogic: 0
+    movement: 0

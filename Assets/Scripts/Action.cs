@@ -15,10 +15,12 @@ public struct ActionValues
     public int damage;
     public int cost;
     public Targets targets;
-
+    public int movement;
     
-    public ActionValues(string _description, int _damage, int _cost, Targets _targets) { description = _description; damage = _damage;cost = _cost; targets = _targets; }
-    public ActionValues(string _description, int _damage, int _cost, int _targetsSimple) { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple); }
+    public ActionValues(string _description, int _damage, int _cost, Targets _targets, int _movement)   //Full constructor
+    { description = _description; damage = _damage;cost = _cost; targets = _targets; movement = _movement; }
+    public ActionValues(string _description, int _damage, int _cost, int _targetsSimple, int _movement) //Simplest constructor
+    { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple);movement = 0; } 
 }
 
 [System.Serializable]
@@ -49,13 +51,15 @@ public class Action {
             Debug.Log($"Hitting {Target.name} now!");
             Target.TakeDamage(updatedData.damage);
             UIManager.instance.ShowAttackEffects(
-                            BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
+                            BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
                             BattleManager.instance.characterPositions[Target.position - 1].position);
 
-            UIManager.instance.SetDamageTakenCaptions(BattleManager.instance.GetCharacterByID(ownerID), Target);
+            UIManager.instance.SetDamageTakenCaptions(GetOwnerCharacter(), Target);
         }
 
-
+        //If the attack comes with an extra movement of some sort - execute it here
+        if(Mathf.Abs(updatedData.movement)>1)
+        BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position,updatedData.movement);
 
         //hide the selection token once used
         if (GetOwnerCharacter().position< BattleManager.instance.charactersPlayer.Count + 1) UIManager.instance.AnimatorTrigger("hideActionToken" + (GetOwnerCharacter().position).ToString()); //offset by -1?
@@ -94,6 +98,19 @@ public class Action {
         else if (updatedData.targets.multiTargetLogic == GameManager.Logic.Xor)  //If damaging just one target - generate random index, hit that one
         {
             hitPositions.Add(UnityEngine.Random.Range(0, updatedData.targets.positionsHit.Length));
+        }
+        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.Allies)  //If damaging just one target - generate random index, hit that one
+        {
+            if (owner.CheckIsThisPlayer()) 
+                for (int i = 1; i < 5; i++)
+                {
+                    if(!BattleManager.instance.GetCharacterByPosition(i).isDead) hitPositions.Add(i);
+                }
+            else 
+                for (int i = 5; i < 9; i++)
+                {
+                    if (!BattleManager.instance.GetCharacterByPosition(i).isDead) hitPositions.Add(i);
+                }
         }
         else Debug.LogWarning("This logic system is not yet implemented");
 

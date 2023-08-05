@@ -1110,7 +1110,7 @@ MonoBehaviour:
     position: 0
     isDead: 0
     hpCur: 100
-    hpMax: 100
+    hpMax: 50
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1121,6 +1121,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1131,6 +1132,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1141,6 +1143,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1151,6 +1154,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1162,13 +1166,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
-  - name: Big Bad Pirate
+  - name: Cap'n Hook
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 200
+    hpMax: 20
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1179,6 +1184,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1189,6 +1195,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
@@ -1199,6 +1206,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
@@ -1209,6 +1217,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1220,13 +1229,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
-  - name: Big Bad Criminal
+  - name: Queen of Hearts
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 300
+    hpMax: 25
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1237,6 +1247,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1247,6 +1258,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1257,6 +1269,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1267,6 +1280,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1278,13 +1292,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
-  - name: Big Bad Minion
+  - name: Grimhilda
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 400
+    hpMax: 20
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1295,6 +1310,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
@@ -1305,9 +1321,10 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
       updatedData:
         description: 
         damage: 0
@@ -1315,9 +1332,10 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
+      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
       updatedData:
         description: 
         damage: 0
@@ -1325,6 +1343,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1336,6 +1355,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
   charactersEnemy:
@@ -1343,7 +1363,7 @@ MonoBehaviour:
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 150
+    hpMax: 20
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1354,6 +1374,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1364,6 +1385,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1374,6 +1396,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1384,6 +1407,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1395,13 +1419,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
   - name: Animal Sidekick
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 100
+    hpMax: 20
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1412,6 +1437,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1422,6 +1448,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1432,6 +1459,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1442,6 +1470,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1453,13 +1482,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
   - name: Main Character
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 200
+    hpMax: 22
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1470,6 +1500,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1480,6 +1511,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1490,6 +1522,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1500,10 +1533,11 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
       updatedData:
         description: 
         damage: 0
@@ -1511,13 +1545,14 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
   - name: The Chosen One
     position: 0
     isDead: 0
     hpCur: 0
-    hpMax: 150
+    hpMax: 25
     actionsAvalible:
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1528,6 +1563,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1538,6 +1574,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1548,6 +1585,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     - name: Punch
       baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
@@ -1558,6 +1596,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     actionChosen:
       name: 
@@ -1569,6 +1608,7 @@ MonoBehaviour:
         targets:
           positionsHit: 
           multiTargetLogic: 0
+        movement: 0
       ownerID: 0
     ElementType: 
   characterPositions:
@@ -1598,6 +1638,7 @@ MonoBehaviour:
       targets:
         positionsHit: 
         multiTargetLogic: 0
+      movement: 0
     ownerID: 0
 --- !u!4 &1343875845
 Transform:
@@ -2194,7 +2235,7 @@ RectTransform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1660134288}
+  m_Father: {fileID: 1829703655}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3863,7 +3904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1660134288, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1829703655, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 480892442545356436}
     - targetCorrespondingSourceObject: {fileID: 1392290577, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}

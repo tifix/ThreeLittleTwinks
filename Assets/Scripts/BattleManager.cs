@@ -364,17 +364,20 @@ public class BattleManager : MonoBehaviour
     }
     public void PlayerMove(int position)
     {
-        int i = position - 1;
+        int i = position - 1;                       //Index starts at 0, positions start as 1; shifting by 1 for clarity
         if (PlayerMovementActions[i] < 1) return;   //breaking if this character has already moved
         PlayerMovementActions[i] = 0;
-        Debug.Log($"moving at {position}");
-        SwappingCharacterElements(charactersPlayer,   i, i + PlayerMovementDirection[i]);
-        SwappingTransformElements(characterPositions, i, i + PlayerMovementDirection[i]);
+        PlayerMoveSimple(i, i + PlayerMovementDirection[i]);
         Debug.Log($"Player Unit {position} has moved!");
 
         //after the player action is performed, proceed to the enemy action
         curStage = BattleStage.enemyAct;
         UIManager.instance.AnimatorTrigger("SwitchToAct");
+    }                   //PlayerMove with turn logic and animations                             - use for actual moves
+    public void PlayerMoveSimple(int position, int direction) //PlayerMove stripped of turn logic, animations and move token handling - use for special moving via actions, environment and such
+    {
+        SwappingCharacterElements(charactersPlayer,   position, position + direction);
+        SwappingTransformElements(characterPositions, position, position + direction);
     }
 
     // this is set to have each character in a row attack, so each enemy hits once per turn. the max amount of actions for enemies for now is the same as the player
