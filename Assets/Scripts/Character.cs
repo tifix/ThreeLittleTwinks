@@ -35,7 +35,7 @@ public class Character
         foreach (Action action in actionsAvalible) 
         {
             //
-            int hitPosition = position - action.updatedData.range;
+            //int hitPosition = position - action.updatedData.range;
         }
 
         //List<int> targets = new List<int>();

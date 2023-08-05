@@ -5,7 +5,6 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,16 +14,20 @@ public struct ActionValues
     public string description;
     public int damage;
     public int cost;
-    public int range;
+    public Targets targets;
 
     
-    public ActionValues(string _description, int _damage, int _cost, int _range) { description = _description; damage = _damage;cost = _cost; range = _range; }
+    public ActionValues(string _description, int _damage, int _cost, Targets _targets) { description = _description; damage = _damage;cost = _cost; targets = _targets; }
+    public ActionValues(string _description, int _damage, int _cost, int _targetsSimple) { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple); }
 }
 
-public struct Target
+[System.Serializable]
+public struct Targets
 {
     public int[] positionsHit;
     public GameManager.Logic multiTargetLogic;
+    public Targets(int simpleRange) { positionsHit = new int[]{ simpleRange}; multiTargetLogic = GameManager.Logic.And; }
+    public Targets(int[] _hits, GameManager.Logic _logic) { positionsHit = _hits; multiTargetLogic = _logic; }
 }
 
 [System.Serializable]
@@ -40,11 +43,19 @@ public class Action {
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
         Debug.LogWarning($"Performing attack {name}");
-        GetTargetCharacter().TakeDamage(updatedData.damage);
-        UIManager.instance.ShowAttackEffects(
-                                    BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
-                                    BattleManager.instance.characterPositions[GetTargetPosition() - 1].position);
-        UIManager.instance.SetDamageTakenCaptions(BattleManager.instance.GetCharacterByID(ownerID));
+
+        foreach (Character Target in GetTargetCharacter())  //Showing targetting 
+        {
+            Debug.Log($"Hitting {Target.name} now!");
+            Target.TakeDamage(updatedData.damage);
+            UIManager.instance.ShowAttackEffects(
+                            BattleManager.instance.characterPositions[BattleManager.instance.GetCharacterByID(ownerID).position - 1].position,
+                            BattleManager.instance.characterPositions[Target.position - 1].position);
+
+            UIManager.instance.SetDamageTakenCaptions(BattleManager.instance.GetCharacterByID(ownerID), Target);
+        }
+
+
 
         //hide the selection token once used
         if (GetOwnerCharacter().position< BattleManager.instance.charactersPlayer.Count + 1) UIManager.instance.AnimatorTrigger("hideActionToken" + (GetOwnerCharacter().position).ToString()); //offset by -1?
@@ -53,54 +64,76 @@ public class Action {
     {
         if (targetState)
         {
-            //Display target parabola
-            UIManager.instance.ShowTargetParabola(
-                                                BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
-                                                BattleManager.instance.characterPositions[GetTargetPosition() - 1].position, -1);
+            foreach (Character Target in GetTargetCharacter())  //Showing targetting 
+            {
+                //Display target parabola
+                UIManager.instance.ShowTargetParabola(
+                                    BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
+                                    BattleManager.instance.characterPositions[Target.position - 1].position, -1);
+            }
+
         }
         else { UIManager.instance.HideTargetParabola(); UIManager.instance.MovePreviewArrow.SetActive(false); }
     }
 
 
-    public int GetTargetPosition()
+    public List<int> GetTargetPositions()   //Currently handles AND and XOR logic
     {
-        int hitPosition;
+        List<int> hitPositions=new List<int>();
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
-        if (owner.position < BattleManager.instance.charactersPlayer.Count + 1) //If the player is attacking
-            hitPosition = owner.position + updatedData.range;
-        else hitPosition = owner.position - updatedData.range;
 
-        if (hitPosition < 1 ||
-            BattleManager.instance.charactersEnemy.Count < 1 ||
-            hitPosition > BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count - 1].position)
+        if (updatedData.targets.multiTargetLogic == GameManager.Logic.And)  //If damaging all hit targets
         {
-            Debug.LogWarning("Hitting beyond the enemies!");
-            return -999;
+            foreach (int hit in updatedData.targets.positionsHit)
+            {
+                if (owner.CheckIsThisPlayer() && CheckIsHitValid(owner.position + hit)) hitPositions.Add(owner.position + hit);  //If the player is attacking
+                else if (CheckIsHitValid(owner.position - hit)) hitPositions.Add(owner.position - hit);  //If the enemy  is attacking
+
+            }
         }
-        return hitPosition;
+        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.Xor)  //If damaging just one target - generate random index, hit that one
+        {
+            hitPositions.Add(UnityEngine.Random.Range(0, updatedData.targets.positionsHit.Length));
+        }
+        else Debug.LogWarning("This logic system is not yet implemented");
+
+        return hitPositions;
     }       //Shorthand for getting the position targetted by this action based on the caster position
-    public Character GetTargetCharacter()
+    public List<Character> GetTargetCharacter()
     {
-        List<Character> pl = BattleManager.instance.charactersPlayer;                       //shorthand for reaing clarity
-        int hitPosition = GetTargetPosition();
-        if (hitPosition == -999) return null;   //Breaking if position invalid
+        List<Character> pl = BattleManager.instance.charactersPlayer;   //shorthand for reading clarity
+        List<Character> hitChars = new List<Character>();
 
-        if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count)      //If the player is attacking
+        foreach (int hitPosition in GetTargetPositions())
         {
-            if (hitPosition > pl.Count)
-                return BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1];  //factor in number of players to get accurate list position
+            //If the player is attacking
+            if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count)      
+            {
+                if (hitPosition > pl.Count)     hitChars.Add(BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1]);  //factor in number of players to get accurate list position
+                else                            hitChars.Add(pl[hitPosition - 1]);
+            }
+            //if the enemy is attacking
             else
-                return BattleManager.instance.charactersPlayer[hitPosition - 1];
+            {
+                if (hitPosition < pl.Count + 1) hitChars.Add(pl[hitPosition - 1]);
+                else                            hitChars.Add(BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1]);  //factor in number of players to get accurate list position
+            }
         }
-        else                                                                                //if the enemy is attacking
-        {
-            if (hitPosition < pl.Count + 1)
-                return BattleManager.instance.charactersPlayer[hitPosition - 1];
-            else
-                return BattleManager.instance.charactersEnemy[hitPosition - pl.Count - 1];  //factor in number of players to get accurate list position
-        }
+        if (hitChars.Count < 1) Debug.LogWarning("Hit positions returns empty! Retrieval likely failed");
 
+        return hitChars;
     } //Get the character hit by this current action
 
     public Character GetOwnerCharacter()  { return BattleManager.instance.GetCharacterByID(ownerID); }
+
+    public bool CheckIsHitValid(int hit) 
+    {
+        if (hit < 1 || BattleManager.instance.charactersEnemy.Count < 1 ||
+        hit > BattleManager.instance.charactersEnemy[BattleManager.instance.charactersEnemy.Count - 1].position)
+        {
+            Debug.LogWarning("Hitting beyond the enemies!");
+            return false;
+        }
+        else return true;
+    }
 }

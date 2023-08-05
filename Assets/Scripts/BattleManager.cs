@@ -4,6 +4,7 @@
  */
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,7 +31,8 @@ public class BattleManager : MonoBehaviour
     [Tooltip("Amount of actions each enemy character can make"), SerializeField]                                               int                  ActionsPerEnemy = 1;                
     [Tooltip("Whether a character can or cannot move anymore"), ]                                                       public int[]                PlayerMovementActions = { 1, 1, 1, 1 };     //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
     [Tooltip("Whether a character can or cannot move anymore"), SerializeField]                                                int[]                EnemyMovementActions = { 1, 1, 1, 1 };      //each unit has a specific amonut of movement, which works off of charactersPlayer. when a movement is done, it cannot be done a gain for that unit
-    [Tooltip("Delay between enemy attack and enemy movement - adjust for animations"), SerializeField]                         float                EnemyAttackDelay = 1f;
+    [Tooltip("Delay between enemy attack and enemy movement - adjust for animations"), SerializeField]                         float                EnemyMoveDelay = 1f;
+    [Tooltip("Delay between executing player act and previewing enemy action - adjust for animations"), SerializeField]        float                EnemyAttackDelay = 1f;
     [Tooltip("Which enemy is set to attack next"), SerializeField]                                                             int                  EnemyCounter = 1;
     [Header("Object references, prefabs")]
     [Tooltip("this is the VFX spawned when hit lands on player/enemy")] public GameObject HitMarker;
@@ -108,6 +110,7 @@ public class BattleManager : MonoBehaviour
         }
 
         //Initialising Enemy Characters
+        GenerateEnemyAttacksAndMoves();
         for (int i = 0; i < charactersEnemy.Count; i++)
         {
             //Refill health
@@ -123,7 +126,6 @@ public class BattleManager : MonoBehaviour
             foreach (Action a in charactersEnemy[i].actionsAvalible)
                 a.ownerID = charactersEnemy[i].GetHashCode();
 
-            if (charactersEnemy[i].actionChosen == null) charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];
         }
         EnemyCounter = 4;
 
@@ -168,12 +170,12 @@ public class BattleManager : MonoBehaviour
                 DetermineNextEnemy();
                 //Switch Animator to show the prepared moves panel
                 UIManager.instance.AnimatorTrigger("SwitchToMove");
-                
+                Invoke("PreviewEnemyBehaviour", EnemyAttackDelay);                //Preview what the enemy is about to do, where to move
+
                 //Wait for player to choose a move
                 while (curStage == BattleStage.playerMove)
                 {
                     yield return new WaitForEndOfFrame();
-                    PreviewEnemyBehaviour();                //Preview what the enemy is about to do, where to move
                     PlayerMoves();                          //Keybind moves, supplementing the UI ones enabled
                     //Debug.Log($" standing by in Move");;
                 }
@@ -187,7 +189,7 @@ public class BattleManager : MonoBehaviour
                 UIManager.instance.HideMoveArrow();  
 
                 EnemyAct();
-                yield return new WaitForSeconds(EnemyAttackDelay);
+                yield return new WaitForSeconds(EnemyMoveDelay);
                 EnemyMove(EnemyCounter);
 
                 //perform the enemy attack and enemy move
@@ -236,7 +238,16 @@ public class BattleManager : MonoBehaviour
         }  
     }        
     public void PreviewCharacterAction(Transform position) => PreviewCharacterAction(GetPositionByCharacter(GetCharacterBySprite(position))); //redirects to PreviewCharacterAction(int)
-    public void EndPreviewCharacterAction(int position) {if(GetCharacterByPosition(position).actionChosen!=null) GetCharacterByPosition(position).actionChosen.Preview(false); } 
+    public void EndPreviewCharacterAction(int position) 
+    { 
+        if (GetCharacterByPosition(position).actionChosen != null) 
+        {
+            //if (curStage == BattleStage.playerMove) return;     //Can't hide anything during player Move stage            position < 5 && 
+            //if (curStage == BattleStage.playerAct) return;     //Can't hide anything during player Move stage            position < 5 && 
+
+            if (curStage==BattleStage.playerAct && position < 5) GetCharacterByPosition(position).actionChosen.Preview(false);  //
+        }
+    } 
     //public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
     public void PreviewEnemyBehaviour() 
     {
@@ -385,7 +396,8 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < charactersEnemy.Count; i++)
         {
             //SelectAction(0, i);
-            charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];    //Just choose the first one avalible
+            if (charactersEnemy[i].actionChosen.baseData == null)
+                charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];    //Just choose the first one avalible
         }
     }
     int DetermineNextEnemy() //Determine which enemy should act next(tries to attack from right to left) 

@@ -17,4 +17,6 @@ MonoBehaviour:
     description: Small damage but collosal disrespect.
     damage: 10
     cost: 1
-    range: 4
+    targets:
+      positionsHit: 0300000004000000
+      multiTargetLogic: 0

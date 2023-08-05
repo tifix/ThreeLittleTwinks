@@ -17,4 +17,6 @@ MonoBehaviour:
     description: instakills the target
     damage: 999
     cost: 0
-    range: 3
+    targets:
+      positionsHit: 01000000
+      multiTargetLogic: 0

@@ -17,4 +17,6 @@ MonoBehaviour:
     description: Just walk up to 'em and give 'em a whack
     damage: 15
     cost: 1
-    range: 3
+    targets:
+      positionsHit: 03000000
+      multiTargetLogic: 0
