@@ -44,11 +44,10 @@ public class Action {
 
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
-        Debug.LogWarning($"Performing attack {name}");
+        Debug.LogWarning($"{GetOwnerCharacter().name} is Performing attack {name}");
 
         foreach (Character Target in GetTargetCharacter())  //Showing targetting 
         {
-            Debug.Log($"Hitting {Target.name} now!");
             Target.TakeDamage(updatedData.damage);
             UIManager.instance.ShowAttackEffects(
                             BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
@@ -59,10 +58,14 @@ public class Action {
 
         //If the attack comes with an extra movement of some sort - execute it here
         if(Mathf.Abs(updatedData.movement)>1)
-        BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position,updatedData.movement);
+        BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position-1,updatedData.movement);
 
         //hide the selection token once used
-        if (GetOwnerCharacter().position< BattleManager.instance.charactersPlayer.Count + 1) UIManager.instance.AnimatorTrigger("hideActionToken" + (GetOwnerCharacter().position).ToString()); //offset by -1?
+        if (GetOwnerCharacter().position < BattleManager.instance.charactersPlayer.Count + 1) 
+        {
+            Debug.LogWarning($"removing token from position {GetOwnerCharacter().position} ({GetOwnerCharacter().name})");
+            UIManager.instance.AnimatorTrigger("hide" + BattleManager.instance.GetNodeByPosition(GetOwnerCharacter().position));
+        } 
     }
     public void Preview(bool targetState)   //Called when hovered over the Enemy/Player attack token - previews where an attack is aimed
     {
@@ -95,7 +98,7 @@ public class Action {
 
             }
         }
-        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.Xor)  //If damaging just one target - generate random index, hit that one
+        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.SelectOr)  //If damaging just one target - generate random index, hit that one
         {
             hitPositions.Add(UnityEngine.Random.Range(0, updatedData.targets.positionsHit.Length));
         }

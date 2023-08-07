@@ -2,6 +2,7 @@
  * 
  * Current Debug mapping SPACE to advance to act stage.
  */
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -261,7 +262,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-    void SwitchBetweenPlanActPhases()
+    public void SwitchBetweenPlanActPhases()
     {
         UIManager.instance.selectedCharacter = 0;
         if (curStage != BattleStage.planning) curStage = BattleStage.planning;
@@ -364,20 +365,21 @@ public class BattleManager : MonoBehaviour
     }
     public void PlayerMove(int position)
     {
+        Debug.Log($"Player Unit {position} is moving");
         int i = position - 1;                       //Index starts at 0, positions start as 1; shifting by 1 for clarity
         if (PlayerMovementActions[i] < 1) return;   //breaking if this character has already moved
         PlayerMovementActions[i] = 0;
-        PlayerMoveSimple(i, i + PlayerMovementDirection[i]);
-        Debug.Log($"Player Unit {position} has moved!");
+        PlayerMoveSimple(i, PlayerMovementDirection[i]);
+        Debug.Log($"Player Unit {position} has moved to position : {i + PlayerMovementDirection[i]}");
 
         //after the player action is performed, proceed to the enemy action
         curStage = BattleStage.enemyAct;
         UIManager.instance.AnimatorTrigger("SwitchToAct");
     }                   //PlayerMove with turn logic and animations                             - use for actual moves
-    public void PlayerMoveSimple(int position, int direction) //PlayerMove stripped of turn logic, animations and move token handling - use for special moving via actions, environment and such
+    public void PlayerMoveSimple(int index, int direction) //PlayerMove stripped of turn logic, animations and move token handling - use for special moving via actions, environment and such
     {
-        SwappingCharacterElements(charactersPlayer,   position, position + direction);
-        SwappingTransformElements(characterPositions, position, position + direction);
+        SwappingCharacterElements(charactersPlayer,   index, index + direction);
+        SwappingTransformElements(characterPositions, index, index + direction);
     }
 
     // this is set to have each character in a row attack, so each enemy hits once per turn. the max amount of actions for enemies for now is the same as the player
@@ -399,7 +401,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < charactersEnemy.Count; i++)
         {
             //SelectAction(0, i);
-            if (charactersEnemy[i].actionChosen.baseData == null)
+            if (charactersEnemy[i].actionChosen.baseData == null || charactersEnemy[i].actionChosen==null)
                 charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];    //Just choose the first one avalible
         }
     }
@@ -409,10 +411,8 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 4; i >0; i--)
         {
-            Debug.Log($"X: {i}");
             if (CheckIfValidAction(charactersEnemy[i - 1].position) && charactersEnemy[i-1].position > rightmost) //if has a valid attack and is the rightmost avalible
             { rightmost = charactersEnemy[i-1].position; } 
-            Debug.Log($"new rightmost obtained {rightmost}");
         }
 
         EnemyCounter = rightmost;
@@ -496,9 +496,33 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning(temp.name);
         return temp as ActionBase;
     }        //Returns default action given it's name
+    public string    GetNodeByPosition(int position) 
+    {
+        Transform NodeParent= GetSpriteByPosition(position);
+        Transform temp =null;
+        for (int i = 0; i < NodeParent.childCount; i++)
+        {
+            if (NodeParent.GetChild(i).CompareTag("token"))
+                {
+                if (NodeParent.GetChild(i).name == "ActionToken1" ||
+                    NodeParent.GetChild(i).name == "ActionToken2" ||
+                    NodeParent.GetChild(i).name == "ActionToken3" ||
+                    NodeParent.GetChild(i).name == "ActionToken3")
+                    {
+                    temp = NodeParent.GetChild(i);
+                    Debug.DrawRay(temp.transform.position, Vector3.up, Color.red, 1f);
+                    return temp.name;
+                    } 
+                }
+                    
+        }
+        Debug.LogWarning("Could not retrieve");
+        return null;
+    }
+
     public bool         CheckIfValidAttacker(int position)
     {
-        if (CheckIfValidAction(position) && !GetCharacterByPosition(position).isDead) { Debug.Log(GetCharacterByPosition(position).name + " is a valid attacker"); return true; }
+        if (CheckIfValidAction(position) && !GetCharacterByPosition(position).isDead) { return true; }  //Debug.Log(GetCharacterByPosition(position).name + " is a valid attacker"); 
         else return false;
     }      //If the player exists, has an attack equipped and is alive - can attack
     public bool         CheckIfValidAction(int position)

@@ -8,16 +8,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum Logic {And, Xor, Or, Even, Allies};
+    public enum Logic {And, SelectOr, RandomOr, Even, Allies};
 
     [SerializeField] private float CHEAT_timescale = 1;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void DebugString(string text)=> Debug.Log(text);
+    
 
-    // Update is called once per frame
     void Update()
     {
         if (CHEAT_timescale!=1)Time.timeScale= CHEAT_timescale;

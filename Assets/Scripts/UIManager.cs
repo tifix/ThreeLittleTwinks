@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_Text dmgAbility1,          dmgAbility2,            dmgAbility3,            dmgAbility4;
     [SerializeField] TMP_Text rangeAbility1,        rangeAbility2,          rangeAbility3,          rangeAbility4;
     [SerializeField] TMP_Text costAbility1,         costAbility2,           costAbility3,           costAbility4;
-    [SerializeField] TMP_Text buttonCaptionAbility1,buttonCaptionAbility2,  buttonCaptionAbility3,  buttonCaptionAbility4;
+    //[SerializeField] TMP_Text buttonCaptionAbility1,buttonCaptionAbility2,  buttonCaptionAbility3,  buttonCaptionAbility4;
 
     //Individual ability value displayers - ACT
     [Space(2), Header("ACT phase")]
@@ -213,7 +213,7 @@ public class UIManager : MonoBehaviour
         costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
         costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
 
-        buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
+        //buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
     }
 
     public string TargetsToString(Targets t) //Converts the multi-target string to a readable format
@@ -224,7 +224,7 @@ public class UIManager : MonoBehaviour
         for (int i = 1; i < t.positionsHit.Length; i++)
         {
             if (t.multiTargetLogic == GameManager.Logic.And) s += "+";
-            else if (t.multiTargetLogic == GameManager.Logic.Or) s += "/";
+            else if (t.multiTargetLogic == GameManager.Logic.SelectOr) s += "/";
             else s += "?";
 
             s += t.positionsHit[i];
@@ -263,6 +263,8 @@ public class UIManager : MonoBehaviour
         if (BattleManager.instance.PlayerMovementDirection[index] > 0) s = "will dodge right";
         else s = "will dodge left";
 
+        if (index == 0 && BattleManager.instance.PlayerMovementDirection[index]   > 2) s = "will dodge left";   //dodging from leftmost will swap to furthest right
+        else if(index==3 && BattleManager.instance.PlayerMovementDirection[index] <-1) s = "will dodge right"; //dodging from rightmost will swap to furthest left
         return s;
     } 
 
@@ -321,7 +323,7 @@ public class UIManager : MonoBehaviour
         captionAbility3.text = "Position 3";
         captionAbility4.text = "Position 4";
 
-        buttonCaptionAbility1.text = "Switch"; buttonCaptionAbility2.text = "Switch"; buttonCaptionAbility3.text = "Switch"; buttonCaptionAbility4.text = "Switch";
+        //buttonCaptionAbility1.text = "Switch"; buttonCaptionAbility2.text = "Switch"; buttonCaptionAbility3.text = "Switch"; buttonCaptionAbility4.text = "Switch";
 
         if (BattleManager.instance.PlayerMovementDirection[0] == 0) descriptionAbility1.text = "swap not set";
         else if (BattleManager.instance.PlayerMovementDirection[0]>2) descriptionAbility1.text = "Will swap left";

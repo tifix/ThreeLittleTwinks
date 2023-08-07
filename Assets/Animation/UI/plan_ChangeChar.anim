@@ -389,7 +389,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 1
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -433,7 +433,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 3004082542
+      path: 1199938831
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -842,7 +842,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []

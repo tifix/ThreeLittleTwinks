@@ -52,7 +52,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 1
     script: {fileID: 0}
   - curve:
@@ -60,7 +60,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.03
+        value: 0.9693213
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -71,7 +71,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMax.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -79,7 +79,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.7678
+        value: 0.65649974
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -90,7 +90,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMin.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -109,7 +109,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -128,7 +128,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_SizeDelta.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -147,7 +147,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMax.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -166,7 +166,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMin.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -185,7 +185,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -204,7 +204,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_SizeDelta.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -235,7 +235,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1199069391
+      path: 418998489
       attribute: 2086281974
       script: {fileID: 0}
       typeID: 1
@@ -259,7 +259,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 1199069391
+      path: 418998489
       attribute: 3600656472
       script: {fileID: 0}
       typeID: 224
@@ -267,7 +267,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 1199069391
+      path: 418998489
       attribute: 193093493
       script: {fileID: 0}
       typeID: 224
@@ -275,7 +275,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 1199069391
+      path: 418998489
       attribute: 538195251
       script: {fileID: 0}
       typeID: 224
@@ -283,7 +283,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 1199069391
+      path: 418998489
       attribute: 38095219
       script: {fileID: 0}
       typeID: 224
@@ -291,7 +291,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 3004082542
+      path: 1199938831
       attribute: 3600656472
       script: {fileID: 0}
       typeID: 224
@@ -299,7 +299,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 3004082542
+      path: 1199938831
       attribute: 193093493
       script: {fileID: 0}
       typeID: 224
@@ -307,7 +307,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 3004082542
+      path: 1199938831
       attribute: 538195251
       script: {fileID: 0}
       typeID: 224
@@ -315,7 +315,7 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
     - serializedVersion: 2
-      path: 3004082542
+      path: 1199938831
       attribute: 38095219
       script: {fileID: 0}
       typeID: 224
@@ -379,7 +379,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_IsActive
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 1
     script: {fileID: 0}
   - curve:
@@ -387,7 +387,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.03
+        value: 0.9693213
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -398,7 +398,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMax.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -406,7 +406,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.7678
+        value: 0.65649974
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -417,7 +417,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMin.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -436,7 +436,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -455,7 +455,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_SizeDelta.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_ActCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_ActCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -474,7 +474,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMax.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -493,7 +493,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchorMin.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -512,7 +512,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -531,7 +531,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_SizeDelta.y
-    path: Canvas_UI/Screen_InBattle/Bookmark_PlanCaption
+    path: Canvas_UI/Screen_InBattle/BookMask/Bookmark_PlanCaption
     classID: 224
     script: {fileID: 0}
   - curve:
