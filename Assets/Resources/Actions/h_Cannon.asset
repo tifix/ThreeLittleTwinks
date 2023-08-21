@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f2836dbad54a04eb8ae3ed466b5e85, type: 3}
+  m_Name: h_Cannon
+  m_EditorClassIdentifier: 
+  name: Cannon
+  ActionBehaviour:
+  - description: Fire a huge cannon at... something in front of you. Mind the knockback
+    targets:
+      multiTargetLogic: 2
+      positionsHit: 020000000300000004000000
+    cost: 2
+    damage: 4
+    movement: 0
+    appliesDebuff: 
+  - description: this part moves the caster
+    targets:
+      multiTargetLogic: 0
+      positionsHit: 
+    cost: 0
+    damage: 0
+    movement: -1
+    appliesDebuff: 

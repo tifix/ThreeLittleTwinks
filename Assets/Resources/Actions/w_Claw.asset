@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1f2836dbad54a04eb8ae3ed466b5e85, type: 3}
-  m_Name: Spit
+  m_Name: w_Claw
   m_EditorClassIdentifier: 
-  name: Spit
-  ActionValues:
-    description: Small damage but collosal disrespect.
-    damage: 2
-    cost: 1
+  name: Claw
+  ActionBehaviour:
+  - description: move 1 right, than damage
     targets:
-      positionsHit: 0300000004000000
-      multiTargetLogic: 0
-    movement: 0
+      multiTargetLogic: 1
+      positionsHit: 0100000002000000
+    cost: 0
+    damage: 3
+    movement: 1
+    appliesDebuff: 

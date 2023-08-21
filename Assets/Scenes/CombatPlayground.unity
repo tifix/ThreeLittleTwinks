@@ -678,61 +678,26 @@ MonoBehaviour:
     hpCur: 100
     hpMax: 50
     actionsAvalible:
-    - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+    - name: claw
+      baseBehaviours: {fileID: 11400000, guid: 1d6e3a34623e63c45bd5afdbe941793e, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 1d6e3a34623e63c45bd5afdbe941793e, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 0}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: Cap'n Hook
@@ -741,61 +706,26 @@ MonoBehaviour:
     hpCur: 0
     hpMax: 20
     actionsAvalible:
-    - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+    - name: shoot
+      baseBehaviours: {fileID: 11400000, guid: 8549266aec651f9428d77e8059ba8d45, type: 2}
+      updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+    - name: parry
+      baseBehaviours: {fileID: 11400000, guid: 24c397dd2c441604f978da68e05e95e6, type: 2}
+      updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+    - name: cannon
+      baseBehaviours: {fileID: 11400000, guid: ac5c578c939c5de4c90a4c8bc0a70a07, type: 2}
+      updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+    - name: point blank
+      baseBehaviours: {fileID: 11400000, guid: 1da7735260b0de44392b304d28d11e94, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 0}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: Queen of Hearts
@@ -805,60 +735,25 @@ MonoBehaviour:
     hpMax: 25
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 54b1ead8ab767b6428e4d4af1d45a695, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 256b4a39b8019754287427631505ea0a, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 0}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: Grimhilda
@@ -868,60 +763,25 @@ MonoBehaviour:
     hpMax: 20
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 0}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   charactersEnemy:
@@ -932,60 +792,25 @@ MonoBehaviour:
     hpMax: 20
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: Animal Sidekick
@@ -995,60 +820,25 @@ MonoBehaviour:
     hpMax: 20
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: Main Character
@@ -1058,60 +848,25 @@ MonoBehaviour:
     hpMax: 22
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   - name: The Chosen One
@@ -1121,60 +876,25 @@ MonoBehaviour:
     hpMax: 25
     actionsAvalible:
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     - name: Punch
-      baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
+      updatedBehaviours: []
       ownerID: 0
     actionChosen:
       name: 
-      baseData: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
-      updatedData:
-        description: 
-        damage: 0
-        cost: 0
-        targets:
-          positionsHit: 
-          multiTargetLogic: 0
-        movement: 0
+      baseBehaviours: {fileID: 0}
+      updatedBehaviours: []
       ownerID: 0
     ElementType: 
   characterPositions:
@@ -1196,15 +916,8 @@ MonoBehaviour:
   HitMarker: {fileID: 1684212363503120386, guid: f2df3b6750eea074b88b22895cfab75b, type: 3}
   DefaultAction:
     name: 
-    baseData: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
-    updatedData:
-      description: 
-      damage: 0
-      cost: 0
-      targets:
-        positionsHit: 
-        multiTargetLogic: 0
-      movement: 0
+    baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+    updatedBehaviours: []
     ownerID: 0
 --- !u!4 &1343875845
 Transform:

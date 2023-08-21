@@ -7,27 +7,29 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
-public struct ActionValues
+public struct ActionBehaviour
 {
-    public string description;
-    public int damage;
-    public int cost;
-    public Targets targets;
-    public int movement;
-    
-    public ActionValues(string _description, int _damage, int _cost, Targets _targets, int _movement)   //Full constructor
-    { description = _description; damage = _damage;cost = _cost; targets = _targets; movement = _movement; }
-    public ActionValues(string _description, int _damage, int _cost, int _targetsSimple, int _movement) //Simplest constructor
-    { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple);movement = 0; } 
+    [Tooltip("in-game description for action from [0] member, use other fields to clear up sub-behaviours")]    public string   description;
+    [Tooltip("Characters this many slots away will be affected")]                                               public Targets  targets;
+    [Tooltip("behaviour driven on [0] member, others redundant")]                                               public int      cost;
+    [Tooltip("damage dealt. Negative values HEAL instead")]                                                     public int      damage;
+                                                                                                                public int      movement;
+    [Tooltip("leave blank if none, full list in BattleManager ApplyDebuff()")]                                  public string   appliesDebuff;
+
+    public ActionBehaviour(string _description, int _damage, int _cost, Targets _targets, int _movement, string _debuff)   //Full constructor
+    { description = _description; damage = _damage;cost = _cost; targets = _targets; movement = _movement; appliesDebuff = _debuff; }
+    public ActionBehaviour(string _description, int _damage, int _cost, int _targetsSimple, int _movement) //Simplest constructor
+    { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple);movement = 0; appliesDebuff = ""; } 
 }
 
 [System.Serializable]
 public struct Targets
 {
-    public int[] positionsHit;
     public GameManager.Logic multiTargetLogic;
+    public int[] positionsHit;
     public Targets(int simpleRange) { positionsHit = new int[]{ simpleRange}; multiTargetLogic = GameManager.Logic.And; }
     public Targets(int[] _hits, GameManager.Logic _logic) { positionsHit = _hits; multiTargetLogic = _logic; }
 }
@@ -36,29 +38,41 @@ public struct Targets
 public class Action {
 
     public string name;
-    public ActionBase baseData;
-    public ActionValues updatedData;
+    public ActionBase baseBehaviours;
+    public List<ActionBehaviour> updatedBehaviours;
     public int ownerID;
 
-    public void Initialise() { updatedData = baseData.ActionValues; name = baseData.name.ToString(); }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
+    public void Initialise() 
+    {
+        updatedBehaviours = new List<ActionBehaviour>(baseBehaviours.ActionBehaviour);
+        name = baseBehaviours.name.ToString(); 
+    }    //While scriptable objects are very convenient for handling Actions, Values of a SO cannot be edited per instance
 
     public void Perform()                   //Perform the action - damaging the target and previewing trajectory
     {
         Debug.LogWarning($"{GetOwnerCharacter().name} is Performing attack {name}");
 
-        foreach (Character Target in GetTargetCharacter())  //Showing targetting 
+        //As each action can do different things to different targets, tackle them one at a time
+        foreach( ActionBehaviour behaviour in updatedBehaviours) 
         {
-            Target.TakeDamage(updatedData.damage);
-            UIManager.instance.ShowAttackEffects(
-                            BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
-                            BattleManager.instance.characterPositions[Target.position - 1].position);
+            //Can target multiple characters, apply effects
+            foreach (Character Target in GetTargetCharacter(behaviour))  //get the targets for this individual behaviour
+            {
+                Target.TakeDamage(behaviour.damage);
+                UIManager.instance.ShowAttackEffects(
+                                BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
+                                BattleManager.instance.characterPositions[Target.position - 1].position);
 
-            UIManager.instance.SetDamageTakenCaptions(GetOwnerCharacter(), Target);
+                UIManager.instance.SetDamageTakenCaptions(GetOwnerCharacter(), Target);
+                if (behaviour.appliesDebuff != "") BattleManager.instance.ApplyDebuff(behaviour.appliesDebuff, Target.position);    //apply debuff after damage
+            }
+
+            //If the attack comes with an extra movement of some sort - execute it here
+            if (Mathf.Abs(behaviour.movement) > 1)
+                BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position - 1, behaviour.movement);
         }
 
-        //If the attack comes with an extra movement of some sort - execute it here
-        if(Mathf.Abs(updatedData.movement)>1)
-        BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position-1,updatedData.movement);
+        
 
         //hide the selection token once used
         if (GetOwnerCharacter().position < BattleManager.instance.charactersPlayer.Count + 1) 
@@ -71,7 +85,7 @@ public class Action {
     {
         if (targetState)
         {
-            foreach (Character Target in GetTargetCharacter())  //Showing targetting 
+            foreach (Character Target in GetTargetCharacter())  //Showing targetting [for first subAction only]
             {
                 //Display target parabola
                 UIManager.instance.ShowTargetParabola(
@@ -84,25 +98,27 @@ public class Action {
     }
 
 
-    public List<int> GetTargetPositions()   //Currently handles AND and XOR logic
-    {
+
+    public List<int> GetTargetPositions() => GetTargetPositions(updatedBehaviours[0]); //Default shorthand; while complex attacks have subBehaviours, simple ones will just have one
+    public List<int> GetTargetPositions(ActionBehaviour subBehaviour)   //Currently handles AND and XOR logic
+    { //subBehaviour
         List<int> hitPositions=new List<int>();
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
 
-        if (updatedData.targets.multiTargetLogic == GameManager.Logic.And)  //If damaging all hit targets
+        if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.And)  //If damaging all hit targets
         {
-            foreach (int hit in updatedData.targets.positionsHit)
+            foreach (int hit in subBehaviour.targets.positionsHit)
             {
                 if (owner.CheckIsThisPlayer() && CheckIsHitValid(owner.position + hit)) hitPositions.Add(owner.position + hit);  //If the player is attacking
                 else if (CheckIsHitValid(owner.position - hit)) hitPositions.Add(owner.position - hit);  //If the enemy  is attacking
 
             }
         }
-        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.SelectOr)  //If damaging just one target - generate random index, hit that one
+        else if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)  //If damaging just one target - generate random index, hit that one
         {
-            hitPositions.Add(UnityEngine.Random.Range(0, updatedData.targets.positionsHit.Length));
+            hitPositions.Add(UnityEngine.Random.Range(0, subBehaviour.targets.positionsHit.Length));
         }
-        else if (updatedData.targets.multiTargetLogic == GameManager.Logic.Allies)  //If damaging just one target - generate random index, hit that one
+        else if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.Allies)  //If damaging just one target - generate random index, hit that one
         {
             if (owner.CheckIsThisPlayer()) 
                 for (int i = 1; i < 5; i++)
@@ -119,12 +135,14 @@ public class Action {
 
         return hitPositions;
     }       //Shorthand for getting the position targetted by this action based on the caster position
-    public List<Character> GetTargetCharacter()
+
+    public List<Character> GetTargetCharacter() => GetTargetCharacter(updatedBehaviours[0]);
+    public List<Character> GetTargetCharacter(ActionBehaviour subBehaviour)
     {
         List<Character> pl = BattleManager.instance.charactersPlayer;   //shorthand for reading clarity
         List<Character> hitChars = new List<Character>();
 
-        foreach (int hitPosition in GetTargetPositions())
+        foreach (int hitPosition in GetTargetPositions(subBehaviour))
         {
             //If the player is attacking
             if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count)      

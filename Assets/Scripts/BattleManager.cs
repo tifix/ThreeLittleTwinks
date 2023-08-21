@@ -84,9 +84,14 @@ public class BattleManager : MonoBehaviour
             charactersPlayer[i].hpCur = charactersPlayer[i].hpMax;
             charactersPlayer[i].position = i + 1;
 
-            //Initialising action instances from base action Scriptable Objects
-            //charactersPlayer[i].actionChosen.Initialise(); ;
-            foreach (Action a in charactersPlayer[i].actionsAvalible) a.Initialise();
+            //Initialising action instances from base action Scriptable Objects and setting default if unassigned
+            for (int a = 0; a < charactersPlayer[i].actionsAvalible.Length; a++)
+            {
+                try { int temp = charactersPlayer[i].actionsAvalible[a].baseBehaviours.ActionBehaviour[0].cost; }           //Action is a non-nullable type, check validity by checking first subBehaviour
+                catch { Debug.LogWarning("unassigned action!"); charactersPlayer[i].actionsAvalible[a] = DefaultAction; }
+                  
+                charactersPlayer[i].actionsAvalible[a].Initialise();
+            }
 
             //initialising action owners
             charactersPlayer[i].actionChosen.ownerID = charactersPlayer[i].GetHashCode();
@@ -103,10 +108,6 @@ public class BattleManager : MonoBehaviour
             {
                 charactersEnemy[i].actionChosen = DefaultAction;
                 charactersEnemy[i].name = "Zombie fairy";
-                for (int j = 0; j < charactersEnemy[i].actionsAvalible.Length; j++)
-                {
-                    charactersEnemy[i].actionsAvalible[j] = DefaultAction;
-                }
             }
         }
 
@@ -119,6 +120,12 @@ public class BattleManager : MonoBehaviour
             charactersEnemy[i].position = i + 1 + charactersPlayer.Count;
 
             //Initialising action instances from base action Scriptable Objects
+            for (int a = 0; a < charactersPlayer[i].actionsAvalible.Length; a++)
+            {
+                try { int temp = charactersEnemy[i].actionsAvalible[a].baseBehaviours.ActionBehaviour[0].cost; }           //Action is a non-nullable type, check validity by checking first subBehaviour
+                catch { Debug.LogWarning("unassigned action!"); charactersEnemy[i].actionsAvalible[a] = DefaultAction; }
+            }
+
             charactersEnemy[i].actionChosen.Initialise(); ;
             foreach (Action a in charactersEnemy[i].actionsAvalible) a.Initialise();
 
@@ -335,8 +342,8 @@ public class BattleManager : MonoBehaviour
 
         if (c.CheckIsThisPlayer())                  //if it's player character acting
         {
-            if (venganceCur < c.actionChosen.updatedData.cost) { curStage = BattleStage.playerMove; return; }
-            venganceCur -= c.actionChosen.updatedData.cost;
+            if (venganceCur < c.actionChosen.updatedBehaviours[0].cost) { curStage = BattleStage.playerMove; return; }
+            venganceCur -= c.actionChosen.updatedBehaviours[0].cost;
         }
 
         c.actionChosen.Perform();
@@ -401,7 +408,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < charactersEnemy.Count; i++)
         {
             //SelectAction(0, i);
-            if (charactersEnemy[i].actionChosen.baseData == null || charactersEnemy[i].actionChosen==null)
+            if (charactersEnemy[i].actionChosen.baseBehaviours == null || charactersEnemy[i].actionChosen==null)
                 charactersEnemy[i].actionChosen = charactersEnemy[i].actionsAvalible[0];    //Just choose the first one avalible
         }
     }
@@ -421,6 +428,26 @@ public class BattleManager : MonoBehaviour
         
     }
 
+    public void ApplyDebuff(string _name, int position) 
+    {
+        //might want to do some tokens representing the debuff
+
+        switch(_name) 
+        {
+            case ("poisoned"): { break; }   //take damage continously.
+            case ("poisoned2"): { break; }   //take damage continously.
+            case ("poisoned3"): { break; }   //take damage continously.
+            case ("braced"): { break; }     //take 50% damage
+
+            case ("huffed up"): { break; }  //empower blow if active
+            case ("puffed up"): { break; }  //take -2 incoming damage, empower blow if active
+            case ("charmed"): { break; }    //if hits caster, take damage themself
+            case ("vulnerable"): { break; } //takes 50% more damage
+            case ("sleeping"): { break; }   //cannot act
+        }
+
+        Debug.LogWarning($"Applying a snazzy debuff <{_name}>");
+    }
 
     #endregion
 

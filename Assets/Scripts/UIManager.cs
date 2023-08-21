@@ -193,25 +193,25 @@ public class UIManager : MonoBehaviour
         captionAbility3.text = c.actionsAvalible[2].name;
         captionAbility4.text = c.actionsAvalible[3].name;
 
-        descriptionAbility1.text = c.actionsAvalible[0].updatedData.description;
-        descriptionAbility2.text = c.actionsAvalible[1].updatedData.description;
-        descriptionAbility3.text = c.actionsAvalible[2].updatedData.description;
-        descriptionAbility4.text = c.actionsAvalible[3].updatedData.description;
+        descriptionAbility1.text = c.actionsAvalible[0].updatedBehaviours[0].description;
+        descriptionAbility2.text = c.actionsAvalible[1].updatedBehaviours[0].description;
+        descriptionAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].description;
+        descriptionAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].description;
 
-        dmgAbility1.text = c.actionsAvalible[0].updatedData.damage.ToString();
-        dmgAbility2.text = c.actionsAvalible[1].updatedData.damage.ToString();
-        dmgAbility3.text = c.actionsAvalible[2].updatedData.damage.ToString();
-        dmgAbility4.text = c.actionsAvalible[3].updatedData.damage.ToString();
+        dmgAbility1.text = c.actionsAvalible[0].updatedBehaviours[0].damage.ToString();
+        dmgAbility2.text = c.actionsAvalible[1].updatedBehaviours[0].damage.ToString();
+        dmgAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].damage.ToString();
+        dmgAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].damage.ToString();
 
-        rangeAbility1.text = TargetsToString(c.actionsAvalible[0].updatedData.targets);
-        rangeAbility2.text = TargetsToString(c.actionsAvalible[1].updatedData.targets);
-        rangeAbility3.text = TargetsToString(c.actionsAvalible[2].updatedData.targets);
-        rangeAbility4.text = TargetsToString(c.actionsAvalible[3].updatedData.targets);
+        rangeAbility1.text = TargetsToString(c.actionsAvalible[0].updatedBehaviours[0].targets);
+        rangeAbility2.text = TargetsToString(c.actionsAvalible[1].updatedBehaviours[0].targets);
+        rangeAbility3.text = TargetsToString(c.actionsAvalible[2].updatedBehaviours[0].targets);
+        rangeAbility4.text = TargetsToString(c.actionsAvalible[3].updatedBehaviours[0].targets);
 
-        costAbility1.text = c.actionsAvalible[0].updatedData.cost.ToString();
-        costAbility2.text = c.actionsAvalible[1].updatedData.cost.ToString();
-        costAbility3.text = c.actionsAvalible[2].updatedData.cost.ToString();
-        costAbility4.text = c.actionsAvalible[3].updatedData.cost.ToString();
+        costAbility1.text = c.actionsAvalible[0].updatedBehaviours[0].cost.ToString();
+        costAbility2.text = c.actionsAvalible[1].updatedBehaviours[0].cost.ToString();
+        costAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].cost.ToString();
+        costAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].cost.ToString();
 
         //buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
     }
@@ -371,9 +371,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.name;
             casterAbility1_act.text  = BattleManager.instance.charactersPlayer[0].name;
-            dmgAbility1_act.text     = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.damage.ToString();
-            rangeAbility1_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.targets);
-            costAbility1_act.text    = BattleManager.instance.charactersPlayer[0].actionChosen.updatedData.cost.ToString();
+            dmgAbility1_act.text     = BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].damage.ToString();
+            rangeAbility1_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].targets);
+            costAbility1_act.text    = BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].cost.ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[0].isDead) 
         {
@@ -387,9 +387,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.name;
             casterAbility2_act.text  = BattleManager.instance.charactersPlayer[1].name;
-            dmgAbility2_act.text     = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.damage.ToString();
-            rangeAbility2_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.targets);
-            costAbility2_act.text    = BattleManager.instance.charactersPlayer[1].actionChosen.updatedData.cost.ToString();
+            dmgAbility2_act.text     = BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].damage.ToString();
+            rangeAbility2_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].targets);
+            costAbility2_act.text    = BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].cost.ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[1].isDead)
         {
@@ -403,9 +403,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.name;
             casterAbility3_act.text  = BattleManager.instance.charactersPlayer[2].name;
-            dmgAbility3_act.text     = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.damage.ToString();
-            rangeAbility3_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.targets);
-            costAbility3_act.text    = BattleManager.instance.charactersPlayer[2].actionChosen.updatedData.cost.ToString();
+            dmgAbility3_act.text     = BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].damage.ToString();
+            rangeAbility3_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].targets);
+            costAbility3_act.text    = BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].cost.ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[2].isDead)
         {
@@ -419,9 +419,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.name;
             casterAbility4_act.text  = BattleManager.instance.charactersPlayer[3].name;
-            dmgAbility4_act.text     = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.damage.ToString();
-            rangeAbility4_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.targets);
-            costAbility4_act.text    = BattleManager.instance.charactersPlayer[3].actionChosen.updatedData.cost.ToString();
+            dmgAbility4_act.text     = BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].damage.ToString();
+            rangeAbility4_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].targets);
+            costAbility4_act.text    = BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].cost.ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[3].isDead)
         {
@@ -435,7 +435,7 @@ public class UIManager : MonoBehaviour
     {
 
         string damageDealerCaption = $"{attacker.name} used {attacker.actionChosen.name}!";
-        string damageTakerCaption = $"{reciever.name} has taken {attacker.actionChosen.updatedData.damage}dmg";
+        string damageTakerCaption = $"{reciever.name} has taken {attacker.actionChosen.updatedBehaviours[0].damage}dmg";
 
         if (attacker.position < BattleManager.instance.charactersPlayer.Count)  //if the position is within bounds of player characters, the player is attacking, ergo RHS takes damage
         {

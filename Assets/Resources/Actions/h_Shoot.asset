@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1f2836dbad54a04eb8ae3ed466b5e85, type: 3}
-  m_Name: Punch
+  m_Name: h_Shoot
   m_EditorClassIdentifier: 
-  name: Punch
-  ActionValues:
-    description: Just walk up to 'em and give 'em a whack
+  name: Shoot
+  ActionBehaviour:
+  - description: select a target to take 2 damage
     damage: 2
-    cost: 1
+    cost: 0
     targets:
-      positionsHit: 03000000
-      multiTargetLogic: 0
+      multiTargetLogic: 1
+      positionsHit: 030000000400000005000000
     movement: 0
+    appliesDebuff: 

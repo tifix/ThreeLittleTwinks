@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1f2836dbad54a04eb8ae3ed466b5e85, type: 3}
-  m_Name: DEBUG
+  m_Name: h_Parry
   m_EditorClassIdentifier: 
-  name: DEBUG
-  ActionValues:
-    description: instakills the target
-    damage: 999
+  name: Parry
+  ActionBehaviour:
+  - description: 
+    damage: 0
     cost: 0
     targets:
-      positionsHit: 01000000
       multiTargetLogic: 0
+      positionsHit: 
+    movement: 0
+    appliesDebuff: 
