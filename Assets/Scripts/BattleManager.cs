@@ -8,13 +8,16 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class BattleManager : MonoBehaviour
 {
     public bool CHEAT_setDefaults = false;
-                                                                                                                        public enum BattleStage     {planning, playerAct,playerMove, enemyAct};
+    [SerializeField] private int TargetChosenNow = 0;
+    public bool isChoosingTarget = false; //if an attack allows selecting a target, this protects against constant and duplicate calls
+    public enum BattleStage     {planning, playerAct,playerMove, enemyAct};
                                                                                                                         public static BattleManager instance;
     [Header("Game current state")]
     [Tooltip("the 'Level' the player is currently playing ")]                                                           public string               battleID = "1";
@@ -40,34 +43,26 @@ public class BattleManager : MonoBehaviour
     [Tooltip("This is the default action to enact if none are assigned")] public Action DefaultAction;
 
     //Assign instance if none found, otherwise destroy
+    //Initialise health to full and actions from base action values. Start main battle flow
     private void Awake()
     {
-        if(instance == null) instance = this;
+        if (instance == null) instance = this;
         else Destroy(this);
-    }
 
-    void Start()  //Initialise health to full and actions from base action values. Start main battle flow
-    { 
         StartEncounter("1");
 
-        if (CHEAT_setDefaults) 
+        if (CHEAT_setDefaults)
         {
             PlayerMovementDirection[0] = 1;
             for (int i = 1; i < PlayerMovementDirection.Length; i++)
-            {
                 PlayerMovementDirection[i] = -1;
-            }
+            
             for (int i = 0; i < charactersPlayer.Count; i++)
-            {
                 SelectAction(0, i);
-            }
+            
         }
-    }    
-    
-    void Update()   //handle the switching to act/plan phases 
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) SwitchBetweenPlanActPhases();         
     }
+
 
 
 
@@ -120,7 +115,7 @@ public class BattleManager : MonoBehaviour
             charactersEnemy[i].position = i + 1 + charactersPlayer.Count;
 
             //Initialising action instances from base action Scriptable Objects
-            for (int a = 0; a < charactersPlayer[i].actionsAvalible.Length; a++)
+            for (int a = 0; a < charactersEnemy[i].actionsAvalible.Length; a++)
             {
                 try { int temp = charactersEnemy[i].actionsAvalible[a].baseBehaviours.ActionBehaviour[0].cost; }           //Action is a non-nullable type, check validity by checking first subBehaviour
                 catch { Debug.LogWarning("unassigned action!"); charactersEnemy[i].actionsAvalible[a] = DefaultAction; }
@@ -237,16 +232,22 @@ public class BattleManager : MonoBehaviour
 
     //trajectory parabola and shifting arrow methods are found here
     #region targetting and action previews
-    public void PreviewCharacterAction(int position) 
+    public void PreviewActionOfCharacter(int position, int attackIndex) 
     { 
         if (CheckIfValidAction(position)) 
         { 
-            if(GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.playerAct) 
-                GetCharacterByPosition(position).actionChosen.Preview(true);                                  //if player then preview in act stage
+            if(GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.playerAct && attackIndex == -1)  //show when previewing player attacks locked in during combat
+                GetCharacterByPosition(position).actionChosen.Preview(true);
+
+            if(GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.planning && attackIndex!=-1)     //show when previewing attack options in planning phase
+                GetCharacterByPosition(position).actionsAvalible[attackIndex].Preview(true);
+
         }  
-    }        
-    public void PreviewCharacterAction(Transform position) => PreviewCharacterAction(GetPositionByCharacter(GetCharacterBySprite(position))); //redirects to PreviewCharacterAction(int)
-    public void EndPreviewCharacterAction(int position) 
+    }
+    public void PreviewActionSelected(int attackIndex) => PreviewActionOfCharacter(UIManager.instance.selectedCharacter + 1, attackIndex);
+
+    public void PreviewCharacterAction(Transform position) => PreviewActionOfCharacter(GetPositionByCharacter(GetCharacterBySprite(position)),-1); //-1 previews chosen attack, 0-3 preview attack options
+    public void PreviewEndCharacterAction(int position) 
     { 
         if (GetCharacterByPosition(position).actionChosen != null) 
         {
@@ -256,7 +257,6 @@ public class BattleManager : MonoBehaviour
             if (curStage==BattleStage.playerAct && position < 5) GetCharacterByPosition(position).actionChosen.Preview(false);  //
         }
     } 
-    //public void ToggleActionPreview(Character c, bool state) => c.actionChosen.Preview(state);
     public void PreviewEnemyBehaviour() 
     {
         if (CheckIfValidAction(GetCharacterByPosition(4+EnemyCounter).position) && curStage == BattleStage.playerMove)  //if the pleyer is moving, preview what the enemy is going to do
@@ -265,6 +265,7 @@ public class BattleManager : MonoBehaviour
             UIManager.instance.ShowMoveArrow(GetSpriteByPosition(4 + EnemyCounter), EnemyCounter - 1);
         } 
     }
+
     #endregion
 
 
@@ -320,6 +321,10 @@ public class BattleManager : MonoBehaviour
         c.actionChosen = c.actionsAvalible[actionIndex];
         c.actionChosen.Initialise();
 
+        //If selectable targets, invoke selection process. Terminate existing coroutine on double-call to avoid multiple running in parallel
+        if(!isChoosingTarget) StartCoroutine(selectTarget());
+        else { TrajectorySelect(); StartCoroutine(selectTarget()); }
+
         //Find apropriate action token and pulse it
         Transform tokenParent = null;
         try
@@ -332,7 +337,76 @@ public class BattleManager : MonoBehaviour
         }
         catch { Debug.LogWarning("Action Token missing, cannot destroy"); }
     }
+    public IEnumerator selectTarget() 
+    {
+        isChoosingTarget = true;
+        while (isChoosingTarget) 
+        {
+            
+            if (Input.GetKeyDown(KeyCode.O)) 
+            {
+                TrajectoryCycle();
+                UIManager.instance.ShowTargetParabola(GetSpriteByPosition(UIManager.instance.selectedCharacter + 1).position, GetSpriteByPosition(TargetChosenNow).position, -1);
+                //Snazzy trajectory display here
+            }
+            else if (Input.GetKeyDown(KeyCode.P))
+            {
+                Debug.Log("B");
+                isChoosingTarget = false;
+                break;
+            }
+            else if(Input.GetKeyUp(KeyCode.O))
+            {
+                UIManager.instance.HideTargetParabola();
+                Debug.Log("Awaiting target");
+            }
+            yield return null;
+        }
+        TrajectorySelect();
+        Debug.Log("Target confirmed");
+    }
+    public void TrajectoryCycle() //cycle the POSITIONS avalible for a selectable multi-trajectory attack
+    {
+        Action a = GetCharacterByPosition(UIManager.instance.selectedCharacter+1).actionChosen; //Selected character is index-based, starting from 0, not 1
 
+        for (int b = 0; b < a.updatedBehaviours.Count; b++)
+        {
+            ActionBehaviour behaviour = a.updatedBehaviours[b];
+            if (behaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)
+            {
+                TargetChosenNow++; 
+                Debug.LogWarning($"targets possible: {a.GetTargetPositions(behaviour).Count} last target {a.GetTargetPositions(behaviour)[a.GetTargetPositions(behaviour).Count - 1]}");
+                
+                if (TargetChosenNow > a.GetTargetPositions(behaviour)[a.GetTargetPositions(behaviour).Count - 1]) 
+                { TargetChosenNow = a.GetTargetPositions(behaviour)[0]; Debug.Log("OOB"); }
+                //a.GetTargetPositions()[a.GetTargetPositions().Count - 1]
+                //a.GetTargetPositions(behaviour)[0]
+
+                
+                //cycle between the different targets possible
+            }
+        }
+    }
+    //gets player index 0, 
+
+
+    public void TrajectorySelect() //For selectable targets, this confirms the option chosen 
+    {
+        Action a = GetCharacterByPosition(UIManager.instance.selectedCharacter+1).actionChosen; //Selected character is index-based, starting from 0, not 1
+
+        for (int b = 0; b < a.updatedBehaviours.Count; b++)
+        {
+            ActionBehaviour behaviour = a.updatedBehaviours[b];
+            //modify the behaviour from a select logic, to AND logic once selected
+            if (behaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)
+            {
+                behaviour.targets.multiTargetLogic = GameManager.Logic.And;
+                behaviour.targets.distancesHit = new int[] { TargetChosenNow };
+                a.updatedBehaviours[b] = behaviour;
+            }
+        }
+        GetCharacterByPosition(UIManager.instance.selectedCharacter + 1).actionChosen = a; //Selected character is index-based, starting from 0, not 1
+    }
 
     #region ACT phase behaviours
     public void CharacterAct(int position) //Execute the character's action and trigger a corresponding enemy reaction (player 3, triggers enemy 3)
@@ -470,7 +544,8 @@ public class BattleManager : MonoBehaviour
     }
     public Character    GetCharacterByPosition(int position)
     {
-        if (position - 1 < charactersPlayer.Count) return charactersPlayer[position - 1];
+        if (position < 0) return null;
+        if (position - 1 < charactersPlayer.Count) { return charactersPlayer[position - 1]; }
         else return charactersEnemy[position - charactersPlayer.Count - 1];
     }    //returns character class given its position
     public Character    GetCharacterBySprite(Transform t)
@@ -546,6 +621,7 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning("Could not retrieve");
         return null;
     }
+   // public int GetHitFromCasterRange(int position, int range) { return 0; }
 
     public bool         CheckIfValidAttacker(int position)
     {
@@ -555,6 +631,7 @@ public class BattleManager : MonoBehaviour
     public bool         CheckIfValidAction(int position)
     {
         //check if downright null
+        if (GetCharacterByPosition(position)==null) return false;
         if (GetCharacterByPosition(position).actionChosen == null) return false;
 
         //check if reset to 0 properties but interpreted as non-null

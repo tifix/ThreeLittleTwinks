@@ -17,15 +17,15 @@ MonoBehaviour:
   - description: Fire a huge cannon at... something in front of you. Mind the knockback
     targets:
       multiTargetLogic: 2
-      positionsHit: 020000000300000004000000
+      distancesHit: 0200000003000000
     cost: 2
     damage: 4
     movement: 0
-    appliesDebuff: 
+    appliesDebuff: AlsoHitsNext
   - description: this part moves the caster
     targets:
       multiTargetLogic: 0
-      positionsHit: 
+      distancesHit: 
     cost: 0
     damage: 0
     movement: -1

@@ -23,8 +23,8 @@ public class Character
     public void TakeDamage(float dmg)   //to be extended later with damage types 
     {
         //if (ElementType == "Water" && dmg.El
-        if (dmg < 0)                    { hpCur -= dmg; hpCur=Mathf.Clamp(hpCur, 0, hpMax); Debug.Log($"Healed {-dmg}"); }     //When healing, clamp at maximum health
-        else if (dmg > 0 && hpCur > 0)  { hpCur -= dmg;                                     Debug.Log($"Took {dmg} damage"); } //Take damage only if alive to avoid repeat Death calls
+        if (dmg < 0)                    { hpCur -= dmg; hpCur=Mathf.Clamp(hpCur, 0, hpMax); Debug.Log($"{name} healed {-dmg}"); }     //When healing, clamp at maximum health
+        else if (dmg > 0 && hpCur > 0)  { hpCur -= dmg;                                     Debug.Log($"{name} took {dmg} dmg"); } //Take damage only if alive to avoid repeat Death calls
         if (hpCur < 1) Die();       //if pushed to death with this attack - die
         
     }

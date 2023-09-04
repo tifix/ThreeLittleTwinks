@@ -19,4 +19,5 @@ public class GameManager : MonoBehaviour
         if (CHEAT_timescale!=1)Time.timeScale= CHEAT_timescale;
 
     }
+
 }

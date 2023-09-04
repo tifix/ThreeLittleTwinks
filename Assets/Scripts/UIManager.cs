@@ -13,6 +13,8 @@ using static UnityEditor.PlayerSettings;
 using static Unity.Burst.Intrinsics.X86;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 [ExecuteInEditMode]
 public class UIManager : MonoBehaviour
@@ -121,8 +123,6 @@ public class UIManager : MonoBehaviour
         Destroy(HitFX);
     }
 
-
-
     public void ShowTargetParabola(Vector3 init, Vector3 fin, float hideAfterTime) //Call with negative float to NOT hide
     {
         GameObject GO = GameObject.Instantiate(targetLine, transform,true);
@@ -130,12 +130,15 @@ public class UIManager : MonoBehaviour
         GO.GetComponent<LineRenderer>().positionCount = targetCurvatureResolution;
         Vector3[] trajectory = new Vector3[targetCurvatureResolution];
         pos = new Vector3[targetCurvatureResolution];
+        if (Vector3.Distance(init, fin) < Mathf.Epsilon) {Debug.Log("Self target!"); init += Vector3.up * 2; }  //if self-targetting, enforce a fixed height
+
         trajectory[0] = new Vector3(init.x, init.y + targetBaseHeight, init.z);
         trajectory[targetCurvatureResolution - 1] = new Vector3(fin.x, fin.y + targetBaseHeight, fin.z);
 
         //Determining natural peak height by solving for midpoint coordinate
+        
         float peakY = -1 * ((init.x + fin.x) / 2 - init.x) * ((init.x + fin.x) / 2 - fin.x);
-
+                      
         Vector3 midPosition;
         for (int i = 1; i < targetCurvatureResolution - 1; i++)
         {
@@ -145,9 +148,11 @@ public class UIManager : MonoBehaviour
             //Lerp the curve so that the height of both end-points and peak is consistent and adjustable
             float relativeY = Mathf.InverseLerp(0, peakY, y); //this represents how far up th
             y = Mathf.Lerp(targetBaseHeight, targetMaxHeight, relativeY);
+            if (Vector3.Distance(init, fin) < Mathf.Epsilon) {Debug.Log("Force offset here to avoid dot parabola");}
 
-            //Exporting values to Gizmos and LineRenderer
-            midPosition += y * Vector3.up;
+
+                //Exporting values to Gizmos and LineRenderer
+                midPosition += y * Vector3.up;
             trajectory[i] = midPosition;
             pos[i] = midPosition;
         }
@@ -198,38 +203,82 @@ public class UIManager : MonoBehaviour
         descriptionAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].description;
         descriptionAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].description;
 
-        dmgAbility1.text = c.actionsAvalible[0].updatedBehaviours[0].damage.ToString();
-        dmgAbility2.text = c.actionsAvalible[1].updatedBehaviours[0].damage.ToString();
-        dmgAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].damage.ToString();
-        dmgAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].damage.ToString();
+        dmgAbility1.text = GetTotalActionValue(c.actionsAvalible[0], "damage").ToString();
+        dmgAbility2.text = GetTotalActionValue(c.actionsAvalible[1], "damage").ToString();
+        dmgAbility3.text = GetTotalActionValue(c.actionsAvalible[2], "damage").ToString();
+        dmgAbility4.text = GetTotalActionValue(c.actionsAvalible[3], "damage").ToString();
 
-        rangeAbility1.text = TargetsToString(c.actionsAvalible[0].updatedBehaviours[0].targets);
-        rangeAbility2.text = TargetsToString(c.actionsAvalible[1].updatedBehaviours[0].targets);
-        rangeAbility3.text = TargetsToString(c.actionsAvalible[2].updatedBehaviours[0].targets);
-        rangeAbility4.text = TargetsToString(c.actionsAvalible[3].updatedBehaviours[0].targets);
+        rangeAbility1.text = TargetsToString(c.actionsAvalible[0]);
+        rangeAbility2.text = TargetsToString(c.actionsAvalible[1]);
+        rangeAbility3.text = TargetsToString(c.actionsAvalible[2]);
+        rangeAbility4.text = TargetsToString(c.actionsAvalible[3]);
 
-        costAbility1.text = c.actionsAvalible[0].updatedBehaviours[0].cost.ToString();
-        costAbility2.text = c.actionsAvalible[1].updatedBehaviours[0].cost.ToString();
-        costAbility3.text = c.actionsAvalible[2].updatedBehaviours[0].cost.ToString();
-        costAbility4.text = c.actionsAvalible[3].updatedBehaviours[0].cost.ToString();
+        costAbility1.text = GetTotalActionValue(c.actionsAvalible[0], "cost").ToString();
+        costAbility2.text = GetTotalActionValue(c.actionsAvalible[1], "cost").ToString();
+        costAbility3.text = GetTotalActionValue(c.actionsAvalible[2], "cost").ToString();
+        costAbility4.text = GetTotalActionValue(c.actionsAvalible[3], "cost").ToString();
 
         //buttonCaptionAbility1.text = "Select"; buttonCaptionAbility2.text = "Select"; buttonCaptionAbility3.text = "Select"; buttonCaptionAbility4.text = "Select";
     }
 
-    public string TargetsToString(Targets t) //Converts the multi-target string to a readable format
+    public string TargetsToString(Action a) //Converts the multi-target struct of an action to a readable string
     {
-        if (t.positionsHit.Length < 1) return "No targets!";
-        string s = t.positionsHit[0].ToString();
+        Targets t;      //clarity shorthand
+        string desc;    //return value
 
-        for (int i = 1; i < t.positionsHit.Length; i++)
+        //for simple behaviours use the only targets, for complex behaviours try to find a multi-target, non-self-targetting if possible
+        if (a.updatedBehaviours.Count == 1) t = a.updatedBehaviours[0].targets;    
+        else                                    
         {
-            if (t.multiTargetLogic == GameManager.Logic.And) s += "+";
-            else if (t.multiTargetLogic == GameManager.Logic.SelectOr) s += "/";
-            else s += "?";
+            t = a.updatedBehaviours[0].targets;                                                 
+            foreach (var subBehaviour in a.updatedBehaviours)
+            {
+                if ((subBehaviour.targets.distancesHit.Length == 1 && subBehaviour.targets.distancesHit[0] == 0)) { t = subBehaviour.targets;  }                 
+                else { t = subBehaviour.targets; break; }
+            }
+        }
+        if (t.distancesHit.Length < 1) return "No targets!";    //return break if Action constructed wrong
 
-            s += t.positionsHit[i];
+        //Convert the Target struct into a displayable string
+        desc = t.distancesHit[0].ToString();
+        for (int i = 1; i < t.distancesHit.Length; i++)
+        {
+            if (t.multiTargetLogic == GameManager.Logic.And) desc+= "+";
+            else if (t.multiTargetLogic == GameManager.Logic.SelectOr) desc+= "/";
+            else desc+= "?";
+
+            desc+= t.distancesHit[i];
         }     
-        return s;
+        return desc;
+    }
+    public int GetTotalActionValue(Action A, string parameter) 
+    {
+        int temp=0;
+        switch (parameter)
+        {
+            case ("damage"):
+                {
+                    foreach (var subBehaviour in A.updatedBehaviours)
+                        temp += subBehaviour.damage;
+                      
+                    break; 
+                }
+            case ("movement"):
+                {
+                    foreach (var subBehaviour in A.updatedBehaviours)
+                        temp += subBehaviour.movement;
+
+                    break;
+                }
+            case ("cost"):
+                {
+                    foreach (var subBehaviour in A.updatedBehaviours)
+                        temp += subBehaviour.cost;
+
+                    break;
+                }
+        }
+        return temp;
     }
 
     //Load data for the dodge window
@@ -294,6 +343,7 @@ public class UIManager : MonoBehaviour
         else selectedCharacter++;
         if (selectedCharacter > BattleManager.instance.charactersPlayer.Count - 1 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//     //0
 
+        BattleManager.instance.isChoosingTarget = false;  //if switching characters, lock on the chosen target to avoid carry-overs
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }       //cycle character + fetch new char's ability data
     public void SelectPreviousCharacter()
@@ -303,6 +353,7 @@ public class UIManager : MonoBehaviour
         else selectedCharacter--;
         if (selectedCharacter < 0 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
 
+        BattleManager.instance.isChoosingTarget = false;  //if switching characters, lock on the chosen target to avoid carry-overs
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }   //cycle character + fetch new char's ability data
     public void SwapMovementOnMovementScreen(int index) 
@@ -359,8 +410,8 @@ public class UIManager : MonoBehaviour
 
 
     public void ToggleSelectedToken(bool state) => SelectedTokens[selectedCharacter].SetActive(state);  //Toggle ability selected token On/off for the character currently selected
-    public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); Debug.Log("Now activating" + index); }
-    public void DisableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(false); Debug.Log("Now activating" + index); }
+    public void EnableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(true); }//Debug.Log("Now activating" + index); 
+    public void DisableSelectedForCharacter(int index) { SelectedTokens[index].SetActive(false); } //Debug.Log("Now activating" + index);
     #endregion
 
     #region ACT UI
@@ -371,9 +422,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility1_act.text = BattleManager.instance.charactersPlayer[0].actionChosen.name;
             casterAbility1_act.text  = BattleManager.instance.charactersPlayer[0].name;
-            dmgAbility1_act.text     = BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].damage.ToString();
-            rangeAbility1_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].targets);
-            costAbility1_act.text    = BattleManager.instance.charactersPlayer[0].actionChosen.updatedBehaviours[0].cost.ToString();
+            dmgAbility1_act.text = GetTotalActionValue(BattleManager.instance.charactersPlayer[0].actionChosen, "damage").ToString();
+            rangeAbility1_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[0].actionChosen);
+            costAbility1_act.text    = GetTotalActionValue(BattleManager.instance.charactersPlayer[0].actionChosen, "cost").ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[0].isDead) 
         {
@@ -387,9 +438,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility2_act.text = BattleManager.instance.charactersPlayer[1].actionChosen.name;
             casterAbility2_act.text  = BattleManager.instance.charactersPlayer[1].name;
-            dmgAbility2_act.text     = BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].damage.ToString();
-            rangeAbility2_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].targets);
-            costAbility2_act.text    = BattleManager.instance.charactersPlayer[1].actionChosen.updatedBehaviours[0].cost.ToString();
+            dmgAbility2_act.text     = GetTotalActionValue(BattleManager.instance.charactersPlayer[1].actionChosen, "damage").ToString();
+            rangeAbility2_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[1].actionChosen);
+            costAbility2_act.text    = GetTotalActionValue(BattleManager.instance.charactersPlayer[1].actionChosen, "cost").ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[1].isDead)
         {
@@ -403,9 +454,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility3_act.text = BattleManager.instance.charactersPlayer[2].actionChosen.name;
             casterAbility3_act.text  = BattleManager.instance.charactersPlayer[2].name;
-            dmgAbility3_act.text     = BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].damage.ToString();
-            rangeAbility3_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].targets);
-            costAbility3_act.text    = BattleManager.instance.charactersPlayer[2].actionChosen.updatedBehaviours[0].cost.ToString();
+            dmgAbility3_act.text     = GetTotalActionValue(BattleManager.instance.charactersPlayer[2].actionChosen, "damage").ToString();
+            rangeAbility3_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[2].actionChosen);
+            costAbility3_act.text    = GetTotalActionValue(BattleManager.instance.charactersPlayer[2].actionChosen, "cost").ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[2].isDead)
         {
@@ -419,9 +470,9 @@ public class UIManager : MonoBehaviour
         {
             captionAbility4_act.text = BattleManager.instance.charactersPlayer[3].actionChosen.name;
             casterAbility4_act.text  = BattleManager.instance.charactersPlayer[3].name;
-            dmgAbility4_act.text     = BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].damage.ToString();
-            rangeAbility4_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].targets);
-            costAbility4_act.text    = BattleManager.instance.charactersPlayer[3].actionChosen.updatedBehaviours[0].cost.ToString();
+            dmgAbility4_act.text     = GetTotalActionValue(BattleManager.instance.charactersPlayer[3].actionChosen, "damage").ToString();
+            rangeAbility4_act.text   = TargetsToString(BattleManager.instance.charactersPlayer[3].actionChosen);
+            costAbility4_act.text    = GetTotalActionValue(BattleManager.instance.charactersPlayer[3].actionChosen, "cost").ToString();
         }
         else if (!BattleManager.instance.charactersPlayer[3].isDead)
         {
@@ -435,7 +486,7 @@ public class UIManager : MonoBehaviour
     {
 
         string damageDealerCaption = $"{attacker.name} used {attacker.actionChosen.name}!";
-        string damageTakerCaption = $"{reciever.name} has taken {attacker.actionChosen.updatedBehaviours[0].damage}dmg";
+        string damageTakerCaption = $"{reciever.name} has taken {GetTotalActionValue(attacker.actionChosen, "damage")}dmg";
 
         if (attacker.position < BattleManager.instance.charactersPlayer.Count)  //if the position is within bounds of player characters, the player is attacking, ergo RHS takes damage
         {

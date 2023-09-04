@@ -17,7 +17,7 @@ MonoBehaviour:
   - description: Heal all characters on your team
     targets:
       multiTargetLogic: 4
-      positionsHit: 
+      distancesHit: 00000000
     cost: 0
     damage: -1
     movement: 0

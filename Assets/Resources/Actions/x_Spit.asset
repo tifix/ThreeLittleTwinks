@@ -16,8 +16,8 @@ MonoBehaviour:
   ActionBehaviour:
   - description: long range disrespect
     targets:
-      multiTargetLogic: 2
-      positionsHit: 02000000030000000400000005000000
+      multiTargetLogic: 0
+      distancesHit: 0300000004000000
     cost: 0
     damage: 1
     movement: 0

@@ -15,10 +15,10 @@ MonoBehaviour:
   name: Point blank
   ActionBehaviour:
   - description: short range but packs some punch
-    damage: 3
-    cost: 0
     targets:
       multiTargetLogic: 1
-      positionsHit: 0100000002000000
+      distancesHit: 0100000002000000
+    cost: 0
+    damage: 3
     movement: 0
     appliesDebuff: 

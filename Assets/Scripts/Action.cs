@@ -7,7 +7,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using static UnityEngine.GraphicsBuffer;
+using Unity.Mathematics;
+using System.Linq;
 
 [System.Serializable]
 public struct ActionBehaviour
@@ -29,9 +32,9 @@ public struct ActionBehaviour
 public struct Targets
 {
     public GameManager.Logic multiTargetLogic;
-    public int[] positionsHit;
-    public Targets(int simpleRange) { positionsHit = new int[]{ simpleRange}; multiTargetLogic = GameManager.Logic.And; }
-    public Targets(int[] _hits, GameManager.Logic _logic) { positionsHit = _hits; multiTargetLogic = _logic; }
+    public int[] distancesHit;
+    public Targets(int simpleRange) { distancesHit = new int[]{ simpleRange}; multiTargetLogic = GameManager.Logic.And; }
+    public Targets(int[] _hits, GameManager.Logic _logic) { distancesHit = _hits; multiTargetLogic = _logic; }
 }
 
 [System.Serializable]
@@ -53,8 +56,17 @@ public class Action {
         Debug.LogWarning($"{GetOwnerCharacter().name} is Performing attack {name}");
 
         //As each action can do different things to different targets, tackle them one at a time
-        foreach( ActionBehaviour behaviour in updatedBehaviours) 
+        for (int b = 0; b < updatedBehaviours.Count; b++) 
         {
+            ActionBehaviour behaviour = updatedBehaviours[b];   //Shortcut for readability's sake
+
+            //If a random of multiple target is used - remove all but one targets
+            if (behaviour.targets.multiTargetLogic == GameManager.Logic.RandomOr) 
+            {
+            int index = UnityEngine.Random.Range(0, behaviour.targets.distancesHit.Length);
+                behaviour.targets.distancesHit=new int[] { behaviour.targets.distancesHit[index] };
+            }
+
             //Can target multiple characters, apply effects
             foreach (Character Target in GetTargetCharacter(behaviour))  //get the targets for this individual behaviour
             {
@@ -68,7 +80,7 @@ public class Action {
             }
 
             //If the attack comes with an extra movement of some sort - execute it here
-            if (Mathf.Abs(behaviour.movement) > 1)
+            if (Mathf.Abs(behaviour.movement) > 0)
                 BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position - 1, behaviour.movement);
         }
 
@@ -105,19 +117,21 @@ public class Action {
         List<int> hitPositions=new List<int>();
         Character owner = BattleManager.instance.GetCharacterByID(ownerID);
 
-        if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.And)  //If damaging all hit targets
+        if (   subBehaviour.targets.multiTargetLogic == GameManager.Logic.And 
+            || subBehaviour.targets.multiTargetLogic == GameManager.Logic.RandomOr 
+            || subBehaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)  //Random hit previews all, target selection happens during Perform()
         {
-            foreach (int hit in subBehaviour.targets.positionsHit)
+            foreach (int hit in subBehaviour.targets.distancesHit)
             {
                 if (owner.CheckIsThisPlayer() && CheckIsHitValid(owner.position + hit)) hitPositions.Add(owner.position + hit);  //If the player is attacking
                 else if (CheckIsHitValid(owner.position - hit)) hitPositions.Add(owner.position - hit);  //If the enemy  is attacking
-
             }
-        }
-        else if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)  //If damaging just one target - generate random index, hit that one
+        }/*
+        else if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)
         {
-            hitPositions.Add(UnityEngine.Random.Range(0, subBehaviour.targets.positionsHit.Length));
-        }
+            //hitPositions.Add(UnityEngine.Random.Range(0, subBehaviour.targets.distancesHit.Length));
+
+        }*/
         else if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.Allies)  //If damaging just one target - generate random index, hit that one
         {
             if (owner.CheckIsThisPlayer()) 
@@ -144,6 +158,7 @@ public class Action {
 
         foreach (int hitPosition in GetTargetPositions(subBehaviour))
         {
+            //Debug.Log($"Hitting position {hitPosition}");
             //If the player is attacking
             if (BattleManager.instance.GetCharacterByID(ownerID).position - 1 < pl.Count)      
             {

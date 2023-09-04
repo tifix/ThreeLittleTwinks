@@ -17,7 +17,7 @@ MonoBehaviour:
   - description: All members heal, targets heal another, heal self 2
     targets:
       multiTargetLogic: 4
-      positionsHit: 00000000
+      distancesHit: 00000000
     cost: 1
     damage: -1
     movement: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   - description: ...and heal the other
     targets:
       multiTargetLogic: 0
-      positionsHit: ffffffff01000000
+      distancesHit: feffffffffffffff000000000100000002000000
     cost: 0
     damage: -1
     movement: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   - description: ...and heal self
     targets:
       multiTargetLogic: 0
-      positionsHit: 00000000
+      distancesHit: 00000000
     cost: 0
     damage: -2
     movement: 0

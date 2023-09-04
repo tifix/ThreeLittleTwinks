@@ -15,10 +15,10 @@ MonoBehaviour:
   name: Shoot
   ActionBehaviour:
   - description: select a target to take 2 damage
-    damage: 2
-    cost: 0
     targets:
       multiTargetLogic: 1
-      positionsHit: 030000000400000005000000
+      distancesHit: 010000000200000003000000040000000500000006000000
+    cost: 0
+    damage: 2
     movement: 0
     appliesDebuff: 

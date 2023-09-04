@@ -17,7 +17,7 @@ MonoBehaviour:
   - description: Kill target
     targets:
       multiTargetLogic: 1
-      positionsHit: fdfffffffeffffffffffffff00000000010000000200000003000000
+      distancesHit: feffffffffffffff000000000100000002000000030000000400000005000000
     cost: 0
     damage: 999
     movement: 0

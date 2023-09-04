@@ -16,9 +16,17 @@ MonoBehaviour:
   ActionBehaviour:
   - description: move 1 right, than damage
     targets:
+      multiTargetLogic: 0
+      distancesHit: 00000000
+    cost: 0
+    damage: 0
+    movement: 1
+    appliesDebuff: 
+  - description: ...and deal damage here
+    targets:
       multiTargetLogic: 1
-      positionsHit: 0100000002000000
+      distancesHit: 010000000200000003000000
     cost: 0
     damage: 3
-    movement: 1
+    movement: 0
     appliesDebuff: 
