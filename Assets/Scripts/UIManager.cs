@@ -258,8 +258,12 @@ public class UIManager : MonoBehaviour
         {
             case ("damage"):
                 {
-                    foreach (var subBehaviour in A.updatedBehaviours)
+                    foreach (var subBehaviour in A.updatedBehaviours) 
+                    {
                         temp += subBehaviour.damage;
+                        //if (subBehaviour.targets.multiTargetLogic == GameManager.Logic.And)
+                    }
+                        
                       
                     break; 
                 }
@@ -339,21 +343,25 @@ public class UIManager : MonoBehaviour
     public void SelectNextCharacter()
     {
         if (selectedCharacter == -999) selectedCharacter = 0;   //Loading OUT of movement selection if that was the last one chosen
-        
-        else selectedCharacter++;
+        else 
+        {
+            BattleManager.instance.TrajectorySelect(); //if switching characters, lock on the chosen target to avoid carry-overs. Must be BEFORE changing SelectedCharacter
+            selectedCharacter++;
+        }
         if (selectedCharacter > BattleManager.instance.charactersPlayer.Count - 1 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//     //0
-
-        BattleManager.instance.isChoosingTarget = false;  //if switching characters, lock on the chosen target to avoid carry-overs
+ 
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }       //cycle character + fetch new char's ability data
     public void SelectPreviousCharacter()
     {
         if (selectedCharacter == -999) selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1; //Loading OUT of movement selection if that was the last one chosen
-        
-        else selectedCharacter--;
+        else
+        {
+            BattleManager.instance.TrajectorySelect(); //if switching characters, lock on the chosen target to avoid carry-overs. Must be BEFORE changing SelectedCharacter
+            selectedCharacter--; 
+        }
         if (selectedCharacter < 0 && selectedCharacter != -999) { ShowMovementInsteadOfActions(); selectedCharacter = -999; return; }//selectedCharacter = BattleManager.instance.charactersPlayer.Count - 1;
-
-        BattleManager.instance.isChoosingTarget = false;  //if switching characters, lock on the chosen target to avoid carry-overs
+        
         LoadDataForCharacter(BattleManager.instance.charactersPlayer[selectedCharacter]);
     }   //cycle character + fetch new char's ability data
     public void SwapMovementOnMovementScreen(int index) 

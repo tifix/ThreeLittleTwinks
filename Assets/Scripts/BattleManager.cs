@@ -49,6 +49,11 @@ public class BattleManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
 
+
+    }
+
+    private void Start()
+    {
         StartEncounter("1");
 
         if (CHEAT_setDefaults)
@@ -56,14 +61,12 @@ public class BattleManager : MonoBehaviour
             PlayerMovementDirection[0] = 1;
             for (int i = 1; i < PlayerMovementDirection.Length; i++)
                 PlayerMovementDirection[i] = -1;
-            
+
             for (int i = 0; i < charactersPlayer.Count; i++)
                 SelectAction(0, i);
-            
+
         }
     }
-
-
 
 
     //Call when the encounter begins and ends - wrap the structure for ease of understandability
@@ -83,7 +86,7 @@ public class BattleManager : MonoBehaviour
             for (int a = 0; a < charactersPlayer[i].actionsAvalible.Length; a++)
             {
                 try { int temp = charactersPlayer[i].actionsAvalible[a].baseBehaviours.ActionBehaviour[0].cost; }           //Action is a non-nullable type, check validity by checking first subBehaviour
-                catch { Debug.LogWarning("unassigned action!"); charactersPlayer[i].actionsAvalible[a] = DefaultAction; }
+                catch { Debug.Log($"unassigned player action at <{i}> Filling with default."); charactersPlayer[i].actionsAvalible[a] = DefaultAction; }
                   
                 charactersPlayer[i].actionsAvalible[a].Initialise();
             }
@@ -118,7 +121,7 @@ public class BattleManager : MonoBehaviour
             for (int a = 0; a < charactersEnemy[i].actionsAvalible.Length; a++)
             {
                 try { int temp = charactersEnemy[i].actionsAvalible[a].baseBehaviours.ActionBehaviour[0].cost; }           //Action is a non-nullable type, check validity by checking first subBehaviour
-                catch { Debug.LogWarning("unassigned action!"); charactersEnemy[i].actionsAvalible[a] = DefaultAction; }
+                catch { Debug.Log($"unassigned action at enemy index <{i}> filling with default"); charactersEnemy[i].actionsAvalible[a] = DefaultAction; }
             }
 
             charactersEnemy[i].actionChosen.Initialise(); ;
@@ -234,7 +237,7 @@ public class BattleManager : MonoBehaviour
     #region targetting and action previews
     public void PreviewActionOfCharacter(int position, int attackIndex) 
     { 
-        if (CheckIfValidAction(position)) 
+        if (CheckIfValidAction(position, attackIndex)) 
         { 
             if(GetCharacterByPosition(position).CheckIsThisPlayer() && curStage == BattleStage.playerAct && attackIndex == -1)  //show when previewing player attacks locked in during combat
                 GetCharacterByPosition(position).actionChosen.Preview(true);
@@ -272,15 +275,17 @@ public class BattleManager : MonoBehaviour
 
     public void SwitchBetweenPlanActPhases()
     {
+        TrajectorySelect(); //Break target selection loop. Must be BEFORE changing selectedCharacter to work
         UIManager.instance.selectedCharacter = 0;
         if (curStage != BattleStage.planning) curStage = BattleStage.planning;
         else curStage = BattleStage.playerAct;
+        
 
         if (curStage == BattleStage.planning)
         {
             UIManager.instance.SelectedArrow.SetActive(true);
             UIManager.instance.MovePreviewArrow.SetActive(false);
-
+            UIManager.instance.selectedCharacter = 0;
             UIManager.instance.AnimatorTrigger("SwitchToPlan");
         }
         else
@@ -342,28 +347,24 @@ public class BattleManager : MonoBehaviour
         isChoosingTarget = true;
         while (isChoosingTarget) 
         {
-            
+            yield return null;
             if (Input.GetKeyDown(KeyCode.O)) 
             {
                 TrajectoryCycle();
-                UIManager.instance.ShowTargetParabola(GetSpriteByPosition(UIManager.instance.selectedCharacter + 1).position, GetSpriteByPosition(TargetChosenNow).position, -1);
+                if(UIManager.instance.selectedCharacter > 0) UIManager.instance.ShowTargetParabola(GetSpriteByPosition(UIManager.instance.selectedCharacter + 1).position, GetSpriteByPosition(TargetChosenNow).position, -1);
                 //Snazzy trajectory display here
             }
             else if (Input.GetKeyDown(KeyCode.P))
             {
-                Debug.Log("B");
                 isChoosingTarget = false;
-                break;
+                TrajectorySelect();
+                break;                      //loop break condition
             }
             else if(Input.GetKeyUp(KeyCode.O))
             {
                 UIManager.instance.HideTargetParabola();
-                Debug.Log("Awaiting target");
             }
-            yield return null;
         }
-        TrajectorySelect();
-        Debug.Log("Target confirmed");
     }
     public void TrajectoryCycle() //cycle the POSITIONS avalible for a selectable multi-trajectory attack
     {
@@ -375,10 +376,10 @@ public class BattleManager : MonoBehaviour
             if (behaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)
             {
                 TargetChosenNow++; 
-                Debug.LogWarning($"targets possible: {a.GetTargetPositions(behaviour).Count} last target {a.GetTargetPositions(behaviour)[a.GetTargetPositions(behaviour).Count - 1]}");
+                Debug.Log($"targets possible: {a.GetTargetPositions(behaviour).Count} last target {a.GetTargetPositions(behaviour)[a.GetTargetPositions(behaviour).Count - 1]}");
                 
                 if (TargetChosenNow > a.GetTargetPositions(behaviour)[a.GetTargetPositions(behaviour).Count - 1]) 
-                { TargetChosenNow = a.GetTargetPositions(behaviour)[0]; Debug.Log("OOB"); }
+                { TargetChosenNow = a.GetTargetPositions(behaviour)[0];}
                 //a.GetTargetPositions()[a.GetTargetPositions().Count - 1]
                 //a.GetTargetPositions(behaviour)[0]
 
@@ -392,7 +393,12 @@ public class BattleManager : MonoBehaviour
 
     public void TrajectorySelect() //For selectable targets, this confirms the option chosen 
     {
+        //StopCoroutine(selectTarget());
+        isChoosingTarget = false;
+
         Action a = GetCharacterByPosition(UIManager.instance.selectedCharacter+1).actionChosen; //Selected character is index-based, starting from 0, not 1
+        if (CheckIfValidAction(UIManager.instance.selectedCharacter + 1)) { Debug.LogWarning("Cannot confirm action, aborting locking."); }
+
 
         for (int b = 0; b < a.updatedBehaviours.Count; b++)
         {
@@ -401,10 +407,12 @@ public class BattleManager : MonoBehaviour
             if (behaviour.targets.multiTargetLogic == GameManager.Logic.SelectOr)
             {
                 behaviour.targets.multiTargetLogic = GameManager.Logic.And;
-                behaviour.targets.distancesHit = new int[] { TargetChosenNow };
+                //TargetChosenNow is a position index, not distance. Distances hit operates on range, so it must be converted from targetHit to range.
+                behaviour.targets.distancesHit = new int[] { TargetChosenNow - UIManager.instance.selectedCharacter-1 };
                 a.updatedBehaviours[b] = behaviour;
             }
         }
+        Debug.Log($"Target for {GetCharacterByPosition(UIManager.instance.selectedCharacter + 1).actionChosen.name} confirmed");
         GetCharacterByPosition(UIManager.instance.selectedCharacter + 1).actionChosen = a; //Selected character is index-based, starting from 0, not 1
     }
 
@@ -621,27 +629,43 @@ public class BattleManager : MonoBehaviour
         Debug.LogWarning("Could not retrieve");
         return null;
     }
-   // public int GetHitFromCasterRange(int position, int range) { return 0; }
+
+    public int GetDistanceBetweenActors(int posAttacker, int posHit)
+    {
+        int distance = 0;
+        //if player damaging enemy - simple math.
+        if (posAttacker > 4) distance = posHit - posAttacker;
+        //if enemy damaging player - distance must be negative to show leftward direction
+        else distance= -(posHit - posAttacker);
+
+        return distance;
+    }
 
     public bool         CheckIfValidAttacker(int position)
     {
         if (CheckIfValidAction(position) && !GetCharacterByPosition(position).isDead) { return true; }  //Debug.Log(GetCharacterByPosition(position).name + " is a valid attacker"); 
         else return false;
     }      //If the player exists, has an attack equipped and is alive - can attack
-    public bool         CheckIfValidAction(int position)
+
+    public bool CheckIfValidAction(int position) => CheckIfValidAction(position, -1);   //If action unspecified, check CHOSEN action
+    public bool         CheckIfValidAction(int position, int attackIndex)//Use index -1 for action CHOSEN, 0-3 for avalible actions
     {
+        
+
         //check if downright null
-        if (GetCharacterByPosition(position)==null) return false;
-        if (GetCharacterByPosition(position).actionChosen == null) return false;
+        if (GetCharacterByPosition(position) == null)                                { Debug.LogWarning($"Character at position {position} is invalid");                    return false; }
+        if (attackIndex<0 && GetCharacterByPosition(position).actionChosen == null)  { Debug.LogWarning($"Character at position {position} action is null!");               return false; }
+        if (attackIndex>0 && GetCharacterByPosition(position).actionsAvalible[attackIndex]==null) { Debug.LogWarning($"Character at position {position} action is null!");  return false; }
 
         //check if reset to 0 properties but interpreted as non-null
         string s;
         try
         {
-            s = GetCharacterByPosition(position).actionChosen.name;
-            if (s.Length < 1) return false;
+            if (attackIndex < 1) s = GetCharacterByPosition(position).actionChosen.name;
+            else s = GetCharacterByPosition(position).actionsAvalible[attackIndex].name;
+            if (s.Length < 1)                                       { Debug.LogWarning($"Character at position {position} has empty action!"); return false; }
         }
-        catch { return false; }
+        catch                                                       { Debug.LogWarning($"Character at position {position} has suspicious action!");return false; }
 
         //Otherwise, action is valid
         return true;
