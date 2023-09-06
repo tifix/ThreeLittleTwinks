@@ -21,11 +21,12 @@ public struct ActionBehaviour
     [Tooltip("damage dealt. Negative values HEAL instead")]                                                     public int      damage;
                                                                                                                 public int      movement;
     [Tooltip("leave blank if none, full list in BattleManager ApplyDebuff()")]                                  public string   appliesDebuff;
+    [Tooltip("leave blank if none, full list in BattleManager ApplyDebuff()")]                                  public int      durationDebuff;
 
-    public ActionBehaviour(string _description, int _damage, int _cost, Targets _targets, int _movement, string _debuff)   //Full constructor
-    { description = _description; damage = _damage;cost = _cost; targets = _targets; movement = _movement; appliesDebuff = _debuff; }
+    public ActionBehaviour(string _description, int _damage, int _cost, Targets _targets, int _movement, string _debuff, int debuffDuration)   //Full constructor
+    { description = _description; damage = _damage;cost = _cost; targets = _targets; movement = _movement; appliesDebuff = _debuff; durationDebuff = debuffDuration; }
     public ActionBehaviour(string _description, int _damage, int _cost, int _targetsSimple, int _movement) //Simplest constructor
-    { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple);movement = 0; appliesDebuff = ""; } 
+    { description = _description; damage = _damage;cost = _cost; targets = new Targets(_targetsSimple);movement = 0; appliesDebuff = ""; durationDebuff = 0; } 
 }
 
 [System.Serializable]
@@ -44,7 +45,7 @@ public class Action {
     public ActionBase baseBehaviours;
     public List<ActionBehaviour> updatedBehaviours;
     public int ownerID;
-
+    public GameManager.Element element = GameManager.Element.Physical;
     public void Initialise() 
     {
         updatedBehaviours = new List<ActionBehaviour>(baseBehaviours.ActionBehaviour);
@@ -70,18 +71,18 @@ public class Action {
             //Can target multiple characters, apply effects
             foreach (Character Target in GetTargetCharacter(behaviour))  //get the targets for this individual behaviour
             {
-                Target.TakeDamage(behaviour.damage);
+                Target.TakeDamage(behaviour.damage, GetOwnerCharacter());
                 UIManager.instance.ShowAttackEffects(
                                 BattleManager.instance.characterPositions[GetOwnerCharacter().position - 1].position,
                                 BattleManager.instance.characterPositions[Target.position - 1].position);
 
                 UIManager.instance.SetDamageTakenCaptions(GetOwnerCharacter(), Target);
-                if (behaviour.appliesDebuff != "") BattleManager.instance.ApplyDebuff(behaviour.appliesDebuff, Target.position);    //apply debuff after damage
+                if (behaviour.appliesDebuff != "") Target.ApplyDebuff(behaviour.appliesDebuff,behaviour.durationDebuff);    //apply debuff after damage
             }
 
             //If the attack comes with an extra movement of some sort - execute it here
             if (Mathf.Abs(behaviour.movement) > 0)
-                BattleManager.instance.PlayerMoveSimple(GetOwnerCharacter().position - 1, behaviour.movement);
+                BattleManager.instance.MoveSimple(behaviour.targets.distancesHit[b], behaviour.movement);  //Not necessarily player
         }
 
         

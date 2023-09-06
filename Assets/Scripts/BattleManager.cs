@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -42,14 +43,18 @@ public class BattleManager : MonoBehaviour
     [Tooltip("this is the VFX spawned when hit lands on player/enemy")] public GameObject HitMarker;
     [Tooltip("This is the default action to enact if none are assigned")] public Action DefaultAction;
 
+    [Header("Game events. These mostly handle Debuffs")]
+    public UnityEvent playerTurn;
+    public UnityEvent roundEnd;
+    public UnityEvent DamageTaken;
+    public UnityEvent Test;
+
     //Assign instance if none found, otherwise destroy
     //Initialise health to full and actions from base action values. Start main battle flow
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(this);
-
-
     }
 
     private void Start()
@@ -61,13 +66,15 @@ public class BattleManager : MonoBehaviour
             PlayerMovementDirection[0] = 1;
             for (int i = 1; i < PlayerMovementDirection.Length; i++)
                 PlayerMovementDirection[i] = -1;
-
             for (int i = 0; i < charactersPlayer.Count; i++)
                 SelectAction(0, i);
-
         }
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) { Test.Invoke(); }
+    }
 
     //Call when the encounter begins and ends - wrap the structure for ease of understandability
     public void StartEncounter(string ID)   //Initialise health to full and actions from base action values.   
@@ -275,8 +282,7 @@ public class BattleManager : MonoBehaviour
 
     public void SwitchBetweenPlanActPhases()
     {
-        TrajectorySelect(); //Break target selection loop. Must be BEFORE changing selectedCharacter to work
-        UIManager.instance.selectedCharacter = 0;
+
         if (curStage != BattleStage.planning) curStage = BattleStage.planning;
         else curStage = BattleStage.playerAct;
         
@@ -290,6 +296,9 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            TrajectorySelect(); //Break target selection loop. Must be BEFORE changing selectedCharacter to work
+            UIManager.instance.selectedCharacter = 0;
+
             UIManager.instance.SelectedArrow.SetActive(false);
 
             UIManager.instance.AnimatorTrigger("SwitchToAct");
@@ -299,22 +308,30 @@ public class BattleManager : MonoBehaviour
             {
                 if (charactersPlayer[i].actionChosen == null) SelectAction(0, i);
             }
+
+
             UIManager.instance.LoadActionDescriptions();   //Load details of actions chosen in plan phase and displays them on execute actions panel
         }
     }   //Switch between planning and act phases using snazzy animations
     public void ChangePlayerMovements(int index, bool isNowMovingLeft) //Left/Right to decide whether moving left/right by ONE tile. Or three if last/first member
     {
-        //This actually deciding movements for the player unit selected,
-        if (isNowMovingLeft) //if SHOULD NOW be moving right, cause it has been moving left
-        {
-            if (index == 0) { PlayerMovementDirection[index] = 3; Debug.Log("Player Unit " + index + " will move backwards"); }
-            else { PlayerMovementDirection[index] = -1; Debug.Log("Player Unit " + index + " move backwards"); }
-        }
-        else
-        {
-            if (index == 3) { PlayerMovementDirection[index] = -3; Debug.Log("Player Unit " + index + " will move backwards"); }
-            else { PlayerMovementDirection[index] = 1; Debug.Log("Player Unit " + index + " will move forwards"); }
-        }
+        PlayerMovementDirection[index] *= -1;
+        PlayerMovementDirection[index] = VerifyMovement(index + 1, PlayerMovementDirection[index]);
+    }
+    public int VerifyMovement(int position, int movement) //check for out-of bounds for player, enemy, looping around from rightmost to leftmost
+    {
+        int finalMovement = movement;
+
+        //if PLAYER movement overflows to the left
+             if (position < 5 && position + movement < 1 ) finalMovement = movement + 4; 
+        //if PLAYER movement overflows to the right
+        else if (position < 5 && position + movement > 4 ) finalMovement = movement - 4;
+        //if ENEMY movement overflows to the left
+        else if (position > 4 && position + movement < 5 ) finalMovement = movement + 4;
+        //if ENEMY movement overflows to the right
+        else if (position > 4 && position + movement > 8 ) finalMovement = movement - 4;
+        
+        return finalMovement;
     }
 
     public void SelectAction(int actionIndex, int characterIndex)
@@ -458,16 +475,20 @@ public class BattleManager : MonoBehaviour
         int i = position - 1;                       //Index starts at 0, positions start as 1; shifting by 1 for clarity
         if (PlayerMovementActions[i] < 1) return;   //breaking if this character has already moved
         PlayerMovementActions[i] = 0;
-        PlayerMoveSimple(i, PlayerMovementDirection[i]);
+        MoveSimple(i, PlayerMovementDirection[i]);
         Debug.Log($"Player Unit {position} has moved to position : {i + PlayerMovementDirection[i]}");
 
         //after the player action is performed, proceed to the enemy action
         curStage = BattleStage.enemyAct;
         UIManager.instance.AnimatorTrigger("SwitchToAct");
     }                   //PlayerMove with turn logic and animations                             - use for actual moves
-    public void PlayerMoveSimple(int index, int direction) //PlayerMove stripped of turn logic, animations and move token handling - use for special moving via actions, environment and such
+    public void MoveSimple(int index, int direction) //PlayerMove stripped of turn logic, animations and move token handling - use for special moving via actions, environment and such
     {
-        SwappingCharacterElements(charactersPlayer,   index, index + direction);
+        direction = VerifyMovement(index+1,direction);
+
+        Debug.LogWarning($"Action swapping character {index+1} and {index+direction+1}");
+        if(GetCharacterByPosition(index+1).CheckIsThisPlayer()) SwappingCharacterElements(charactersPlayer,   index, index + direction);
+        else                                                    SwappingCharacterElements(charactersEnemy,    index, index + direction);
         SwappingTransformElements(characterPositions, index, index + direction);
     }
 
@@ -510,26 +531,7 @@ public class BattleManager : MonoBehaviour
         
     }
 
-    public void ApplyDebuff(string _name, int position) 
-    {
-        //might want to do some tokens representing the debuff
-
-        switch(_name) 
-        {
-            case ("poisoned"): { break; }   //take damage continously.
-            case ("poisoned2"): { break; }   //take damage continously.
-            case ("poisoned3"): { break; }   //take damage continously.
-            case ("braced"): { break; }     //take 50% damage
-
-            case ("huffed up"): { break; }  //empower blow if active
-            case ("puffed up"): { break; }  //take -2 incoming damage, empower blow if active
-            case ("charmed"): { break; }    //if hits caster, take damage themself
-            case ("vulnerable"): { break; } //takes 50% more damage
-            case ("sleeping"): { break; }   //cannot act
-        }
-
-        Debug.LogWarning($"Applying a snazzy debuff <{_name}>");
-    }
+    
 
     #endregion
 

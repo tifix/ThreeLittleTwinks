@@ -684,52 +684,66 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: 8549266aec651f9428d77e8059ba8d45, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: parry
       baseBehaviours: {fileID: 11400000, guid: 24c397dd2c441604f978da68e05e95e6, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: cannon
       baseBehaviours: {fileID: 11400000, guid: ac5c578c939c5de4c90a4c8bc0a70a07, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: point blank
       baseBehaviours: {fileID: 11400000, guid: 1da7735260b0de44392b304d28d11e94, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: Queen of Hearts
     position: 0
     isDead: 0
     hpCur: 0
     hpMax: 25
     actionsAvalible:
-    - name: Punch
+    - name: heal
       baseBehaviours: {fileID: 11400000, guid: 54b1ead8ab767b6428e4d4af1d45a695, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
+      element: 2
+    - name: heads
       baseBehaviours: {fileID: 11400000, guid: 256b4a39b8019754287427631505ea0a, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
+      element: 2
+    - name: TEMP
+      baseBehaviours: {fileID: 11400000, guid: 24c397dd2c441604f978da68e05e95e6, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: Grimhilda
     position: 0
     isDead: 0
@@ -740,24 +754,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
+      element: 2
+    - name: heal
       baseBehaviours: {fileID: 11400000, guid: 6deb040c22155704f8239b88a3e45dd5, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
+      element: 2
+    - name: DEBUG
       baseBehaviours: {fileID: 11400000, guid: 22f797471127dd2468d92e5f77b22212, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: Big Bad Wolf
     position: 0
     isDead: 0
@@ -768,24 +789,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: 1d6e3a34623e63c45bd5afdbe941793e, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseBehaviours: {fileID: 11400000, guid: 1d6e3a34623e63c45bd5afdbe941793e, type: 2}
+      element: 2
+    - name: Huff
+      baseBehaviours: {fileID: 11400000, guid: 2d49630555fc28b45a063621c57e9759, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
+      element: 2
+    - name: Blow
       baseBehaviours: {fileID: 11400000, guid: 7005ce96fe61c2e4b9783474309468aa, type: 2}
       updatedBehaviours: []
       ownerID: 0
-    - name: Punch
-      baseBehaviours: {fileID: 11400000, guid: 7005ce96fe61c2e4b9783474309468aa, type: 2}
+      element: 2
+    - name: Temp
+      baseBehaviours: {fileID: 11400000, guid: 24c397dd2c441604f978da68e05e95e6, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   charactersEnemy:
   - name: Miscelanous Protagonist
     position: 0
@@ -797,24 +825,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: Animal Sidekick
     position: 0
     isDead: 0
@@ -825,24 +860,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: Main Character
     position: 0
     isDead: 0
@@ -853,24 +895,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: fe37e86670e9f1d46a5db082b751a805, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   - name: The Chosen One
     position: 0
     isDead: 0
@@ -881,24 +930,31 @@ MonoBehaviour:
       baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: 35459a5cdff51244d8573f70f0ef4f95, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     - name: Punch
       baseBehaviours: {fileID: 11400000, guid: eb1654efee0bf9e468e83fa5ae00f75d, type: 2}
       updatedBehaviours: []
       ownerID: 0
+      element: 2
     actionChosen:
       name: 
       baseBehaviours: {fileID: 0}
       updatedBehaviours: []
       ownerID: 0
-    ElementType: 
+      element: 2
+    curDebuffs: []
+    vulnerableTo: 3
+    ResistantTo: 2
   characterPositions:
   - {fileID: 1921436620}
   - {fileID: 1829703655}
@@ -928,7 +984,21 @@ MonoBehaviour:
       damage: 0
       movement: 0
       appliesDebuff: 
+      durationDebuff: 0
     ownerID: 0
+    element: 2
+  playerTurn:
+    m_PersistentCalls:
+      m_Calls: []
+  roundEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  DamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  Test:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1343875845
 Transform:
   m_ObjectHideFlags: 0
@@ -1798,8 +1868,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1131917263704428429, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
+      propertyPath: m_text
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131917263704428429, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 10.3
       objectReference: {fileID: 0}
     - target: {fileID: 1131917263704428429, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMax
@@ -1807,7 +1881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1131917263704428429, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMin
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1131917263704428429, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_enableAutoSizing
@@ -2087,11 +2161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3962809658398758995, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_text
-      value: test
+      value: 1/2/3/4/5/6
       objectReference: {fileID: 0}
     - target: {fileID: 3962809658398758995, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 8.85
       objectReference: {fileID: 0}
     - target: {fileID: 3962809658398758995, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMax
@@ -2099,7 +2173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3962809658398758995, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMin
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3962809658398758995, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_enableAutoSizing
@@ -2138,6 +2212,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4455671324526605123, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
+      propertyPath: m_text
+      value: 2?3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4455671324526605123, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSize
       value: 14
       objectReference: {fileID: 0}
@@ -2147,7 +2225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4455671324526605123, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMin
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4455671324526605123, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_enableAutoSizing
@@ -2531,7 +2609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6697066017004669217, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.0000009536743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6697066017004669217, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2570,6 +2648,10 @@ PrefabInstance:
       value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6772393147819201376, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
+      propertyPath: m_text
+      value: 1/2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6772393147819201376, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSize
       value: 14
       objectReference: {fileID: 0}
@@ -2579,7 +2661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6772393147819201376, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_fontSizeMin
-      value: 14
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6772393147819201376, guid: efd8fffe1ac611a47bec4b52860fcd0f, type: 3}
       propertyPath: m_enableAutoSizing

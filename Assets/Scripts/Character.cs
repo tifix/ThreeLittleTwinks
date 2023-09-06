@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class Character
@@ -14,17 +15,20 @@ public class Character
     public string name = "DefaultCharacter";
     public int position;
     public bool isDead = false;//each character stores data of it's own position (counting from 1 from the left to right)
-    public float hpCur=100;
-    public float hpMax=100;
-    public Action[] actionsAvalible= new Action[4];
+    public float hpCur = 100, hpMax = 100;
+    public Action[] actionsAvalible = new Action[4];
     public Action actionChosen;
-    public string ElementType;
+    public List<Debuff> curDebuffs = new List<Debuff>();
+    public GameManager.Element vulnerableTo = GameManager.Element.Curse;
+    public GameManager.Element ResistantTo = GameManager.Element.Physical;
 
-    public void TakeDamage(float dmg)   //to be extended later with damage types 
+    public void TakeDamage(float dmg, Character attacker)   //to be extended later with damage types 
     {
-        //if (ElementType == "Water" && dmg.El
+        if (CheckCurrentDebuff("braced")) { dmg = Mathf.RoundToInt(dmg / 2); Debug.LogWarning($"BRACED! Dmg:{dmg}! {attacker.name} takes dmg too!"); attacker.TakeDamage(2,this); } 
+        if (CheckCurrentDebuff("huffed up")) { if (dmg > 2) dmg -= 2; else if(dmg>-1){ dmg = 0; } Debug.LogWarning($"HUFFED UP! Dmg:{dmg}!"); } 
+
         if (dmg < 0)                    { hpCur -= dmg; hpCur=Mathf.Clamp(hpCur, 0, hpMax); Debug.Log($"{name} healed {-dmg}"); }     //When healing, clamp at maximum health
-        else if (dmg > 0 && hpCur > 0)  { hpCur -= dmg;                                     Debug.Log($"{name} took {dmg} dmg"); } //Take damage only if alive to avoid repeat Death calls
+        else if (dmg > 0 && hpCur > 0)  { hpCur -= dmg;                                     Debug.Log($"{name} took {dmg} dmg");  } //Take damage only if alive to avoid repeat Death calls
         if (hpCur < 1) Die();       //if pushed to death with this attack - die
         
     }
@@ -106,4 +110,90 @@ public class Character
         if (position < BattleManager.instance.charactersPlayer.Count + 1) return true;
         else return false;
     }
+
+    public void RefreshDebuffEffects() { }
+
+
+
+    public void ApplyDebuff(string _name,int duration)
+    {
+        //might want to do some tokens representing the debuff
+        
+        //If debuff applied is already active, do not add again. Extend duration instead;
+        foreach (var debuff in curDebuffs)
+        {
+            if (debuff.name == _name) 
+            {
+                if (debuff.duration < duration)
+                    debuff.duration = duration;
+                else { }
+                RefreshDebuffEffects();
+                return;
+            }
+        }
+
+        //Applying new effects
+        curDebuffs.Add(new Debuff(duration,_name, GetHashCode()));
+        Debuff deb = GetDebuffByName(_name);
+
+        switch (_name)
+        {
+            case ("poisoned"): { break; }   //take damage continously.
+            case ("poisoned2"): { break; }   //take damage continously.
+            case ("poisoned3"): { break; }   //take damage continously.
+            case ("braced"): //take 50% damage
+                {
+                    //DamageTaken.AddListener(Braced);
+
+                    //time-down triggers added
+                    BattleManager.instance.roundEnd.AddListener(deb.ReduceDebuffDuration);
+                    BattleManager.instance.Test.AddListener(deb.ReduceDebuffDuration);
+                    break; 
+                }     
+                
+            case ("huffed up"): 
+                {
+                    //empower blow if active
+
+                    //time-down triggers added
+                    BattleManager.instance.roundEnd.AddListener(deb.ReduceDebuffDuration);
+                    break; 
+                }  
+            case ("puffed up"): { break; }  //take -2 incoming damage, empower blow if active
+            case ("charmed"): 
+                {
+                    //DamageTaken.AddListener(Charmed);
+                    break; 
+                }    //if hits caster, take damage themself
+            case ("vulnerable"): { break; } //takes 50% more damage
+            case ("sleeping"): { break; }   //cannot act
+                default : { Debug.LogWarning($"{_name} is not a valid Debuff!"); break; }
+        }
+
+        Debug.LogWarning($"Applying a snazzy debuff <{_name}>");
+    }
+    public bool CheckCurrentDebuff(string _name) 
+    {
+        foreach (var debuff in curDebuffs)
+            if (debuff.name == _name) return true;
+        
+        return false;
+    }
+    public Debuff GetDebuffByName(string _name) 
+    {
+        foreach (var debuff in curDebuffs)
+            if (debuff.name == _name) return debuff;
+
+        return null;
+    }
+
+    #region debuffs
+    public void Charmed() 
+    {
+    }
+    public void Braced() 
+    { 
+    
+    }
+    #endregion
 }
